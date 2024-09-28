@@ -1,0 +1,128 @@
+package mongodb
+
+import (
+	"budget-tracker-api-v2/model"
+	"budget-tracker-api-v2/repository"
+	"fmt"
+
+	"context"
+	"errors"
+	"strings"
+
+	"go.mongodb.org/mongo-driver/bson/primitive"
+)
+
+// MongoUserRepository defines a Repository for User model
+type MongoUserRepository struct {
+	MongoCollection repository.UserCollectionInterface
+}
+
+// NewUserRepository will return an UserRepoInterface for mongodb
+func NewUserRepository(ctx context.Context, c repository.UserCollectionInterface) (repository.UserRepoInterface, error) {
+	r := MongoUserRepository{
+		MongoCollection: c,
+	}
+
+	err := r.MongoCollection.CreateIndexes(context.TODO(), []string{"login", "email"})
+	if err != nil {
+		return nil, err
+	}
+	return &r, nil
+}
+
+// InsertUser will insert an user
+func (r *MongoUserRepository) InsertUser(ctx context.Context, emp *model.User) (*model.User, error) {
+
+	if emp.ID.IsZero() {
+		emp.ID = primitive.NewObjectID()
+	}
+
+	_, err := r.MongoCollection.
+		InsertOne(context.Background(), emp)
+
+	if err != nil {
+		if strings.Contains(err.Error(), "duplicate key error collection") {
+			return nil, errors.New("user or email already registered")
+		}
+
+		return nil, err
+	}
+
+	return emp, nil
+}
+
+// FindUserByID will fetch an user based on its ID
+func (r *MongoUserRepository) FindUserByID(ctx context.Context, empID string) (*model.User, error) {
+	emp, err := r.MongoCollection.FindOne(ctx, empID)
+	fmt.Println(empID)
+
+	if err != nil {
+		if strings.Contains(err.Error(), "mongo: no documents in result") {
+			return nil, fmt.Errorf("user id '%s' not found", empID)
+		}
+
+		return nil, err
+	}
+
+	return emp, nil
+}
+
+// // FindAllUser will fetch all user
+// func (r *MongoUserRepository) FindAllUser(ctx context.Context) ([]model.User, error) {
+// 	var emps []model.User
+
+// 	results, err := r.MongoCollection.
+// 		Find(context.Background(), bson.D{})
+
+// 	if err != nil {
+// 		return nil, err
+// 	}
+
+// 	err = results.All(context.Background(), &emps)
+// 	if err != nil {
+// 		return nil, errors.New("unable to decode")
+// 	}
+
+// 	return emps, nil
+// }
+
+// // UpdateUserByID will update an user based on its ID
+// func (r *MongoUserRepository) UpdateUserByID(ctx context.Context, empID string, updatedEmp *model.User) (int64, error) {
+// 	result, err := r.MongoCollection.
+// 		UpdateOne(context.Background(),
+// 			bson.D{
+// 				{
+// 					Key:   "user_id",
+// 					Value: empID,
+// 				}},
+// 			bson.D{
+// 				{
+// 					Key:   "$set",
+// 					Value: updatedEmp,
+// 				}},
+// 		)
+
+// 	if err != nil {
+// 		return 0, err
+// 	}
+
+// 	return result.ModifiedCount, nil
+// }
+
+// // DeleteUserByID will delete an user based on its ID
+// func (r *MongoUserRepository) DeleteUserByID(ctx context.Context, empID string) (int64, error) {
+// 	result, err := r.MongoCollection.
+// 		DeleteOne(context.Background(),
+// 			bson.D{
+// 				{
+// 					Key:   "user_id",
+// 					Value: empID,
+// 				}},
+// 		)
+
+// 	if err != nil {
+// 		return 0, err
+// 	}
+
+// 	return result.DeletedCount, nil
+// }

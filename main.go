@@ -31,7 +31,7 @@ func main() {
 		log.Error(err)
 	}
 
-	r, err := u.InsertUser(ctx, &model.User{
+	r, err := u.Insert(ctx, &model.User{
 		Login: "vsantos",
 		Name:  "Victor Santos",
 		Email: "vsantos.py@gmail.com",
@@ -46,7 +46,7 @@ func main() {
 			"login": r.Login,
 		}).Info("User created")
 
-		ru, err := u.FindUserByID(ctx, r.ID.Hex())
+		ru, err := u.FindByID(ctx, r.ID.Hex())
 		if err != nil {
 			log.Error(err)
 		}
@@ -55,4 +55,11 @@ func main() {
 			log.Info(ru)
 		}
 	}
+
+	rd, err := u.Delete(ctx, r.ID.Hex())
+	if err != nil {
+		log.Error(err)
+	}
+
+	log.Info(rd)
 }

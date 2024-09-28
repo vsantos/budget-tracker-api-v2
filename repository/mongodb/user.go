@@ -30,8 +30,8 @@ func NewUserRepository(ctx context.Context, c repository.UserCollectionInterface
 	return &r, nil
 }
 
-// InsertUser will insert an user
-func (r *MongoUserRepository) InsertUser(ctx context.Context, emp *model.User) (*model.User, error) {
+// Insert will insert an user
+func (r *MongoUserRepository) Insert(ctx context.Context, emp *model.User) (*model.User, error) {
 
 	if emp.ID.IsZero() {
 		emp.ID = primitive.NewObjectID()
@@ -51,10 +51,9 @@ func (r *MongoUserRepository) InsertUser(ctx context.Context, emp *model.User) (
 	return emp, nil
 }
 
-// FindUserByID will fetch an user based on its ID
-func (r *MongoUserRepository) FindUserByID(ctx context.Context, empID string) (*model.User, error) {
+// FindByID will fetch an user based on its ID
+func (r *MongoUserRepository) FindByID(ctx context.Context, empID string) (*model.User, error) {
 	emp, err := r.MongoCollection.FindOne(ctx, empID)
-	fmt.Println(empID)
 
 	if err != nil {
 		if strings.Contains(err.Error(), "mongo: no documents in result") {
@@ -109,20 +108,14 @@ func (r *MongoUserRepository) FindUserByID(ctx context.Context, empID string) (*
 // 	return result.ModifiedCount, nil
 // }
 
-// // DeleteUserByID will delete an user based on its ID
-// func (r *MongoUserRepository) DeleteUserByID(ctx context.Context, empID string) (int64, error) {
-// 	result, err := r.MongoCollection.
-// 		DeleteOne(context.Background(),
-// 			bson.D{
-// 				{
-// 					Key:   "user_id",
-// 					Value: empID,
-// 				}},
-// 		)
+// Delete will delete an user based on its ID
+func (r *MongoUserRepository) Delete(ctx context.Context, empID string) (int64, error) {
+	result, err := r.MongoCollection.
+		DeleteOne(context.Background(), empID)
 
-// 	if err != nil {
-// 		return 0, err
-// 	}
+	if err != nil {
+		return 0, err
+	}
 
-// 	return result.DeletedCount, nil
-// }
+	return result, nil
+}

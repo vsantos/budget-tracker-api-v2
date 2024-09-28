@@ -36,3 +36,8 @@ func (c *UserMockCollectionConfig) FindOne(ctx context.Context, id string) (*mod
 		Email: "mock.user@gmail.com",
 	}, nil
 }
+
+// DeleteOne will insert a document into mongodb
+func (c *UserMockCollectionConfig) DeleteOne(ctx context.Context, id string) (int64, error) {
+	return 1, nil
+}

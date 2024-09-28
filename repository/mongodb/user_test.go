@@ -45,7 +45,7 @@ func TestInsertUser(t *testing.T) {
 		u, err := NewUserRepository(context.TODO(), test.collection)
 		assert.NoError(t, err)
 
-		_, err = u.InsertUser(context.TODO(), test.user)
+		_, err = u.Insert(context.TODO(), test.user)
 		if test.err == "" {
 			assert.NoError(t, err)
 		}

@@ -63,3 +63,20 @@ func (c *UserCollectionConfig) FindOne(ctx context.Context, id string) (*model.U
 
 	return &emp, nil
 }
+
+// DeleteOne will find a User from collection
+func (c *UserCollectionConfig) DeleteOne(ctx context.Context, id string) (int64, error) {
+	i, err := primitive.ObjectIDFromHex(id)
+	if err != nil {
+		return 0, errors.New("not able to get ID format")
+	}
+
+	filter := bson.M{"_id": i}
+	result, err := c.MongoCollection.DeleteOne(ctx, filter)
+
+	if err != nil {
+		return 0, err
+	}
+
+	return result.DeletedCount, nil
+}

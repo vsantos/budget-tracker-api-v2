@@ -18,7 +18,7 @@ func main() {
 
 	c, err := mongodb.NewClient("mongodb+srv://budget-tracker.gj4ww.mongodb.net")
 	if err != nil {
-		log.Error(err)
+		log.Fatal(err)
 	}
 
 	var m repository.UserCollectionInterface

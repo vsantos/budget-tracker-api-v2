@@ -13,26 +13,26 @@ import (
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
-// MongoUserRepository defines a Repository for User model
-type MongoUserRepository struct {
-	MongoCollection repository.UserCollectionInterface
+// MongoSpendRepository defines a Repository for Spend model
+type MongoSpendRepository struct {
+	MongoCollection repository.SpendCollectionInterface
 }
 
-// NewUserRepository will return an UserRepoInterface for mongodb
-func NewUserRepository(ctx context.Context, c repository.UserCollectionInterface) (repository.UserRepoInterface, error) {
-	r := MongoUserRepository{
+// NewSpendRepository will return an SpendRepoInterface for mongodb
+func NewSpendRepository(ctx context.Context, c repository.SpendCollectionInterface) (repository.SpendRepoInterface, error) {
+	r := MongoSpendRepository{
 		MongoCollection: c,
 	}
 
-	err := r.MongoCollection.CreateIndexes(context.TODO(), []string{"login", "email"})
-	if err != nil {
-		return nil, err
-	}
+	// err := r.MongoCollection.CreateIndexes(context.TODO(), []string{"login", "email"})
+	// if err != nil {
+	// 	return nil, err
+	// }
 	return &r, nil
 }
 
-// Insert will insert an user
-func (r *MongoUserRepository) Insert(ctx context.Context, emp *model.User) (*model.User, error) {
+// Insert will insert an spend
+func (r *MongoSpendRepository) Insert(ctx context.Context, emp *model.Spend) (*model.Spend, error) {
 
 	if emp.ID.IsZero() {
 		emp.ID = primitive.NewObjectID()
@@ -46,7 +46,7 @@ func (r *MongoUserRepository) Insert(ctx context.Context, emp *model.User) (*mod
 
 	if err != nil {
 		if strings.Contains(err.Error(), "duplicate key error collection") {
-			return nil, errors.New("user or email already registered")
+			return nil, errors.New("spend already registered with the same ID")
 		}
 
 		return nil, err
@@ -55,13 +55,13 @@ func (r *MongoUserRepository) Insert(ctx context.Context, emp *model.User) (*mod
 	return emp, nil
 }
 
-// FindByID will fetch an user based on its ID
-func (r *MongoUserRepository) FindByID(ctx context.Context, empID string) (*model.User, error) {
+// FindByID will fetch an spend based on its ID
+func (r *MongoSpendRepository) FindByID(ctx context.Context, empID string) (*model.Spend, error) {
 	emp, err := r.MongoCollection.FindOne(ctx, empID)
 
 	if err != nil {
 		if strings.Contains(err.Error(), "mongo: no documents in result") {
-			return nil, fmt.Errorf("user id '%s' not found", empID)
+			return nil, fmt.Errorf("spend id '%s' not found", empID)
 		}
 
 		return nil, err
@@ -70,9 +70,9 @@ func (r *MongoUserRepository) FindByID(ctx context.Context, empID string) (*mode
 	return emp, nil
 }
 
-// // FindAllUser will fetch all user
-// func (r *MongoUserRepository) FindAllUser(ctx context.Context) ([]model.User, error) {
-// 	var emps []model.User
+// // FindAllSpend will fetch all spend
+// func (r *MongoSpendRepository) FindAllSpend(ctx context.Context) ([]model.Spend, error) {
+// 	var emps []model.Spend
 
 // 	results, err := r.MongoCollection.
 // 		Find(context.Background(), bson.D{})
@@ -89,13 +89,13 @@ func (r *MongoUserRepository) FindByID(ctx context.Context, empID string) (*mode
 // 	return emps, nil
 // }
 
-// // UpdateUserByID will update an user based on its ID
-// func (r *MongoUserRepository) UpdateUserByID(ctx context.Context, empID string, updatedEmp *model.User) (int64, error) {
+// // UpdateSpendByID will update an spend based on its ID
+// func (r *MongoSpendRepository) UpdateSpendByID(ctx context.Context, empID string, updatedEmp *model.Spend) (int64, error) {
 // 	result, err := r.MongoCollection.
 // 		UpdateOne(context.Background(),
 // 			bson.D{
 // 				{
-// 					Key:   "user_id",
+// 					Key:   "spend_id",
 // 					Value: empID,
 // 				}},
 // 			bson.D{
@@ -112,8 +112,8 @@ func (r *MongoUserRepository) FindByID(ctx context.Context, empID string) (*mode
 // 	return result.ModifiedCount, nil
 // }
 
-// Delete will delete an user based on its ID
-func (r *MongoUserRepository) Delete(ctx context.Context, empID string) (int64, error) {
+// Delete will delete an spend based on its ID
+func (r *MongoSpendRepository) Delete(ctx context.Context, empID string) (int64, error) {
 	result, err := r.MongoCollection.
 		DeleteOne(context.Background(), empID)
 

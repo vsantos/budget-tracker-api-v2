@@ -5,6 +5,7 @@ import (
 	"budget-tracker-api-v2/repository"
 	"budget-tracker-api-v2/repository/mongodb"
 	"context"
+	"fmt"
 
 	log "github.com/sirupsen/logrus"
 )
@@ -28,7 +29,7 @@ func main() {
 
 	u, err := mongodb.NewUserRepository(ctx, m)
 	if err != nil {
-		log.Error(err)
+		log.Fatal(err)
 	}
 
 	r, err := u.Insert(ctx, &model.User{
@@ -46,20 +47,44 @@ func main() {
 			"login": r.Login,
 		}).Info("User created")
 
-		ru, err := u.FindByID(ctx, r.ID.Hex())
-		if err != nil {
-			log.Error(err)
-		}
+		// _, err = u.Delete(ctx, r.ID.Hex())
+		// if err != nil {
+		// 	log.Fatal(err)
+		// }
 
-		if ru != nil {
-			log.Info(ru)
-		}
 	}
 
-	rd, err := u.Delete(ctx, r.ID.Hex())
+	var ms repository.SpendCollectionInterface
+	ms = &mongodb.SpendCollectionConfig{
+		MongoCollection: c.Database("budget-tracker").Collection("spends"),
+	}
+
+	s, err := mongodb.NewSpendRepository(ctx, ms)
 	if err != nil {
-		log.Error(err)
+		log.Fatal(err)
 	}
 
-	log.Info(rd)
+	ru, err := u.FindByID(ctx, "686ec8c798948f5b4911eb68")
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	if ru == nil {
+		log.Panic(ru)
+	}
+
+	rs, err := s.Insert(ctx, &model.Spend{
+		OwnerID:     ru.ID,
+		Type:        "variant",
+		Description: "Aluguel do mês",
+		Cost:        30.2,
+		Categories:  []string{"casa"},
+	})
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	fmt.Println(&rs)
+
+	// log.Info(rd)
 }

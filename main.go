@@ -5,7 +5,6 @@ import (
 	"budget-tracker-api-v2/repository"
 	"budget-tracker-api-v2/repository/mongodb"
 	"context"
-	"fmt"
 
 	log "github.com/sirupsen/logrus"
 )
@@ -64,7 +63,7 @@ func main() {
 		log.Fatal(err)
 	}
 
-	ru, err := u.FindByID(ctx, "686ec8c798948f5b4911eb68")
+	ru, err := u.FindByID(ctx, r.ID.Hex())
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -73,18 +72,48 @@ func main() {
 		log.Panic(ru)
 	}
 
-	rs, err := s.Insert(ctx, &model.Spend{
-		OwnerID:     ru.ID,
-		Type:        "variant",
-		Description: "Aluguel do mês",
-		Cost:        30.2,
-		Categories:  []string{"casa"},
+	var mc repository.CardCollectionInterface
+	mc = &mongodb.CardCollectionConfig{
+		MongoCollection: c.Database("budget-tracker").Collection("cards"),
+	}
+
+	sc, err := mongodb.NewCardRepository(ctx, mc)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	cardOutput, err := sc.Insert(ctx, &model.Card{
+		OwnerID:    ru.ID,
+		Alias:      "foo",
+		Network:    "VISA",
+		LastDigits: 5443,
 	})
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	fmt.Println(&rs)
+	rc, err := sc.FindByID(ctx, cardOutput.ID.Hex())
+	if err != nil {
+		log.Fatal(err)
+	}
 
-	// log.Info(rd)
+	if ru == nil {
+		log.Panic(ru)
+	}
+
+	_, err = s.Insert(ctx, &model.Spend{
+		OwnerID:     ru.ID,
+		Type:        "variant",
+		Description: "Aluguel do mês",
+		Cost:        30.2,
+		Categories:  []string{"casa"},
+		PaymentMethod: model.PaymentMethod{
+			Credit:      *rc,
+			Debit:       false,
+			PaymentSlip: false,
+		},
+	})
+	if err != nil {
+		log.Fatal(err)
+	}
 }

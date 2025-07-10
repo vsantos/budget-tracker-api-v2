@@ -1,7 +1,7 @@
 package mongodb
 
 import (
-	"budget-tracker-api-v2/model"
+	"budget-tracker-api-v2/internal/model"
 	"context"
 
 	"go.mongodb.org/mongo-driver/bson/primitive"
@@ -30,10 +30,11 @@ func (c *UserMockCollectionConfig) InsertOne(ctx context.Context, document inter
 func (c *UserMockCollectionConfig) FindOne(ctx context.Context, id string) (*model.User, error) {
 
 	return &model.User{
-		ID:    primitive.NewObjectID(),
-		Login: "mockuser",
-		Name:  "Mock User Torres",
-		Email: "mock.user@gmail.com",
+		ID:        primitive.NewObjectID(),
+		Login:     "mockuser",
+		Firstname: "Mock User",
+		Lastname:  "Torres",
+		Email:     "mock.user@gmail.com",
 	}, nil
 }
 

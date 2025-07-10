@@ -11,3 +11,10 @@
 - [ ] Metrics
 - [ ] Traces
 - [ ] Structured Logs
+
+## Functional
+
+- [X] CRUD User
+- [X] CRUD Card
+- [X] CRUD Spend
+- [ ] HTTP

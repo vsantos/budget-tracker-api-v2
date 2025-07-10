@@ -1,7 +1,7 @@
 package mongodb
 
 import (
-	"budget-tracker-api-v2/model"
+	"budget-tracker-api-v2/internal/model"
 	"context"
 
 	"go.mongodb.org/mongo-driver/bson/primitive"

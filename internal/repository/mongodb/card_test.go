@@ -1,8 +1,8 @@
 package mongodb
 
 import (
-	"budget-tracker-api-v2/model"
-	"budget-tracker-api-v2/repository"
+	"budget-tracker-api-v2/internal/model"
+	"budget-tracker-api-v2/internal/repository"
 	"context"
 	"errors"
 	"testing"
@@ -37,7 +37,7 @@ func TestInsertCard(t *testing.T) {
 				Error: errors.New("duplicate key error collection"),
 			},
 			card: &model.Card{},
-			err:  "card already registered with the same ID",
+			err:  "card already registered with the same ID and/or owner ID",
 		},
 	}
 

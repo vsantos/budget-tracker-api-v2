@@ -13,6 +13,8 @@ type Card struct {
 	Alias string `json:"alias" bson:"alias"`
 	// example: VISA
 	Network string `json:"network" bson:"network"`
+	// example: Itaú
+	Bank string `json:"bank" bson:"bank"`
 	// example: #ffffff
 	Color string `json:"color" bson:"color"`
 	// example: 1234

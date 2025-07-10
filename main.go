@@ -7,6 +7,7 @@ import (
 	"context"
 
 	log "github.com/sirupsen/logrus"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
 func init() {
@@ -63,12 +64,13 @@ func main() {
 		log.Fatal(err)
 	}
 
-	ru, err := u.FindByID(ctx, r.ID.Hex())
+	userID, _ := primitive.ObjectIDFromHex("686f0a6071813ecbb376d36a")
+	ru, err := u.FindByID(ctx, userID.Hex())
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	if ru == nil {
+	if ru == nil || ru.ID.IsZero() {
 		log.Panic(ru)
 	}
 
@@ -84,8 +86,9 @@ func main() {
 
 	cardOutput, err := sc.Insert(ctx, &model.Card{
 		OwnerID:    ru.ID,
-		Alias:      "foo",
+		Alias:      "platinum multiplo",
 		Network:    "VISA",
+		Bank:       "Itaú",
 		LastDigits: 5443,
 	})
 	if err != nil {

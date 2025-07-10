@@ -58,7 +58,7 @@ func main() {
 
 	}
 
-	userID, _ := primitive.ObjectIDFromHex("686f1ce375e46b0906870d2c")
+	userID, _ := primitive.ObjectIDFromHex("686f255205535b1dd3b68f38")
 	ru, err := u.FindByID(ctx, userID.Hex())
 	if err != nil {
 		log.Fatal(err)

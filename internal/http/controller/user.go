@@ -6,7 +6,6 @@ import (
 	"budget-tracker-api-v2/internal/repository/mongodb"
 	"context"
 	"encoding/json"
-	"log"
 	"net/http"
 	"strings"
 
@@ -19,17 +18,23 @@ func GetUsers(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(users)
 }
 
-// CreateUser fetches all users from the platform
+// CreateUser create a new user within the platform
 func CreateUser(w http.ResponseWriter, r *http.Request) {
 	w.Header().Add("content-type", "application/json")
 
 	var user *model.User
 
-	_ = json.NewDecoder(r.Body).Decode(&user)
+	err := json.NewDecoder(r.Body).Decode(&user)
+	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		w.Write([]byte(`{"message": "could not create user", "details": "` + err.Error() + `"}`))
+		return
+	}
 
 	c, err := mongodb.NewClient("mongodb+srv://budget-tracker.gj4ww.mongodb.net")
 	if err != nil {
-		log.Fatal(err)
+		w.WriteHeader(http.StatusInternalServerError)
+		w.Write([]byte(`{"message": "could not create user", "details": "` + err.Error() + `"}`))
 		return
 	}
 
@@ -40,7 +45,8 @@ func CreateUser(w http.ResponseWriter, r *http.Request) {
 
 	u, err := mongodb.NewUserRepository(context.Background(), m)
 	if err != nil {
-		log.Fatal(err)
+		w.WriteHeader(http.StatusInternalServerError)
+		w.Write([]byte(`{"message": "could not create user", "details": "` + err.Error() + `"}`))
 		return
 	}
 
@@ -64,14 +70,14 @@ func CreateUser(w http.ResponseWriter, r *http.Request) {
 // GetUser will find a single user based on ID
 func GetUser(w http.ResponseWriter, r *http.Request) {
 	var user *model.User
-	json.NewEncoder(w).Encode(user)
 
 	w.Header().Add("content-type", "application/json")
 	params := mux.Vars(r)
 
 	c, err := mongodb.NewClient("mongodb+srv://budget-tracker.gj4ww.mongodb.net")
 	if err != nil {
-		log.Fatal(err)
+		w.WriteHeader(http.StatusInternalServerError)
+		w.Write([]byte(`{"message": "could not get user", "details": "` + err.Error() + `"}`))
 		return
 	}
 
@@ -82,7 +88,8 @@ func GetUser(w http.ResponseWriter, r *http.Request) {
 
 	u, err := mongodb.NewUserRepository(context.Background(), m)
 	if err != nil {
-		log.Fatal(err)
+		w.WriteHeader(http.StatusInternalServerError)
+		w.Write([]byte(`{"message": "could not get user", "details": "` + err.Error() + `"}`))
 		return
 	}
 
@@ -100,7 +107,7 @@ func GetUser(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// masking salted password
-	user.Password = ""
+	user.Password = "<sensitive>"
 
 	json.NewEncoder(w).Encode(user)
 }

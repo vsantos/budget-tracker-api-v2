@@ -62,7 +62,7 @@ func TestGetUserRoute(t *testing.T) {
 
 	for _, testCase := range cases {
 
-		r, err := NewRouter(m)
+		r, err := NewRouter(m, nil)
 		if testCase.ExpectedErrorMsg != "" {
 			assert.Error(t, err, testCase.ExpectedErrorMsg)
 		} else {

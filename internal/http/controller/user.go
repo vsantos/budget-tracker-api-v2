@@ -17,7 +17,14 @@ type UsersController struct {
 	Repo repository.UserCollectionInterface
 }
 
-// GetUsers fetches all users from the platform
+// RegisterRoutes register router for handling User operations
+func (uc *UsersController) RegisterRoutes(r *mux.Router) {
+	r.HandleFunc("/api/v1/users", uc.GetUsers).Methods("GET")
+	r.HandleFunc("/api/v1/users", uc.CreateUser).Methods("POST")
+	r.HandleFunc("/api/v1/users/{id}", uc.GetUser).Methods("GET")
+}
+
+// GetUsers handler list of all user within the platform without filters. Deprecated.
 func (uc *UsersController) GetUsers(w http.ResponseWriter, r *http.Request) {
 	var users []model.User
 	json.NewEncoder(w).Encode(users)
@@ -55,7 +62,7 @@ func (uc *UsersController) CreateUser(w http.ResponseWriter, r *http.Request) {
 	}
 
 	w.WriteHeader(http.StatusCreated)
-	w.Write([]byte(`{"message": "created user '` + user.Login + `'", "id": "` + user.ID.String() + `"}`))
+	w.Write([]byte(`{"message": "created user '` + user.Login + `'", "id": "` + user.ID.Hex() + `"}`))
 }
 
 // GetUser will find a single user based on ID

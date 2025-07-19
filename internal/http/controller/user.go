@@ -12,16 +12,19 @@ import (
 	"github.com/gorilla/mux"
 )
 
+// UsersController injects UserRepository to controllers
+type UsersController struct {
+	Repo repository.UserCollectionInterface
+}
+
 // GetUsers fetches all users from the platform
-func GetUsers(w http.ResponseWriter, r *http.Request) {
+func (uc *UsersController) GetUsers(w http.ResponseWriter, r *http.Request) {
 	var users []model.User
 	json.NewEncoder(w).Encode(users)
 }
 
 // CreateUser create a new user within the platform
-func CreateUser(w http.ResponseWriter, r *http.Request) {
-	w.Header().Add("content-type", "application/json")
-
+func (uc *UsersController) CreateUser(w http.ResponseWriter, r *http.Request) {
 	var user *model.User
 
 	err := json.NewDecoder(r.Body).Decode(&user)
@@ -31,19 +34,7 @@ func CreateUser(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	c, err := mongodb.NewClient("mongodb+srv://budget-tracker.gj4ww.mongodb.net")
-	if err != nil {
-		w.WriteHeader(http.StatusInternalServerError)
-		w.Write([]byte(`{"message": "could not create user", "details": "` + err.Error() + `"}`))
-		return
-	}
-
-	var m repository.UserCollectionInterface
-	m = &mongodb.UserCollectionConfig{
-		MongoCollection: c.Database("budget-tracker-v2").Collection("users"),
-	}
-
-	u, err := mongodb.NewUserRepository(context.Background(), m)
+	u, err := mongodb.NewUserRepository(context.Background(), uc.Repo)
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
 		w.Write([]byte(`{"message": "could not create user", "details": "` + err.Error() + `"}`))
@@ -68,25 +59,12 @@ func CreateUser(w http.ResponseWriter, r *http.Request) {
 }
 
 // GetUser will find a single user based on ID
-func GetUser(w http.ResponseWriter, r *http.Request) {
+func (uc *UsersController) GetUser(w http.ResponseWriter, r *http.Request) {
 	var user *model.User
 
-	w.Header().Add("content-type", "application/json")
 	params := mux.Vars(r)
 
-	c, err := mongodb.NewClient("mongodb+srv://budget-tracker.gj4ww.mongodb.net")
-	if err != nil {
-		w.WriteHeader(http.StatusInternalServerError)
-		w.Write([]byte(`{"message": "could not get user", "details": "` + err.Error() + `"}`))
-		return
-	}
-
-	var m repository.UserCollectionInterface
-	m = &mongodb.UserCollectionConfig{
-		MongoCollection: c.Database("budget-tracker-v2").Collection("users"),
-	}
-
-	u, err := mongodb.NewUserRepository(context.Background(), m)
+	u, err := mongodb.NewUserRepository(context.Background(), uc.Repo)
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
 		w.Write([]byte(`{"message": "could not get user", "details": "` + err.Error() + `"}`))

@@ -19,7 +19,8 @@ func init() {
 func main() {
 	ctx := context.Background()
 
-	c, err := mongodb.NewClient("mongodb+srv://budget-tracker.gj4ww.mongodb.net")
+	// c, err := mongodb.NewClient("mongodb+srv://budget-tracker.gj4ww.mongodb.net")
+	c, err := mongodb.NewClient()
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -58,7 +59,7 @@ func main() {
 
 	}
 
-	userID, _ := primitive.ObjectIDFromHex("686f255205535b1dd3b68f38")
+	userID, _ := primitive.ObjectIDFromHex("687baad049572fb8c4e305f9")
 	ru, err := u.FindByID(ctx, userID.Hex())
 	if err != nil {
 		log.Fatal(err)
@@ -68,35 +69,35 @@ func main() {
 		log.Panic(ru)
 	}
 
-	var mc repository.CardCollectionInterface
-	mc = &mongodb.CardCollectionConfig{
-		MongoCollection: c.Database("budget-tracker-v2").Collection("cards"),
-	}
+	// var mc repository.CardCollectionInterface
+	// mc = &mongodb.CardCollectionConfig{
+	// 	MongoCollection: c.Database("budget-tracker-v2").Collection("cards"),
+	// }
 
-	sc, err := mongodb.NewCardRepository(ctx, mc)
-	if err != nil {
-		log.Fatal(err)
-	}
+	// sc, err := mongodb.NewCardRepository(ctx, mc)
+	// if err != nil {
+	// 	log.Fatal(err)
+	// }
 
-	cardOutput, err := sc.Insert(ctx, &model.Card{
-		OwnerID:    ru.ID,
-		Alias:      "platinum multiplo",
-		Network:    "VISA",
-		Bank:       "Itaú",
-		LastDigits: 5443,
-	})
-	if err != nil {
-		log.Fatal(err)
-	}
+	// cardOutput, err := sc.Insert(ctx, &model.Card{
+	// 	OwnerID:    ru.ID,
+	// 	Alias:      "platinum multiplo",
+	// 	Network:    "VISA",
+	// 	Bank:       "Itaú",
+	// 	LastDigits: 5443,
+	// })
+	// if err != nil {
+	// 	log.Error(err)
+	// }
 
-	rc, err := sc.FindByID(ctx, cardOutput.ID.Hex())
-	if err != nil {
-		log.Fatal(err)
-	}
+	// rc, err := sc.FindByID(ctx, cardOutput.ID.Hex())
+	// if err != nil {
+	// 	log.Fatal(err)
+	// }
 
-	if ru == nil {
-		log.Panic(ru)
-	}
+	// if ru == nil {
+	// 	log.Panic(ru)
+	// }
 
 	var ms repository.SpendCollectionInterface
 	ms = &mongodb.SpendCollectionConfig{
@@ -115,7 +116,7 @@ func main() {
 		Cost:        30.2,
 		Categories:  []string{"casa"},
 		PaymentMethod: model.PaymentMethod{
-			Credit:      *rc,
+			// Credit:      *rc,
 			Debit:       false,
 			PaymentSlip: false,
 		},
@@ -124,7 +125,10 @@ func main() {
 		log.Fatal(err)
 	}
 
-	router := router.NewRouter()
+	router, err := router.NewRouter(m)
+	if err != nil {
+		log.Fatal(err)
+	}
 	log.Println("Server running on :8080")
 	log.Fatal(http.ListenAndServe(":8080", router))
 }

@@ -1,33 +1,24 @@
 package middleware
 
-// import (
-// 	"budget-tracker-api-v2/internal/http/router"
-// 	"testing"
+import (
+	"net/http"
+	"net/http/httptest"
+	"testing"
 
-// 	"github.com/stretchr/testify/assert"
-// )
+	"github.com/stretchr/testify/assert"
+)
 
-// func TestGetUserRoute(t *testing.T) {
-// 	type middlewareTestCase struct {
-// 		Database      string
-// 		ExpectedError error
-// 	}
+func TestInjectHeaders(t *testing.T) {
+	dummyHandler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		w.WriteHeader(http.StatusOK)
+	})
 
-// 	cases := []middlewareTestCase{
-// 		{
-// 			Database:      "mongodbd",
-// 			ExpectedError: nil,
-// 		},
-// 	}
+	wrapped := InjectHeaders(dummyHandler)
 
-// 	for _, testCase := range cases {
-// 		r, err := router.NewRouter(testCase.Database)
-// 		if testCase.ExpectedError != nil {
-// 			assert.Error(t, err, testCase.ExpectedError)
-// 			assert.NotNil(t, r)
-// 		} else {
-// 			assert.NoError(t, err)
-// 		}
-// 	}
+	req := httptest.NewRequest("GET", "/", nil)
+	rr := httptest.NewRecorder()
 
-// }
+	wrapped.ServeHTTP(rr, req)
+	assert.Equal(t, "application/json", rr.Header().Get("Content-Type"))
+	assert.Equal(t, "*", rr.Header().Get("Access-Control-Allow-Origin"))
+}

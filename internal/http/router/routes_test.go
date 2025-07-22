@@ -80,5 +80,4 @@ func TestGetUserRoute(t *testing.T) {
 			assert.Equal(t, rr.Code, testCase.ExpectedStatusCode)
 		}
 	}
-
 }

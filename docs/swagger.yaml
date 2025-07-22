@@ -1,0 +1,80 @@
+definitions:
+  Card:
+    description: Card defines a user credit card
+    properties:
+      alias:
+        example: My Platinum Card
+        type: string
+        x-go-name: Alias
+      bank:
+        example: Itaú
+        type: string
+        x-go-name: Bank
+      color:
+        example: '#ffffff'
+        type: string
+        x-go-name: Color
+      last_digits:
+        example: 1234
+        format: int32
+        type: integer
+        x-go-name: LastDigits
+      network:
+        example: VISA
+        type: string
+        x-go-name: Network
+      owner_id:
+        $ref: '#/definitions/ObjectID'
+    type: object
+    x-go-package: budget-tracker-api-v2/internal/model
+  ObjectID:
+    items:
+      format: uint8
+      type: integer
+    title: ObjectID is the BSON ObjectID type.
+    type: array
+    x-go-package: go.mongodb.org/mongo-driver/bson/primitive
+  PaymentMethod:
+    description: PaymentMethod defines which payment method was used for a certain
+      spend
+    properties:
+      credit:
+        $ref: '#/definitions/Card'
+      debit:
+        type: boolean
+        x-go-name: Debit
+      payment_slip:
+        type: boolean
+        x-go-name: PaymentSlip
+    type: object
+    x-go-package: budget-tracker-api-v2/internal/model
+  Spend:
+    description: Spend defines a user spend to be added to Balance
+    properties:
+      categories:
+        example: '"categories": ["personal development"]'
+        items:
+          type: string
+        type: array
+        x-go-name: Categories
+      cost:
+        example: 12.9
+        format: double
+        type: number
+        x-go-name: Cost
+      description:
+        example: guitar lessons
+        type: string
+        x-go-name: Description
+      owner_id:
+        $ref: '#/definitions/ObjectID'
+      payment_method:
+        $ref: '#/definitions/PaymentMethod'
+      type:
+        example: fixed
+        type: string
+        x-go-name: Type
+    type: object
+    x-go-package: budget-tracker-api-v2/internal/model
+paths: {}
+swagger: "2.0"

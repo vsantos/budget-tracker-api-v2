@@ -9,6 +9,8 @@ import (
 	"net/http"
 	"strings"
 
+	/*adicionar essa linha */
+
 	"github.com/gorilla/mux"
 )
 

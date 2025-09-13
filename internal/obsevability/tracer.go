@@ -11,6 +11,7 @@ import (
 	semconv "go.opentelemetry.io/otel/semconv/v1.24.0"
 )
 
+// InitTracer will init Tracer globally
 func InitTracer(ctx context.Context) func(context.Context) error {
 	exp, err := otlptracehttp.New(
 		ctx,
@@ -27,8 +28,6 @@ func InitTracer(ctx context.Context) func(context.Context) error {
 		context.Background(),
 		resource.WithAttributes(
 			semconv.ServiceNameKey.String("budget-tracker-api-v2"),
-			// semconv.ServiceVersionKey.String("1.0.0"),
-			// semconv.DeploymentEnvironmentKey.String("development"),
 		),
 	)
 	if err != nil {

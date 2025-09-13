@@ -3,18 +3,18 @@
 - [ ] Easy setup for local testing if needed (via Kind)
 
 ## CI/CD (Github pages)
-- [ ] Tests Pipeline
+- [X] Tests Pipeline
 - [ ] Build image and push to registry
 
 ## Observability
 
 - [ ] Metrics
-- [ ] Traces
+- [ ] Traces - WIP
 - [ ] Structured Logs
 
 ## Functional
 
 - [X] CRUD User
 - [X] CRUD Card
-- [X] CRUD Spend
+- [ ] CRUD Spend
 - [ ] HTTP

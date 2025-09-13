@@ -11,6 +11,8 @@ import (
 
 	"github.com/gorilla/mux"
 	log "github.com/sirupsen/logrus"
+	"go.opentelemetry.io/otel"
+	"go.opentelemetry.io/otel/codes"
 )
 
 // CardsController injects CardRepository to controllers
@@ -92,15 +94,24 @@ func (uc *CardsController) CreateCard(w http.ResponseWriter, r *http.Request) {
 // GetCard will find a single card based on ID
 func (uc *CardsController) GetCard(w http.ResponseWriter, r *http.Request) {
 	var card *model.Card
+	tracer := otel.Tracer("budget-tracker-api-v2")
+	ctx, span := tracer.Start(r.Context(), "controller")
+	defer span.End()
 
 	params := mux.Vars(r)
 
-	u, err := mongodb.NewCardRepository(context.Background(), uc.Repo)
+	u, err := mongodb.NewCardRepository(ctx, uc.Repo)
 	if err != nil {
+
+		span.RecordError(err)
+		span.SetStatus(codes.Error, err.Error())
+
 		if strings.Contains(err.Error(), "already registered") {
 			w.WriteHeader(http.StatusConflict)
 			_, err := w.Write([]byte(`{"message": "` + err.Error() + `"}`))
 			if err != nil {
+				span.RecordError(err)
+				span.SetStatus(codes.Error, err.Error())
 				log.Error("Could not write response: ", err)
 			}
 
@@ -110,9 +121,13 @@ func (uc *CardsController) GetCard(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusInternalServerError)
 		_, err := w.Write([]byte(`{"message": "could not get card", "details": "` + err.Error() + `"}`))
 		if err != nil {
+			span.RecordError(err)
+			span.SetStatus(codes.Error, err.Error())
+
 			log.Error("Could not write response: ", err)
 		}
 
+		span.AddEvent("card info returned")
 		return
 	}
 

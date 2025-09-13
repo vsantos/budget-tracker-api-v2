@@ -11,6 +11,8 @@ import (
 	"strings"
 
 	"go.mongodb.org/mongo-driver/bson/primitive"
+	"go.opentelemetry.io/otel"
+	"go.opentelemetry.io/otel/codes"
 )
 
 // MongoCardRepository defines a Repository for Card model
@@ -20,12 +22,18 @@ type MongoCardRepository struct {
 
 // NewCardRepository will return an CardRepoInterface for mongodb
 func NewCardRepository(ctx context.Context, c repository.CardCollectionInterface) (repository.CardRepoInterface, error) {
+	tracer := otel.Tracer("budget-tracker-api-v2")
+	ctx, span := tracer.Start(ctx, "collection")
+	defer span.End()
+
 	r := MongoCardRepository{
 		MongoCollection: c,
 	}
 
-	err := r.MongoCollection.CreateIndexes(context.TODO(), []string{"owner_id", "last_digits"})
+	err := r.MongoCollection.CreateIndexes(ctx, []string{"owner_id", "last_digits"})
 	if err != nil {
+		span.RecordError(err)
+		span.SetStatus(codes.Error, err.Error())
 		return nil, err
 	}
 	return &r, nil
@@ -42,7 +50,7 @@ func (r *MongoCardRepository) Insert(ctx context.Context, emp *model.Card) (*mod
 	emp.CreatedAt = primitive.NewDateTimeFromTime(t)
 
 	_, err := r.MongoCollection.
-		InsertOne(context.Background(), emp)
+		InsertOne(ctx, emp)
 
 	if err != nil {
 		if strings.Contains(err.Error(), "duplicate key error collection") {
@@ -57,6 +65,10 @@ func (r *MongoCardRepository) Insert(ctx context.Context, emp *model.Card) (*mod
 
 // FindByID will fetch an card based on its ID
 func (r *MongoCardRepository) FindByID(ctx context.Context, empID string) (*model.Card, error) {
+	tracer := otel.Tracer("budget-tracker-api-v2")
+	ctx, span := tracer.Start(ctx, "find by ID")
+	defer span.End()
+
 	emp, err := r.MongoCollection.FindOne(ctx, empID)
 
 	if err != nil {
@@ -75,13 +87,13 @@ func (r *MongoCardRepository) FindByID(ctx context.Context, empID string) (*mode
 // 	var emps []model.Card
 
 // 	results, err := r.MongoCollection.
-// 		Find(context.Background(), bson.D{})
+// 		Find(ctx, bson.D{})
 
 // 	if err != nil {
 // 		return nil, err
 // 	}
 
-// 	err = results.All(context.Background(), &emps)
+// 	err = results.All(ctx, &emps)
 // 	if err != nil {
 // 		return nil, errors.New("unable to decode")
 // 	}
@@ -92,7 +104,7 @@ func (r *MongoCardRepository) FindByID(ctx context.Context, empID string) (*mode
 // // UpdateCardByID will update an card based on its ID
 // func (r *MongoCardRepository) UpdateCardByID(ctx context.Context, empID string, updatedEmp *model.Card) (int64, error) {
 // 	result, err := r.MongoCollection.
-// 		UpdateOne(context.Background(),
+// 		UpdateOne(ctx,
 // 			bson.D{
 // 				{
 // 					Key:   "card_id",
@@ -115,7 +127,7 @@ func (r *MongoCardRepository) FindByID(ctx context.Context, empID string) (*mode
 // Delete will delete an card based on its ID
 func (r *MongoCardRepository) Delete(ctx context.Context, empID string) (int64, error) {
 	result, err := r.MongoCollection.
-		DeleteOne(context.Background(), empID)
+		DeleteOne(ctx, empID)
 
 	if err != nil {
 		return 0, err

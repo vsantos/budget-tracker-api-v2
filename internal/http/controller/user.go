@@ -28,8 +28,11 @@ func (uc *UsersController) RegisterRoutes(r *mux.Router) {
 
 // GetUsers handler list of all user within the platform without filters. Deprecated.
 func (uc *UsersController) GetUsers(w http.ResponseWriter, r *http.Request) {
-	var users []model.User
-	json.NewEncoder(w).Encode(users)
+	// var users []model.User
+
+	w.WriteHeader(http.StatusOK)
+	// json.NewEncoder(w).Encode(users)
+	w.Write([]byte(`[]`))
 }
 
 // CreateUser create a new user within the platform

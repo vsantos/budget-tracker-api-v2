@@ -17,9 +17,9 @@ func NewClient() (*mongo.Client, error) {
 
 	var mongoHost, mongoUser, mongoPass string
 
-	mongoHost = os.Getenv("MONGODB_ATLAS_HOST")
-	mongoUser = os.Getenv("MONGODB_ATLAS_USER")
-	mongoPass = os.Getenv("MONGODB_ATLAS_PASS")
+	mongoHost = os.Getenv("MONGODB_HOST")
+	mongoUser = os.Getenv("MONGODB_USER")
+	mongoPass = os.Getenv("MONGODB_PASS")
 
 	if mongoHost == "" || mongoUser == "" || mongoPass == "" {
 		return nil, errors.New("empty HOST, USER or PASS env vars for mongodb atlas")

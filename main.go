@@ -2,9 +2,12 @@ package main
 
 import (
 	"budget-tracker-api-v2/internal/http/router"
+	"budget-tracker-api-v2/internal/obsevability"
 	"budget-tracker-api-v2/internal/repository"
 	"budget-tracker-api-v2/internal/repository/mongodb"
+	"context"
 	"net/http"
+	"time"
 
 	log "github.com/sirupsen/logrus"
 )
@@ -14,7 +17,27 @@ func init() {
 }
 
 func main() {
-	// ctx := context.Background()
+	ctx := context.Background()
+
+	timedOut, cancel := context.WithTimeout(ctx, 3*time.Second)
+	defer cancel()
+
+	// otelShutdown, err := obsevability.SetupOTelSDK(timedOut)
+	// if err != nil {
+	// 	if err == context.DeadlineExceeded {
+	// 		fmt.Println("timeout when reaching jaeger")
+	// 	} else {
+	// 		fmt.Println(err)
+	// 	}
+	// }
+
+	// // Handle shutdown properly so nothing leaks.
+	// defer func() {
+	// 	err = errors.Join(err, otelShutdown(context.Background()))
+	// }()
+
+	shutdown := obsevability.InitTracer(timedOut)
+	defer shutdown(timedOut)
 
 	// c, err := mongodb.NewClient("mongodb+srv://budget-tracker.gj4ww.mongodb.net")
 	c, err := mongodb.NewClient()

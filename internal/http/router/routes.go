@@ -6,6 +6,7 @@ import (
 	"budget-tracker-api-v2/internal/repository"
 
 	"github.com/gorilla/mux"
+	"go.opentelemetry.io/contrib/instrumentation/net/http/otelhttp"
 )
 
 // NewRouter will set new User Routes
@@ -16,6 +17,8 @@ func NewRouter(
 	r := mux.NewRouter()
 
 	r.Use(middleware.InjectHeaders)
+	r.Use(otelhttp.NewMiddleware("budget-tracker-api-v2"))
+
 	// API routes
 	userController := controller.UsersController{
 		Repo: userCollectionInterface,

@@ -55,7 +55,7 @@ func TestGetUserRoute(t *testing.T) {
 		},
 	}
 
-	var m repository.UserCollectionInterface
+	var m repository.UserCollectionInterface //nolint:staticcheck
 	m = &mongodb.UserMockCollectionConfig{
 		Error: nil,
 	}

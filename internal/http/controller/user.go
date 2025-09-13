@@ -12,6 +12,7 @@ import (
 	/*adicionar essa linha */
 
 	"github.com/gorilla/mux"
+	log "github.com/sirupsen/logrus"
 )
 
 // UsersController injects UserRepository to controllers
@@ -32,7 +33,10 @@ func (uc *UsersController) GetUsers(w http.ResponseWriter, r *http.Request) {
 
 	w.WriteHeader(http.StatusOK)
 	// json.NewEncoder(w).Encode(users)
-	w.Write([]byte(`[]`))
+	_, err := w.Write([]byte(`[]`))
+	if err != nil {
+		log.Error("Could not write response: ", err)
+	}
 }
 
 // CreateUser create a new user within the platform
@@ -42,14 +46,21 @@ func (uc *UsersController) CreateUser(w http.ResponseWriter, r *http.Request) {
 	err := json.NewDecoder(r.Body).Decode(&user)
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
-		w.Write([]byte(`{"message": "could not create user", "details": "` + err.Error() + `"}`))
+		_, err := w.Write([]byte(`{"message": "could not create user", "details": "` + err.Error() + `"}`))
+		if err != nil {
+			log.Error("Could not write response: ", err)
+		}
 		return
 	}
 
 	u, err := mongodb.NewUserRepository(context.Background(), uc.Repo)
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
-		w.Write([]byte(`{"message": "could not create user", "details": "` + err.Error() + `"}`))
+		_, err := w.Write([]byte(`{"message": "could not create user", "details": "` + err.Error() + `"}`))
+		if err != nil {
+			log.Error("Could not write response: ", err)
+		}
+
 		return
 	}
 
@@ -57,17 +68,29 @@ func (uc *UsersController) CreateUser(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		if strings.Contains(err.Error(), "user or email already registered") {
 			w.WriteHeader(http.StatusConflict)
-			w.Write([]byte(`{"message": "could not create user", "details": "` + err.Error() + `"}`))
+			_, err := w.Write([]byte(`{"message": "could not create user", "details": "` + err.Error() + `"}`))
+			if err != nil {
+				log.Error("Could not write response: ", err)
+			}
+
 			return
 		}
 
 		w.WriteHeader(http.StatusInternalServerError)
-		w.Write([]byte(`{"message": "could not create user", "details": "` + err.Error() + `"}`))
+		_, err := w.Write([]byte(`{"message": "could not create user", "details": "` + err.Error() + `"}`))
+		if err != nil {
+			log.Error("Could not write response: ", err)
+		}
+
 		return
 	}
 
 	w.WriteHeader(http.StatusCreated)
-	w.Write([]byte(`{"message": "created user '` + user.Login + `'", "id": "` + user.ID.Hex() + `"}`))
+	_, err = w.Write([]byte(`{"message": "created user '` + user.Login + `'", "id": "` + user.ID.Hex() + `"}`))
+	if err != nil {
+		log.Error("Could not write response: ", err)
+	}
+
 }
 
 // GetUser will find a single user based on ID
@@ -79,7 +102,11 @@ func (uc *UsersController) GetUser(w http.ResponseWriter, r *http.Request) {
 	u, err := mongodb.NewUserRepository(context.Background(), uc.Repo)
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
-		w.Write([]byte(`{"message": "could not get user", "details": "` + err.Error() + `"}`))
+		_, err := w.Write([]byte(`{"message": "could not get user", "details": "` + err.Error() + `"}`))
+		if err != nil {
+			log.Error("Could not write response: ", err)
+		}
+
 		return
 	}
 
@@ -87,17 +114,28 @@ func (uc *UsersController) GetUser(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		if strings.Contains(err.Error(), "could not find user") {
 			w.WriteHeader(http.StatusNotFound)
-			w.Write([]byte(`{"message": "could not find user", "id": "` + params["id"] + `"}`))
+			_, err := w.Write([]byte(`{"message": "could not find user", "id": "` + params["id"] + `"}`))
+			if err != nil {
+				log.Error("Could not write response: ", err)
+			}
+
 			return
 		}
 
 		w.WriteHeader(http.StatusInternalServerError)
-		w.Write([]byte(`{"message": "` + err.Error() + `"}`))
+		_, err := w.Write([]byte(`{"message": "` + err.Error() + `"}`))
+		if err != nil {
+			log.Error("Could not write response: ", err)
+		}
+
 		return
 	}
 
 	// masking salted password
 	user.Password = "<sensitive>"
 
-	json.NewEncoder(w).Encode(user)
+	err = json.NewEncoder(w).Encode(user)
+	if err != nil {
+		log.Error("Could not encode response: ", err)
+	}
 }

@@ -10,6 +10,7 @@ import (
 	"strings"
 
 	"github.com/gorilla/mux"
+	log "github.com/sirupsen/logrus"
 )
 
 // CardsController injects CardRepository to controllers
@@ -27,7 +28,10 @@ func (uc *CardsController) RegisterRoutes(r *mux.Router) {
 // GetCards handler list of all card within the platform without filters. Deprecated.
 func (uc *CardsController) GetCards(w http.ResponseWriter, r *http.Request) {
 	var cards []model.Card
-	json.NewEncoder(w).Encode(cards)
+	err := json.NewEncoder(w).Encode(cards)
+	if err != nil {
+		log.Error("Could not encode response: ", err)
+	}
 }
 
 // CreateCard create a new card within the platform
@@ -37,14 +41,22 @@ func (uc *CardsController) CreateCard(w http.ResponseWriter, r *http.Request) {
 	err := json.NewDecoder(r.Body).Decode(&card)
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
-		w.Write([]byte(`{"message": "could not create card", "details": "` + err.Error() + `"}`))
+		_, err := w.Write([]byte(`{"message": "could not create card", "details": "` + err.Error() + `"}`))
+		if err != nil {
+			log.Error("Could not write response: ", err)
+		}
+
 		return
 	}
 
 	u, err := mongodb.NewCardRepository(context.Background(), uc.Repo)
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
-		w.Write([]byte(`{"message": "could not create card", "details": "` + err.Error() + `"}`))
+		_, err := w.Write([]byte(`{"message": "could not create card", "details": "` + err.Error() + `"}`))
+		if err != nil {
+			log.Error("Could not write response: ", err)
+		}
+
 		return
 	}
 
@@ -52,17 +64,29 @@ func (uc *CardsController) CreateCard(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		if strings.Contains(err.Error(), "already registered") {
 			w.WriteHeader(http.StatusConflict)
-			w.Write([]byte(`{"message": "could not create card", "details": "` + err.Error() + `"}`))
+			_, err := w.Write([]byte(`{"message": "could not create card", "details": "` + err.Error() + `"}`))
+			if err != nil {
+				log.Error("Could not write response: ", err)
+			}
+
 			return
 		}
 
 		w.WriteHeader(http.StatusInternalServerError)
-		w.Write([]byte(`{"message": "could not create card", "details": "` + err.Error() + `"}`))
+		_, err := w.Write([]byte(`{"message": "could not create card", "details": "` + err.Error() + `"}`))
+		if err != nil {
+			log.Error("Could not write response: ", err)
+		}
+
 		return
 	}
 
 	w.WriteHeader(http.StatusCreated)
-	w.Write([]byte(`{"message": "created card '` + card.Alias + `'", "id": "` + card.ID.Hex() + `", "owner_id": "` + card.OwnerID.Hex() + `"}`))
+	_, err = w.Write([]byte(`{"message": "created card '` + card.Alias + `'", "id": "` + card.ID.Hex() + `", "owner_id": "` + card.OwnerID.Hex() + `"}`))
+	if err != nil {
+		log.Error("Could not write response: ", err)
+	}
+
 }
 
 // GetCard will find a single card based on ID
@@ -75,12 +99,20 @@ func (uc *CardsController) GetCard(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		if strings.Contains(err.Error(), "already registered") {
 			w.WriteHeader(http.StatusConflict)
-			w.Write([]byte(`{"message": "` + err.Error() + `"}`))
+			_, err := w.Write([]byte(`{"message": "` + err.Error() + `"}`))
+			if err != nil {
+				log.Error("Could not write response: ", err)
+			}
+
 			return
 		}
 
 		w.WriteHeader(http.StatusInternalServerError)
-		w.Write([]byte(`{"message": "could not get card", "details": "` + err.Error() + `"}`))
+		_, err := w.Write([]byte(`{"message": "could not get card", "details": "` + err.Error() + `"}`))
+		if err != nil {
+			log.Error("Could not write response: ", err)
+		}
+
 		return
 	}
 
@@ -88,14 +120,25 @@ func (uc *CardsController) GetCard(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		if strings.Contains(err.Error(), "could not find card") {
 			w.WriteHeader(http.StatusNotFound)
-			w.Write([]byte(`{"message": "could not find card", "id": "` + params["id"] + `"}`))
+			_, err := w.Write([]byte(`{"message": "could not find card", "id": "` + params["id"] + `"}`))
+			if err != nil {
+				log.Error("Could not write response: ", err)
+			}
+
 			return
 		}
 
 		w.WriteHeader(http.StatusInternalServerError)
-		w.Write([]byte(`{"message": "` + err.Error() + `", "owner_id": "` + card.OwnerID.Hex() + `}`))
+		_, err := w.Write([]byte(`{"message": "` + err.Error() + `", "owner_id": "` + card.OwnerID.Hex() + `}`))
+		if err != nil {
+			log.Error("Could not write response: ", err)
+		}
+
 		return
 	}
 
-	json.NewEncoder(w).Encode(card)
+	err = json.NewEncoder(w).Encode(card)
+	if err != nil {
+		log.Error("Could not encode response: ", err)
+	}
 }

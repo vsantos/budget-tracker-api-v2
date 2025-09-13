@@ -26,9 +26,9 @@ func InitTracer(ctx context.Context) func(context.Context) error {
 	res, err := resource.New(
 		context.Background(),
 		resource.WithAttributes(
-			semconv.ServiceNameKey.String("minha-aplicacao"),
-			semconv.ServiceVersionKey.String("1.0.0"),
-			semconv.DeploymentEnvironmentKey.String("development"),
+			semconv.ServiceNameKey.String("budget-tracker-api-v2"),
+			// semconv.ServiceVersionKey.String("1.0.0"),
+			// semconv.DeploymentEnvironmentKey.String("development"),
 		),
 	)
 	if err != nil {

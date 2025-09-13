@@ -22,35 +22,20 @@ func main() {
 	timedOut, cancel := context.WithTimeout(ctx, 3*time.Second)
 	defer cancel()
 
-	// otelShutdown, err := obsevability.SetupOTelSDK(timedOut)
-	// if err != nil {
-	// 	if err == context.DeadlineExceeded {
-	// 		fmt.Println("timeout when reaching jaeger")
-	// 	} else {
-	// 		fmt.Println(err)
-	// 	}
-	// }
-
-	// // Handle shutdown properly so nothing leaks.
-	// defer func() {
-	// 	err = errors.Join(err, otelShutdown(context.Background()))
-	// }()
-
 	shutdown := obsevability.InitTracer(timedOut)
 	defer shutdown(timedOut)
 
-	// c, err := mongodb.NewClient("mongodb+srv://budget-tracker.gj4ww.mongodb.net")
 	c, err := mongodb.NewClient()
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	var m repository.UserCollectionInterface
+	var m repository.UserCollectionInterface //nolint:staticcheck
 	m = &mongodb.UserCollectionConfig{
 		MongoCollection: c.Database("budget-tracker-v2").Collection("users"),
 	}
 
-	var ms repository.CardCollectionInterface
+	var ms repository.CardCollectionInterface //nolint:staticcheck
 	ms = &mongodb.CardCollectionConfig{
 		MongoCollection: c.Database("budget-tracker-v2").Collection("cards"),
 	}

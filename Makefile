@@ -7,6 +7,7 @@ sonar:
 		sonarsource/sonar-scanner-cli
 
 test:
+	golangci-lint run ./...
 	go test ./... -cover
 
 docs:

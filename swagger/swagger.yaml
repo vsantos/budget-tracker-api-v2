@@ -8,7 +8,7 @@ paths:
       summary: "Create an user"
       description: "Create a new user to the platform"
       tags:
-      - users
+      - Users
       requestBody:
         required: true
         content:
@@ -50,7 +50,7 @@ paths:
       summary: "Get details from an user"
       description: "based on the user_id, get the details from a single user"
       tags:
-      - users
+      - Users
       parameters:
         - name: Content-Type
           in: header
@@ -102,7 +102,7 @@ paths:
       summary: Create a card
       description: Endpoint to create a new card for a given owner_id
       tags:
-      - cards
+      - Cards
       parameters:
         - in: header
           name: Content-Type
@@ -168,7 +168,7 @@ paths:
       summary: "Get details from a card"
       description: "based on the card_id, get the details from a single card"
       tags:
-      - cards
+      - Cards
       parameters:
         - in: header
           name: Content-Type
@@ -222,7 +222,7 @@ paths:
     delete:
       summary: Delete card
       tags:
-      - cards
+      - Cards
       parameters:
         - in: header
           name: Content-Type

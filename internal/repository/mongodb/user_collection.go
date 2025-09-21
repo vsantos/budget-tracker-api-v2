@@ -10,10 +10,12 @@ import (
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
+	"go.opentelemetry.io/otel/trace"
 )
 
 // UserCollectionConfig will implement mongodb collection functions
 type UserCollectionConfig struct {
+	Tracer          trace.Tracer
 	MongoCollection *mongo.Collection
 }
 

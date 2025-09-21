@@ -1,5 +1,3 @@
-version: "3.9"
-
 networks:
   otel-network:
     driver: bridge
@@ -40,9 +38,7 @@ services:
     environment:
       MONGODB_HOST: "mongodb+srv://budget-tracker.gj4ww.mongodb.net/"
       MONGODB_USER: "vsantos"
-      MONGODB_PASS: "<CHANGEME>" 
-      OTEL_EXPORTER_OTLP_ENDPOINT: "http://otel-collector:4317"
-      OTEL_SERVICE_NAME: "minha-aplicacao"
+      MONGODB_PASS: "R4hv10DP1HN6Iv2H"
     networks:
       - otel-network
     depends_on:

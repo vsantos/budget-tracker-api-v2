@@ -10,12 +10,18 @@ import (
 	"time"
 
 	log "github.com/sirupsen/logrus"
+	"go.opentelemetry.io/otel"
 )
 
 func init() {
 	log.SetFormatter(&log.JSONFormatter{})
 }
 
+// @title           Budget Tracker API V2
+// @version         0.1
+// @description     This backend enables CRUD to handle with personal financial operations
+// @host            localhost:8080
+// @BasePath        /api/v1/
 func main() {
 	ctx := context.Background()
 
@@ -24,6 +30,7 @@ func main() {
 
 	shutdown := obsevability.InitTracer(timedOut)
 	defer shutdown(timedOut)
+	tracer := otel.Tracer("budget-tracker-api-v2")
 
 	c, err := mongodb.NewClient()
 	if err != nil {
@@ -32,15 +39,17 @@ func main() {
 
 	var m repository.UserCollectionInterface //nolint:staticcheck
 	m = &mongodb.UserCollectionConfig{
+		Tracer:          tracer,
 		MongoCollection: c.Database("budget-tracker-v2").Collection("users"),
 	}
 
 	var ms repository.CardCollectionInterface //nolint:staticcheck
 	ms = &mongodb.CardCollectionConfig{
+		Tracer:          tracer,
 		MongoCollection: c.Database("budget-tracker-v2").Collection("cards"),
 	}
 
-	router, err := router.NewRouter(m, ms)
+	router, err := router.NewRouter(tracer, m, ms)
 	if err != nil {
 		log.Fatal(err)
 	}

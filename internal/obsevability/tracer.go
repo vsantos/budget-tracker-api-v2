@@ -9,7 +9,18 @@ import (
 	"go.opentelemetry.io/otel/sdk/resource"
 	sdktrace "go.opentelemetry.io/otel/sdk/trace"
 	semconv "go.opentelemetry.io/otel/semconv/v1.24.0"
+	"go.opentelemetry.io/otel/trace"
 )
+
+type TracerProvider interface {
+	Tracer(name string) trace.Tracer
+}
+
+type DefaultTracerProvider struct{}
+
+func (d *DefaultTracerProvider) Tracer(name string) trace.Tracer {
+	return otel.Tracer(name)
+}
 
 // InitTracer will init Tracer globally
 func InitTracer(ctx context.Context) func(context.Context) error {

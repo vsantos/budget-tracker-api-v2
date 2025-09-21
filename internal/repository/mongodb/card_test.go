@@ -7,8 +7,11 @@ import (
 	"errors"
 	"testing"
 
+	sdktrace "go.opentelemetry.io/otel/sdk/trace"
+
 	"github.com/stretchr/testify/assert"
 	"go.mongodb.org/mongo-driver/bson/primitive"
+	"go.opentelemetry.io/otel/sdk/trace/tracetest"
 )
 
 type insertCardTest struct {
@@ -18,6 +21,11 @@ type insertCardTest struct {
 }
 
 func TestInsertCard(t *testing.T) {
+	sr := tracetest.NewSpanRecorder()
+	tp := sdktrace.NewTracerProvider(
+		sdktrace.WithSpanProcessor(sr),
+	)
+	tracer := tp.Tracer("test-tracer")
 
 	var inserCardTests = []insertCardTest{
 		{
@@ -37,12 +45,12 @@ func TestInsertCard(t *testing.T) {
 				Error: errors.New("duplicate key error collection"),
 			},
 			card: &model.Card{},
-			err:  "card already registered with the same ID and/or owner ID",
+			err:  "card already registered with the 'last 4 digits'",
 		},
 	}
 
 	for _, test := range inserCardTests {
-		u, err := NewCardRepository(context.TODO(), test.collection)
+		u, err := NewCardRepository(context.TODO(), tracer, test.collection)
 		assert.NoError(t, err)
 
 		_, err = u.Insert(context.TODO(), test.card)

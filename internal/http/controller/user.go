@@ -4,7 +4,6 @@ import (
 	"budget-tracker-api-v2/internal/model"
 	"budget-tracker-api-v2/internal/repository"
 	"budget-tracker-api-v2/internal/repository/mongodb"
-	"context"
 	"encoding/json"
 	"net/http"
 	"strings"
@@ -13,11 +12,13 @@ import (
 
 	"github.com/gorilla/mux"
 	log "github.com/sirupsen/logrus"
+	"go.opentelemetry.io/otel/trace"
 )
 
 // UsersController injects UserRepository to controllers
 type UsersController struct {
-	Repo repository.UserCollectionInterface
+	Tracer trace.Tracer
+	Repo   repository.UserCollectionInterface
 }
 
 // RegisterRoutes register router for handling User operations
@@ -43,6 +44,9 @@ func (uc *UsersController) GetUsers(w http.ResponseWriter, r *http.Request) {
 func (uc *UsersController) CreateUser(w http.ResponseWriter, r *http.Request) {
 	var user *model.User
 
+	ctx, span := uc.Tracer.Start(r.Context(), "UsersController.CreateUser")
+	defer span.End()
+
 	err := json.NewDecoder(r.Body).Decode(&user)
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
@@ -53,7 +57,7 @@ func (uc *UsersController) CreateUser(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	u, err := mongodb.NewUserRepository(context.Background(), uc.Repo)
+	u, err := mongodb.NewUserRepository(ctx, uc.Tracer, uc.Repo)
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
 		_, err := w.Write([]byte(`{"message": "could not create user", "details": "` + err.Error() + `"}`))
@@ -97,9 +101,12 @@ func (uc *UsersController) CreateUser(w http.ResponseWriter, r *http.Request) {
 func (uc *UsersController) GetUser(w http.ResponseWriter, r *http.Request) {
 	var user *model.User
 
+	ctx, span := uc.Tracer.Start(r.Context(), "UsersController.GetUser")
+	defer span.End()
+
 	params := mux.Vars(r)
 
-	u, err := mongodb.NewUserRepository(context.Background(), uc.Repo)
+	u, err := mongodb.NewUserRepository(ctx, uc.Tracer, uc.Repo)
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
 		_, err := w.Write([]byte(`{"message": "could not get user", "details": "` + err.Error() + `"}`))

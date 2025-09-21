@@ -12,6 +12,7 @@ import (
 	"strings"
 
 	"go.mongodb.org/mongo-driver/bson/primitive"
+	"go.opentelemetry.io/otel/trace"
 )
 
 // MongoUserRepository defines a Repository for User model
@@ -20,12 +21,16 @@ type MongoUserRepository struct {
 }
 
 // NewUserRepository will return an UserRepoInterface for mongodb
-func NewUserRepository(ctx context.Context, c repository.UserCollectionInterface) (repository.UserRepoInterface, error) {
+func NewUserRepository(ctx context.Context, tracer trace.Tracer, c repository.UserCollectionInterface) (repository.UserRepoInterface, error) {
+
+	ctx, span := tracer.Start(ctx, "UserRepository.NewRepository")
+	defer span.End()
+
 	r := MongoUserRepository{
 		MongoCollection: c,
 	}
 
-	err := r.MongoCollection.CreateIndexes(context.TODO(), []string{"login", "email"})
+	err := r.MongoCollection.CreateIndexes(ctx, []string{"login", "email"})
 	if err != nil {
 		return nil, err
 	}

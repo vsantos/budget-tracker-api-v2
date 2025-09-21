@@ -10,5 +10,7 @@ test:
 	golangci-lint run ./...
 	go test ./... -cover
 
-docs:
-	swagger generate spec --scan-models -o ./docs/swagger.yaml
+rebuild:
+	docker-compose down; docker-compose up -d --build
+swag:
+	~/go/bin/swag init -g main.go --parseDependency 

@@ -9,7 +9,8 @@
 ## Observability
 
 - [ ] Metrics
-- [ ] Traces - WIP
+- [X] Traces
+- [ ] Create tracer object
 - [ ] Structured Logs
 
 ## Functional

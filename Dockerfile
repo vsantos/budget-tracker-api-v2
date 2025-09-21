@@ -10,13 +10,15 @@ RUN go mod download
 
 COPY . .
 
-RUN CGO_ENABLED=0 GOOS=linux go build -o app .
+RUN CGO_ENABLED=0 GOOS=linux go build -o budget-tracker-api-v2 .
 
-FROM gcr.io/distroless/base-debian10
-# FROM alpine
+# FROM gcr.io/distroless/base-debian10
+## For debugging purposes only
+FROM alpine
 
 WORKDIR /app
 
-COPY --from=builder /app/app .
+COPY --from=builder /app/swagger ./swagger/
+COPY --from=builder /app/budget-tracker-api-v2 .
 
-CMD ["./app"]
+CMD ["./budget-tracker-api-v2"]

@@ -3,12 +3,24 @@ info:
   title: Budget Tracker API V2
   version: 0.0.1
 paths:
-  /api/v1/users/{id}:    
-    get:
-      summary: "Get details from an user"
-      description: "based on the user_id, get the details from a single user"
+  /api/v1/users:    
+    post:
+      summary: "Create an user"
+      description: "Create a new user to the platform"
       tags:
       - users
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+            example:
+              login: "vsantos"
+              firstname: "Victor"
+              lastname: "Santos"
+              email: "vsnatos.py@gmail.com"
+              password: "randompass"
       parameters:
         - in: header
           name: Content-Type
@@ -17,20 +29,140 @@ paths:
             type: string
             example: application/json
       responses:
+        '201':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+              example:
+                message: "created user 'vsantos'"
+                id: "68d066e8a4b62b805177aa91"
+        '409':
+          description: Conflict
+          content:
+            application/json:
+              example:
+                message: "could not create user"
+                details: "user or email already registered"
+  /api/v1/users/{id}:    
+    get:
+      summary: "Get details from an user"
+      description: "based on the user_id, get the details from a single user"
+      tags:
+      - users
+      parameters:
+        - name: Content-Type
+          in: header
+          required: true
+          schema:
+            type: string
+            example: application/json
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+          example: "68d066e8a4b62b805177aa91"
+          description: user ID
+      responses:
         '200':
           description: Success
           content:
             application/json:
               schema:
-                type: object
+                $ref: '#/components/schemas/User'
               example:
                 id: "687baad049572fb8c4e305f9"
                 login: "vsantos"
-                first_name: "Victor"
-                last_name: "Santos"
+                firstname: "Victor"
+                lastname: "Santos"
                 email: "vsantos.py@gmail.com"
                 password: "<sensitive>"
                 created_at: "2025-07-19T14:25:20.996Z"
+        '404':
+          description: User not found
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                message: "could not find user"
+                id: "687baad049572fb8c4e305f1"
+        '500':
+          description: User not found
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                message: "not able to get ID format"
+  /api/v1/cards:
+    post:
+      summary: Create a card
+      description: Endpoint to create a new card for a given owner_id
+      tags:
+      - cards
+      parameters:
+        - in: header
+          name: Content-Type
+          required: true
+          schema:
+            type: string
+            example: application/json
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Card'
+            example:
+              owner_id: "687baad049572fb8c4e305f3"
+              alias: "Platinum"
+              type: "Debit"
+              network: "VISA"
+              bank: "Citibank"
+              color: "#fff"
+              last_digits: 1234
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                message: "card created"
+                status_code: 201
+                card:
+                  id: "68d036ba865f1ea380a77fa9"
+                  owner_id: "687baad049572fb8c4e305f3"
+                  alias: "Platinum"
+                  type: "Debit"
+                  network: "VISA"
+                  bank: "Citibank"
+                  color: "#fff"
+                  last_digits: 1234
+        '409':
+          description: Conflict
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                message: "could not create card"
+                details: "card already registered with the 'last 4 digits'"
+                status_code: 409
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                message: "could not create card"
+                details: "internal error when posting card"
+                status_code: 500
   /api/v1/cards/{id}:    
     get:
       summary: "Get details from a card"
@@ -44,6 +176,13 @@ paths:
           schema:
             type: string
             example: application/json
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+          example: "68d066e8a4b62b805177aa91"
+          description: card ID
       responses:
         '200':
           description: Success
@@ -91,6 +230,13 @@ paths:
           schema:
             type: string
             example: application/json
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+          example: "68d066e8a4b62b805177aa91"
+          description: card ID
       responses:
         '200':
           description: Deleted
@@ -121,74 +267,25 @@ paths:
               example:
                 message: "error when fetching card's details"
                 details: "not able to get ID format"
-  /api/v1/cards:
-    post:
-      summary: Create card
-      description: Endpoint to create a new card for a given owner_id
-      tags:
-      - cards
-      parameters:
-        - in: header
-          name: Content-Type
-          required: true
-          schema:
-            type: string
-            example: application/json
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/Card'
-            example:
-              owner_id: "687baad049572fb8c4e305f3"
-              alias: "Platinum"
-              type: "Debit"
-              network: "VISA"
-              bank: "Citibank"
-              color: "#fff"
-              last_digits: 1234
-      responses:
-        '409':
-          description: Conflict
-          content:
-            application/json:
-              schema:
-                type: object
-              example:
-                message: "could not create card"
-                details: "card already registered with the 'last 4 digits'"
-                status_code: 409
-        '500':
-          description: Internal Server Error
-          content:
-            application/json:
-              schema:
-                type: object
-              example:
-                message: "could not create card"
-                details: "internal error when posting card"
-                status_code: 500
-        '201':
-          description: Created
-          content:
-            application/json:
-              schema:
-                type: object
-              example:
-                message: "card created"
-                status_code: 201
-                card:
-                  id: "68d036ba865f1ea380a77fa9"
-                  owner_id: "687baad049572fb8c4e305f3"
-                  alias: "Platinum"
-                  type: "Debit"
-                  network: "VISA"
-                  bank: "Citibank"
-                  color: "#fff"
-                  last_digits: 1234
 components:
   schemas:
+    User:
+      type: object
+      properties:
+        id:
+          type: string
+        login:
+          type: string
+        firstname:
+          type: string
+        lastname:
+          type: string
+        email:
+          type: string
+        password:
+          type: string
+        created_at:
+          type: string
     Card:
       type: object
       properties:

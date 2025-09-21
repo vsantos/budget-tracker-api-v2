@@ -12,6 +12,7 @@ import (
 
 	"github.com/gorilla/mux"
 	log "github.com/sirupsen/logrus"
+	"go.opentelemetry.io/otel/codes"
 	"go.opentelemetry.io/otel/trace"
 )
 
@@ -49,6 +50,9 @@ func (uc *UsersController) CreateUser(w http.ResponseWriter, r *http.Request) {
 
 	err := json.NewDecoder(r.Body).Decode(&user)
 	if err != nil {
+		span.RecordError(err)
+		span.SetStatus(codes.Error, err.Error())
+
 		w.WriteHeader(http.StatusInternalServerError)
 		_, err := w.Write([]byte(`{"message": "could not create user", "details": "` + err.Error() + `"}`))
 		if err != nil {
@@ -59,6 +63,9 @@ func (uc *UsersController) CreateUser(w http.ResponseWriter, r *http.Request) {
 
 	u, err := mongodb.NewUserRepository(ctx, uc.Tracer, uc.Repo)
 	if err != nil {
+		span.RecordError(err)
+		span.SetStatus(codes.Error, err.Error())
+
 		w.WriteHeader(http.StatusInternalServerError)
 		_, err := w.Write([]byte(`{"message": "could not create user", "details": "` + err.Error() + `"}`))
 		if err != nil {
@@ -108,6 +115,9 @@ func (uc *UsersController) GetUser(w http.ResponseWriter, r *http.Request) {
 
 	u, err := mongodb.NewUserRepository(ctx, uc.Tracer, uc.Repo)
 	if err != nil {
+		span.RecordError(err)
+		span.SetStatus(codes.Error, err.Error())
+
 		w.WriteHeader(http.StatusInternalServerError)
 		_, err := w.Write([]byte(`{"message": "could not get user", "details": "` + err.Error() + `"}`))
 		if err != nil {
@@ -119,7 +129,9 @@ func (uc *UsersController) GetUser(w http.ResponseWriter, r *http.Request) {
 
 	user, err = u.FindByID(r.Context(), params["id"])
 	if err != nil {
-		if strings.Contains(err.Error(), "could not find user") {
+		if strings.Contains(err.Error(), "not found") {
+			span.AddEvent("user not found")
+
 			w.WriteHeader(http.StatusNotFound)
 			_, err := w.Write([]byte(`{"message": "could not find user", "id": "` + params["id"] + `"}`))
 			if err != nil {
@@ -130,6 +142,9 @@ func (uc *UsersController) GetUser(w http.ResponseWriter, r *http.Request) {
 		}
 
 		w.WriteHeader(http.StatusInternalServerError)
+		span.RecordError(err)
+		span.SetStatus(codes.Error, err.Error())
+
 		_, err := w.Write([]byte(`{"message": "` + err.Error() + `"}`))
 		if err != nil {
 			log.Error("Could not write response: ", err)

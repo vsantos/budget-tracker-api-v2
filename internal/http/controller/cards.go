@@ -180,6 +180,8 @@ func (uc *CardsController) GetCard(w http.ResponseWriter, r *http.Request) {
 		span.SetStatus(codes.Error, err.Error())
 
 		if strings.Contains(err.Error(), "not found") {
+			span.AddEvent("user not found")
+
 			notFoundMsg := CardsErrorMessage{
 				Message:    "could not find card",
 				Details:    err.Error(),
@@ -194,6 +196,9 @@ func (uc *CardsController) GetCard(w http.ResponseWriter, r *http.Request) {
 
 			return
 		}
+
+		span.RecordError(err)
+		span.SetStatus(codes.Error, err.Error())
 
 		errMsg := CardsErrorMessage{
 			Message: "error when fetching card's details",

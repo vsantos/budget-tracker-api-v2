@@ -7,6 +7,7 @@ import (
 	"context"
 	"encoding/json"
 	"errors"
+	"fmt"
 	"net/http"
 	"time"
 
@@ -66,9 +67,22 @@ func (uc *AuthController) CreateToken(w http.ResponseWriter, r *http.Request) {
 	ctx, span := uc.Tracer.Start(r.Context(), "AuthController.CreateToken")
 	defer span.End()
 
+	fmt.Println("go")
 	var jwtUser model.JWTUser
+	if r.Body == nil {
+		w.WriteHeader(http.StatusBadRequest)
+		_, err := w.Write([]byte(`{"message": "empty body"}`))
+		if err != nil {
+			log.Error("Could not write response: ", err)
+		}
+		return
+	}
 
-	_ = json.NewDecoder(r.Body).Decode(&jwtUser)
+	err := json.NewDecoder(r.Body).Decode(&jwtUser)
+	if err != nil {
+		w.WriteHeader(http.StatusBadRequest)
+		log.Error("Could not write response: ", err)
+	}
 
 	if jwtUser.Login == "" || jwtUser.Password == "" {
 		w.WriteHeader(http.StatusBadRequest)
@@ -135,6 +149,8 @@ func (uc *AuthController) CreateToken(w http.ResponseWriter, r *http.Request) {
 		span.SetStatus(codes.Error, err.Error())
 		log.Error("Could not write response: ", err)
 	}
+
+	w.WriteHeader(http.StatusCreated)
 	_, err = w.Write(jwtResponseJSON)
 	if err != nil {
 		log.Error("Could not write response: ", err)

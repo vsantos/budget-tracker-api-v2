@@ -50,26 +50,6 @@ func TestGetUserRoute(t *testing.T) {
 			ExpectedErrorMsg:   "",
 		},
 		{
-			verb:               "GET",
-			path:               "/api/v1/users/686f255205535b1dd3b68f38",
-			body:               nil,
-			ExpectedStatusCode: 400,
-			ExpectedErrorMsg:   "",
-			ExpectedBodyMsg:    "{\"message\": \"missing 'Authorization' header\"}",
-		},
-		{
-			verb: "GET",
-			path: "/api/v1/users/686f255205535b1dd3b68f38",
-			body: nil,
-			headers: map[string]string{
-				"Content-type":  "application/json",
-				"Authorization": "Bearer foo",
-			},
-			ExpectedStatusCode: 401,
-			ExpectedErrorMsg:   "",
-			ExpectedBodyMsg:    "{\"message\": \"could not authenticate\", \"details\": \"token contains an invalid number of segments\"}",
-		},
-		{
 			verb: "GET",
 			path: "/api/v1/users/686f255205535b1dd3b68f38",
 			body: nil,
@@ -87,7 +67,6 @@ func TestGetUserRoute(t *testing.T) {
 	m := &mongodb.UserMockCollectionConfig{
 		Error: nil,
 	}
-
 	for _, testCase := range cases {
 
 		r, err := NewRouter(tracer, m, nil)

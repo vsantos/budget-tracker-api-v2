@@ -34,6 +34,7 @@ func (c *UserMockCollectionConfig) FindOneBy(ctx context.Context, login string) 
 		Firstname: "Mock User",
 		Lastname:  "Torres",
 		Email:     "mock.user@gmail.com",
+		Password:  "$2a$10$HOrmuqyfwr575K4P9tjQXe0QKqbddMA/KFZ.YZhWVKPLMUF3LS4gi",
 	}, nil
 }
 
@@ -46,6 +47,8 @@ func (c *UserMockCollectionConfig) FindOne(ctx context.Context, id string) (*mod
 		Firstname: "Mock User",
 		Lastname:  "Torres",
 		Email:     "mock.user@gmail.com",
+		// Salted password
+		Password: "$2a$10$HOrmuqyfwr575K4P9tjQXe0QKqbddMA/KFZ.YZhWVKPLMUF3LS4gi",
 	}, nil
 }
 

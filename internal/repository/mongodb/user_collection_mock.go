@@ -26,7 +26,18 @@ func (c *UserMockCollectionConfig) InsertOne(ctx context.Context, document inter
 	return "66f1cca3c37c733c4ada103d", nil
 }
 
-// FindOne will insert a document into mongodb
+// FindOneBy will find a document based on field
+func (c *UserMockCollectionConfig) FindOneBy(ctx context.Context, login string) (*model.User, error) {
+	return &model.User{
+		ID:        primitive.NewObjectID(),
+		Login:     login,
+		Firstname: "Mock User",
+		Lastname:  "Torres",
+		Email:     "mock.user@gmail.com",
+	}, nil
+}
+
+// FindOne will find a document based on ID
 func (c *UserMockCollectionConfig) FindOne(ctx context.Context, id string) (*model.User, error) {
 
 	return &model.User{

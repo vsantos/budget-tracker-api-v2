@@ -9,6 +9,8 @@ import (
 
 	"github.com/stretchr/testify/assert"
 	"go.mongodb.org/mongo-driver/bson/primitive"
+	sdktrace "go.opentelemetry.io/otel/sdk/trace"
+	"go.opentelemetry.io/otel/sdk/trace/tracetest"
 )
 
 type insertUserTest struct {
@@ -18,6 +20,11 @@ type insertUserTest struct {
 }
 
 func TestInsertUser(t *testing.T) {
+	sr := tracetest.NewSpanRecorder()
+	tp := sdktrace.NewTracerProvider(
+		sdktrace.WithSpanProcessor(sr),
+	)
+	tracer := tp.Tracer("test-tracer")
 
 	var inserUserTests = []insertUserTest{
 		{
@@ -50,7 +57,7 @@ func TestInsertUser(t *testing.T) {
 	}
 
 	for _, test := range inserUserTests {
-		u, err := NewUserRepository(context.TODO(), test.collection)
+		u, err := NewUserRepository(context.TODO(), tracer, test.collection)
 		assert.NoError(t, err)
 
 		_, err = u.Insert(context.TODO(), test.user)

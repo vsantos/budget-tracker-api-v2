@@ -1,14 +1,13 @@
 package controller
 
 import (
+	"budget-tracker-api-v2/internal/http/middleware"
 	"budget-tracker-api-v2/internal/model"
 	"budget-tracker-api-v2/internal/repository"
 	"budget-tracker-api-v2/internal/repository/mongodb"
 	"encoding/json"
 	"net/http"
 	"strings"
-
-	/*adicionar essa linha */
 
 	"github.com/gorilla/mux"
 	log "github.com/sirupsen/logrus"
@@ -24,21 +23,11 @@ type UsersController struct {
 
 // RegisterRoutes register router for handling User operations
 func (uc *UsersController) RegisterRoutes(r *mux.Router) {
-	r.HandleFunc("/api/v1/users", uc.GetUsers).Methods("GET")
-	r.HandleFunc("/api/v1/users", uc.CreateUser).Methods("POST")
-	r.HandleFunc("/api/v1/users/{id}", uc.GetUser).Methods("GET")
-}
+	p := r.PathPrefix("/api/v1/users").Subrouter()
+	p.Use(middleware.RequireTokenAuthentication)
 
-// GetUsers handler list of all user within the platform without filters. Deprecated.
-func (uc *UsersController) GetUsers(w http.ResponseWriter, r *http.Request) {
-	// var users []model.User
-
-	w.WriteHeader(http.StatusOK)
-	// json.NewEncoder(w).Encode(users)
-	_, err := w.Write([]byte(`[]`))
-	if err != nil {
-		log.Error("Could not write response: ", err)
-	}
+	p.HandleFunc("", uc.CreateUser).Methods("POST")
+	p.HandleFunc("/{id}", uc.GetUser).Methods("GET")
 }
 
 // CreateUser create a new user within the platform

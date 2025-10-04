@@ -1,8 +1,49 @@
 openapi: 3.0.3
 info:
-  title: Budget Tracker API V2
+  title: Budget Tracker API
   version: 0.0.1
 paths:
+  /api/v1/jwt/issue:
+   post:
+      summary: "Create a new JWT token"
+      description: "Create a new token to sign every request to the platform"
+      tags:
+      - Authentication
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/JWTUser'
+            example:
+              login: "vsantos"
+              password: "randompass"
+      parameters:
+        - in: header
+          name: Content-Type
+          required: true
+          schema:
+            type: string
+            example: application/json
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Token'
+              example:
+                type: "bearer"
+                refresh: ""
+                token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdXRob3JpemVkIjp0cnVlLCJleHAiOjE3NTg0OTIxMzcsImlhdCI6MTc1ODQ5MTgzNywibmFtZSI6InZzYW50b3MiLCJzdWIiOiJ0ZXN0In0.jXxP85bOfYSSgTSGSz9jJRAnAeZrz0VVZ4RInT0f_aM"
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Token'
+              example:
+                message: "required login and password to request a new token"
   /api/v1/users:    
     post:
       summary: "Create an user"
@@ -269,6 +310,22 @@ paths:
                 details: "not able to get ID format"
 components:
   schemas:
+    JWTUser:
+      type: object
+      properties:
+        login:
+          type: string
+        password:
+          type: string
+    Token:
+      type: object
+      properties:
+        type:
+          type: string
+        refresh:
+          type: string
+        token:
+          type: string
     User:
       type: object
       properties:

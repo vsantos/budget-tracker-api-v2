@@ -1,6 +1,7 @@
 package controller
 
 import (
+	"budget-tracker-api-v2/internal/http/middleware"
 	"budget-tracker-api-v2/internal/model"
 	"budget-tracker-api-v2/internal/repository"
 	"budget-tracker-api-v2/internal/repository/mongodb"
@@ -44,10 +45,13 @@ type CardsController struct {
 
 // RegisterRoutes register router for handling Card operations
 func (uc *CardsController) RegisterRoutes(r *mux.Router) {
-	r.HandleFunc("/api/v1/cards", uc.GetCards).Methods("GET")
-	r.HandleFunc("/api/v1/cards", uc.CreateCard).Methods("POST")
-	r.HandleFunc("/api/v1/cards/{id}", uc.GetCard).Methods("GET")
-	r.HandleFunc("/api/v1/cards/{id}", uc.DeleteCard).Methods("DELETE")
+	p := r.PathPrefix("/api/v1/cards").Subrouter()
+	p.Use(middleware.RequireTokenAuthentication)
+
+	p.HandleFunc("", uc.GetCards).Methods("GET")
+	p.HandleFunc("", uc.CreateCard).Methods("POST")
+	p.HandleFunc("/{id}", uc.GetCard).Methods("GET")
+	p.HandleFunc("/{id}", uc.DeleteCard).Methods("DELETE")
 }
 
 // GetCards handler list of all card within the platform without filters. Deprecated.

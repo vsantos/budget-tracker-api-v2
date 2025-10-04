@@ -30,40 +30,7 @@ func NewRouter(
 		),
 	)
 
-	r.Handle("/swagger/swagger.yaml", http.StripPrefix("/swagger/", http.FileServer(http.Dir("./swagger"))))
-	// r.PathPrefix("/swagger/").Handler(http.StripPrefix("/swagger/", http.FileServer(http.Dir("./swaggerui"))))
-	r.HandleFunc("/swagger/", func(w http.ResponseWriter, r *http.Request) {
-		w.Header().Set("Content-Type", "text/html")
-		html := `
-	<!DOCTYPE html>
-	<html>
-	<head>
-	  <title>Swagger UI</title>
-	  <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/4.18.3/swagger-ui.css" />
-	</head>
-	<body>
-	  <div id="swagger-ui"></div>
-	  <script src="https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/4.18.3/swagger-ui-bundle.js"></script>
-	  <script src="https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/4.18.3/swagger-ui-standalone-preset.js"></script>
-	  <script>
-	    window.onload = function() {
-	      SwaggerUIBundle({
-	        url: "/swagger/swagger.yaml",
-	        dom_id: '#swagger-ui',
-	        presets: [
-	          SwaggerUIBundle.presets.apis,
-	          SwaggerUIStandalonePreset
-	        ],
-	        layout: "BaseLayout"
-	      });
-	    }
-	  </script>
-	</body>
-	</html>
-			`
-		w.Write([]byte(html))
-	})
-	// API routes
+	// API Routes
 	userController := controller.UsersController{
 		Tracer: tracer,
 		Repo:   userCollectionInterface,
@@ -74,6 +41,13 @@ func NewRouter(
 		Repo:   cardsCollectionInterface,
 	}
 
+	authController := controller.AuthController{
+		Tracer:   tracer,
+		UserRepo: userController.Repo,
+	}
+
+	controller.SwaggerRegisterRouter(r)
+	authController.RegisterRoutes(r)
 	userController.RegisterRoutes(r)
 	cardsController.RegisterRoutes(r)
 

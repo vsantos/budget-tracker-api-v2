@@ -17,11 +17,6 @@ func init() {
 	log.SetFormatter(&log.JSONFormatter{})
 }
 
-// @title           Budget Tracker API V2
-// @version         0.1
-// @description     This backend enables CRUD to handle with personal financial operations
-// @host            localhost:8080
-// @BasePath        /api/v1/
 func main() {
 	ctx := context.Background()
 
@@ -29,7 +24,12 @@ func main() {
 	defer cancel()
 
 	shutdown := obsevability.InitTracer(timedOut)
-	defer shutdown(timedOut)
+	defer func() {
+		if cerr := shutdown(timedOut); cerr != nil {
+			log.Printf("error shutting down tracer object: %v", cerr)
+		}
+	}()
+
 	tracer := otel.Tracer("budget-tracker-api-v2")
 
 	c, err := mongodb.NewClient()

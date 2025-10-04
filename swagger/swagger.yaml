@@ -7,6 +7,7 @@ paths:
    post:
       summary: "Create a new JWT token"
       description: "Create a new token to sign every request to the platform"
+      security: []
       tags:
       - Authentication
       requestBody:
@@ -48,6 +49,8 @@ paths:
     post:
       summary: "Create an user"
       description: "Create a new user to the platform"
+      security:
+        - bearerAuth: []
       tags:
       - Users
       requestBody:
@@ -90,6 +93,8 @@ paths:
     get:
       summary: "Get details from an user"
       description: "based on the user_id, get the details from a single user"
+      security:
+        - bearerAuth: []
       tags:
       - Users
       parameters:
@@ -142,6 +147,8 @@ paths:
     post:
       summary: Create a card
       description: Endpoint to create a new card for a given owner_id
+      security:
+        - bearerAuth: []
       tags:
       - Cards
       parameters:
@@ -208,6 +215,8 @@ paths:
     get:
       summary: "Get details from a card"
       description: "based on the card_id, get the details from a single card"
+      security:
+        - bearerAuth: []
       tags:
       - Cards
       parameters:
@@ -262,6 +271,8 @@ paths:
                 details: "not able to get ID format"
     delete:
       summary: Delete card
+      security:
+        - bearerAuth: []
       tags:
       - Cards
       parameters:
@@ -309,6 +320,11 @@ paths:
                 message: "error when fetching card's details"
                 details: "not able to get ID format"
 components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
   schemas:
     JWTUser:
       type: object

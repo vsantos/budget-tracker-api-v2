@@ -11,6 +11,7 @@ test:
 	go test ./... -cover
 
 rebuild:
+	go test ./... -cover
 	docker-compose down; docker-compose up -d --build
 
 generate-docs:

@@ -17,7 +17,6 @@ import (
 	"go.opentelemetry.io/otel/trace"
 )
 
-// Due to a limitation on Swagger 2.0, we are declaring static error messages
 type CardsErrorMessage struct {
 	Message    string `json:"message"`
 	Details    string `json:"details"`

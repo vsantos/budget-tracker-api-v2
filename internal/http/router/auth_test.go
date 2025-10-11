@@ -46,10 +46,6 @@ func TestAuthRoute(t *testing.T) {
 	noUserBody, _ := json.Marshal(mockedJWTUser)
 	userBody, _ := json.Marshal(mockedExistentJWTUser)
 
-	t.Setenv("MONGODB_ATLAS_USER", "user")
-	t.Setenv("MONGODB_ATLAS_PASS", "pass")
-	t.Setenv("MONGODB_ATLAS_HOST", "mongodb+srv://budget-tracker.gj4ww.mongodb.net")
-
 	cases := []GetUserTestForAuth{
 		{
 			verb:               "POST",

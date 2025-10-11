@@ -1,3 +1,6 @@
+# Getting started
+
+This guide will help you to: build, deploy and observe `budget-tracker-api` locally for developing purposes.
 
 <script src="https://giscus.app/client.js"
         data-repo="vsantos/budget-tracker-api-v2-discussions"

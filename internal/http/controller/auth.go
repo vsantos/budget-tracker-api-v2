@@ -7,18 +7,15 @@ import (
 	"context"
 	"encoding/json"
 	"errors"
-	"fmt"
 	"net/http"
 	"time"
 
-	"github.com/dgrijalva/jwt-go"
+	"github.com/golang-jwt/jwt/v5"
 	"github.com/gorilla/mux"
 	log "github.com/sirupsen/logrus"
 	"go.opentelemetry.io/otel/codes"
 	"go.opentelemetry.io/otel/trace"
 )
-
-var mySigninKey = []byte("myhellokey")
 
 type AuthController struct {
 	Tracer   trace.Tracer
@@ -26,7 +23,7 @@ type AuthController struct {
 }
 
 // GenerateJWTAccessToken will generate a JWT access token
-func GenerateJWTAccessToken(ctx context.Context, sub string, login string) (string, error) {
+func GenerateJWTAccessToken(ctx context.Context, jwtKey string, sub string, login string) (string, error) {
 	accessToken := jwt.New(jwt.SigningMethodHS256)
 	claims := accessToken.Claims.(jwt.MapClaims)
 	claims["authorized"] = true
@@ -35,7 +32,7 @@ func GenerateJWTAccessToken(ctx context.Context, sub string, login string) (stri
 	claims["exp"] = time.Now().Add(5 * time.Minute).Unix()
 	claims["iat"] = time.Now().Unix()
 
-	at, err := accessToken.SignedString(mySigninKey)
+	at, err := accessToken.SignedString([]byte(jwtKey))
 	if err != nil {
 		return "", err
 	}
@@ -43,13 +40,14 @@ func GenerateJWTAccessToken(ctx context.Context, sub string, login string) (stri
 }
 
 // GenerateJWTRefreshToken will generate a new refresh token
-func GenerateJWTRefreshToken(ctx context.Context, sub string) (string, error) {
+func GenerateJWTRefreshToken(ctx context.Context, jwtKey string, sub string) (string, error) {
+	bjwtKey := []byte(jwtKey)
 	refreshToken := jwt.New(jwt.SigningMethodHS256)
 	rtClaims := refreshToken.Claims.(jwt.MapClaims)
 	rtClaims["sub"] = sub
 	rtClaims["exp"] = time.Now().Add(time.Hour * 24).Unix()
 
-	rt, err := refreshToken.SignedString(mySigninKey)
+	rt, err := refreshToken.SignedString(bjwtKey)
 	if err != nil {
 		return "", err
 	}
@@ -67,7 +65,6 @@ func (uc *AuthController) CreateToken(w http.ResponseWriter, r *http.Request) {
 	ctx, span := uc.Tracer.Start(r.Context(), "AuthController.CreateToken")
 	defer span.End()
 
-	fmt.Println("go")
 	var jwtUser model.JWTUser
 	if r.Body == nil {
 		w.WriteHeader(http.StatusBadRequest)
@@ -103,7 +100,7 @@ func (uc *AuthController) CreateToken(w http.ResponseWriter, r *http.Request) {
 	// if jwtUser.Login == user.Login {
 	match := crypt.CheckPasswordHash(jwtUser.Password, user.Password)
 	if match {
-		aToken, err = GenerateJWTAccessToken(ctx, user.ID.Hex(), user.Login)
+		aToken, err = GenerateJWTAccessToken(ctx, "myhellokey", user.ID.Hex(), user.Login)
 		if err != nil {
 			w.WriteHeader(http.StatusInternalServerError)
 			_, err := w.Write([]byte(`{"message": "could not create access token", "details": "` + err.Error() + `"}`))
@@ -113,7 +110,7 @@ func (uc *AuthController) CreateToken(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
-		rToken, err = GenerateJWTRefreshToken(ctx, user.ID.Hex())
+		rToken, err = GenerateJWTRefreshToken(ctx, "myhellokey", user.ID.Hex())
 		if err != nil {
 			w.WriteHeader(http.StatusInternalServerError)
 			_, err := w.Write([]byte(`{"message": "could not create refresh token", "details": "` + err.Error() + `"}`))

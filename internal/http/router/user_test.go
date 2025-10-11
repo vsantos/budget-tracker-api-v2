@@ -1,7 +1,9 @@
 package router
 
 import (
+	"budget-tracker-api-v2/internal/http/controller"
 	"budget-tracker-api-v2/internal/repository/mongodb"
+	"fmt"
 	"io"
 	"net/http"
 	"net/http/httptest"
@@ -30,9 +32,11 @@ func TestGetUserRoute(t *testing.T) {
 	)
 	tracer := tp.Tracer("test-tracer")
 
-	t.Setenv("MONGODB_ATLAS_USER", "user")
-	t.Setenv("MONGODB_ATLAS_PASS", "pass")
-	t.Setenv("MONGODB_ATLAS_HOST", "mongodb+srv://budget-tracker.gj4ww.mongodb.net")
+	invalidJwtToken, err := controller.GenerateJWTAccessToken(t.Context(), "invalidKey", "ID_MALUCO", "vsantos")
+	assert.NoError(t, err)
+
+	validJwtToken, err := controller.GenerateJWTAccessToken(t.Context(), "myhellokey", "ID_MALUCO", "vsantos")
+	assert.NoError(t, err)
 
 	cases := []GetUserTest{
 		{
@@ -58,8 +62,27 @@ func TestGetUserRoute(t *testing.T) {
 				"Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdXRob3JpemVkIjp0cnVlLCJleHAiOjE3NTk1NDM1NjgsImlhdCI6MTc1OTU0MzI2OCwibmFtZSI6InZzYW50b3MiLCJzdWIiOiI2OGQwNjZlOGE0YjYyYjgwNTE3N2FhOTEifQ.OoL_fl_qz0bmNvFxAh_PoG5UJsDtGCCzeGMa9sPKqVs",
 			},
 			ExpectedStatusCode: 401,
-			ExpectedErrorMsg:   "",
 			ExpectedBodyMsg:    "{\"message\": \"could not authenticate\", \"details\": \"Token is expired\"}",
+		},
+		{
+			verb: "GET",
+			path: "/api/v1/users/686f255205535b1dd3b68f38",
+			headers: map[string]string{
+				"Content-type":  "application/json",
+				"Authorization": fmt.Sprintf("Bearer %s", invalidJwtToken),
+			},
+			ExpectedStatusCode: 401,
+			ExpectedBodyMsg:    "{\"message\": \"could not authenticate\", \"details\": \"signature is invalid\"}",
+		},
+		{
+			verb: "GET",
+			path: "/api/v1/users/686f255205535b1dd3b68f38",
+			headers: map[string]string{
+				"Content-type":  "application/json",
+				"Authorization": fmt.Sprintf("Bearer %s", validJwtToken),
+			},
+			ExpectedStatusCode: 200,
+			ExpectedBodyMsg:    "{\"id\":\"686f255205535b1dd3b68f38\",\"login\":\"mockuser\",\"firstname\":\"Mock User\",\"lastname\":\"Torres\",\"email\":\"mock.user@gmail.com\",\"password\":\"\\u003csensitive\\u003e\"}\n",
 		},
 	}
 
@@ -90,9 +113,8 @@ func TestGetUserRoute(t *testing.T) {
 
 			r.ServeHTTP(rr, req)
 			assert.Equal(t, testCase.ExpectedStatusCode, rr.Code)
-			// t.Log(rr.Body)
-			// t.Log(rr.Code)
-			// t.Log(testCase)
+
+			// In case of expected body as response
 			if testCase.ExpectedBodyMsg != "" {
 				assert.Equal(t, testCase.ExpectedBodyMsg, rr.Body.String())
 			}

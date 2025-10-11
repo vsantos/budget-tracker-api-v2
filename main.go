@@ -2,7 +2,7 @@ package main
 
 import (
 	"budget-tracker-api-v2/internal/http/router"
-	"budget-tracker-api-v2/internal/obsevability"
+	"budget-tracker-api-v2/internal/observability"
 	"budget-tracker-api-v2/internal/repository"
 	"budget-tracker-api-v2/internal/repository/mongodb"
 	"context"
@@ -23,7 +23,7 @@ func main() {
 	timedOut, cancel := context.WithTimeout(ctx, 3*time.Second)
 	defer cancel()
 
-	shutdown := obsevability.InitTracer(timedOut)
+	shutdown := observability.InitTracer(timedOut)
 	defer func() {
 		if cerr := shutdown(timedOut); cerr != nil {
 			log.Printf("error shutting down tracer object: %v", cerr)

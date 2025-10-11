@@ -30,15 +30,15 @@ func TestClientNoEnvs(t *testing.T) {
 		{
 			Envs: []envVar{
 				{
-					key:   "MONGODB_ATLAS_HOST",
+					key:   "MONGODB_HOST",
 					value: "",
 				},
 				{
-					key:   "MONGODB_ATLAS_USER",
+					key:   "MONGODB_USER",
 					value: "user",
 				},
 				{
-					key:   "MONGODB_ATLAS_PASS",
+					key:   "MONGODB_PASS",
 					value: "pass",
 				},
 			},
@@ -53,15 +53,15 @@ func TestClientNoEnvs(t *testing.T) {
 		{
 			Envs: []envVar{
 				{
-					key:   "MONGODB_ATLAS_HOST",
+					key:   "MONGODB_HOST",
 					value: "mongodb+srv://budget-tracker.gj4ww.mongodb.net",
 				},
 				{
-					key:   "MONGODB_ATLAS_USER",
+					key:   "MONGODB_USER",
 					value: "",
 				},
 				{
-					key:   "MONGODB_ATLAS_PASS",
+					key:   "MONGODB_PASS",
 					value: "pass",
 				},
 			},
@@ -76,15 +76,15 @@ func TestClientNoEnvs(t *testing.T) {
 		{
 			Envs: []envVar{
 				{
-					key:   "MONGODB_ATLAS_HOST",
+					key:   "MONGODB_HOST",
 					value: "mongodb+srv://budget-tracker.gj4ww.mongodb.net",
 				},
 				{
-					key:   "MONGODB_ATLAS_USER",
+					key:   "MONGODB_USER",
 					value: "user",
 				},
 				{
-					key:   "MONGODB_ATLAS_PASS",
+					key:   "MONGODB_PASS",
 					value: "",
 				},
 			},
@@ -100,11 +100,18 @@ func TestClientNoEnvs(t *testing.T) {
 
 	for _, testCase := range cases {
 		for _, envVar := range testCase.Envs {
+			t.Log(envVar)
+
 			t.Setenv(envVar.key, envVar.value)
 		}
 
 		_, err := NewClient()
-		assert.Error(t, err, testCase.GetUserTest.ExpectedErrorMsg)
+		t.Log(err)
+		// In case of expected error msg, validate `err`
+		if testCase.GetUserTest.ExpectedErrorMsg != "" {
+			assert.Error(t, err, testCase.GetUserTest.ExpectedErrorMsg)
+		} else {
+			assert.NoError(t, err)
+		}
 	}
-
 }

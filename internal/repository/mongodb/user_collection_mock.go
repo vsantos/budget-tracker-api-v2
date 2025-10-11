@@ -28,8 +28,13 @@ func (c *UserMockCollectionConfig) InsertOne(ctx context.Context, document inter
 
 // FindOneBy will find a document based on field
 func (c *UserMockCollectionConfig) FindOneBy(ctx context.Context, login string) (*model.User, error) {
+	objID, err := primitive.ObjectIDFromHex("686f255205535b1dd3b68f38")
+	if err != nil {
+		return nil, err
+	}
+
 	return &model.User{
-		ID:        primitive.NewObjectID(),
+		ID:        objID,
 		Login:     login,
 		Firstname: "Mock User",
 		Lastname:  "Torres",
@@ -40,9 +45,13 @@ func (c *UserMockCollectionConfig) FindOneBy(ctx context.Context, login string) 
 
 // FindOne will find a document based on ID
 func (c *UserMockCollectionConfig) FindOne(ctx context.Context, id string) (*model.User, error) {
+	objID, err := primitive.ObjectIDFromHex("686f255205535b1dd3b68f38")
+	if err != nil {
+		return nil, err
+	}
 
 	return &model.User{
-		ID:        primitive.NewObjectID(),
+		ID:        objID,
 		Login:     "mockuser",
 		Firstname: "Mock User",
 		Lastname:  "Torres",

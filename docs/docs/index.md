@@ -2,15 +2,15 @@
 
 ## Purpose
 
-This simple platform was created for personal purposes, to refine and improve knowledge among several best practices: CI/CD, software engineering, observability and security.
+This simple platform was created for personal use, with the goal of refining and improving knowledge across several best practices: CI/CD, software engineering, observability, and security.
 
-As an additional result, a functional CRUD is expected to help with our daily-basis finances - to keep track on them for allowing posterior smarter decisions. This will be clearer after you reah the #architecture section.
+As an additional outcome, it provides a functional CRUD system designed to help manage day-to-day finances — keeping track of them to enable smarter decisions later on. This will become clearer once you reach the #architecture section.
 
-As a "classical" REST API application, you can use this application as your personal backend for posterior studies. Let's say you wanna explore a MCP server with a real-world API (not the usual JSON public endpoints spread the internet), so you can learn from a real world example.
+As a “classical” REST API application, you can also use it as your personal backend for further studies. For instance, you might want to experiment with an MCP server using a real-world API (rather than the usual public JSON endpoints scattered across the internet) to learn from a realistic example.
 
 ## Target Audience
 
-This application is aimed for technology enthusiasts and IT professionals, it's not a "saas" application ready to be used directly from a public URL. This project requires you to clone the repository and explore locally before thinking in serving your own platform.
+This application is aimed at technology enthusiasts and IT professionals. It’s not a SaaS application ready to be used directly from a public URL. Instead, it requires you to clone the repository and explore it locally before considering deploying your own instance.
 
 <script src="https://giscus.app/client.js"
         data-repo="vsantos/budget-tracker-api-v2-discussions"

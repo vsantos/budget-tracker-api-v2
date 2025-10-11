@@ -3,6 +3,7 @@ package mongodb
 import (
 	"context"
 	"errors"
+	"fmt"
 	"os"
 	"time"
 
@@ -24,6 +25,8 @@ func NewClient() (*mongo.Client, error) {
 	if mongoHost == "" || mongoUser == "" || mongoPass == "" {
 		return nil, errors.New("empty HOST, USER or PASS env vars for mongodb atlas")
 	}
+
+	fmt.Println(mongoHost)
 
 	uri := options.Client().ApplyURI(mongoHost)
 	cred := options.Client().SetAuth(options.Credential{

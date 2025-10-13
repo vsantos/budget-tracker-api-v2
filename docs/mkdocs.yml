@@ -4,8 +4,12 @@ plugins:
   - offline
   - swagger-ui-tag
   - glightbox
+  - search
+
 theme:
   name: material
+  favicon: piggy-bank.svg
+  logo: piggy-bank.svg
   features:
     - navigation.tabs
     - navigation.expand
@@ -71,6 +75,7 @@ markdown_extensions:
       alternate_style: true
 
 extra:
+  homepage: https://budget-tracker.vsantos.cc
   generator: false
   social:
     - icon: fontawesome/brands/linkedin

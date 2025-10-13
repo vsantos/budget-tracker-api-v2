@@ -8,6 +8,8 @@ As an additional outcome, it provides a functional CRUD system designed to help 
 
 As a “classical” REST API application, you can also use it as your personal backend for further studies. For instance, you might want to experiment with an MCP server using a real-world API (rather than the usual public JSON endpoints scattered across the internet) to learn from a realistic example.
 
+The idea behind this app is to build features similar to what a simple finance spreadsheet could provide for personal use. If your goal is to actually manage your finances, it might be a better idea to just stick with a simple spreadsheet or a paid app.
+
 !!! note "Proceed with learning purposes in mind"
 
     This app contains some overengineering throughout the ecosystem. It isn’t necessarily intended to be “production-ready” out of the box, but it aims to follow most production best practices.

@@ -8,6 +8,10 @@ As an additional outcome, it provides a functional CRUD system designed to help 
 
 As a “classical” REST API application, you can also use it as your personal backend for further studies. For instance, you might want to experiment with an MCP server using a real-world API (rather than the usual public JSON endpoints scattered across the internet) to learn from a realistic example.
 
+!!! note "Proceed with learning purposes in mind"
+
+    This app has some overengineering spread around the ecossystem, it's not necessarialy aimed to be "production ready" out-of-the-box but it tries to follow most production best-practices.
+
 ## Target Audience
 
 This application is aimed at technology enthusiasts and IT professionals. It’s not a SaaS application ready to be used directly from a public URL. Instead, it requires you to clone the repository and explore it locally before considering deploying your own instance.

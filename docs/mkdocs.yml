@@ -43,8 +43,23 @@ nav:
       - Observability: api/packages/observability.md
       - Utils:
         - Crypt: api/packages/crypt.md
-  - Local Development: local_development.md
+  - Local Development:
+    - Getting started:
+      - Running locally: development/local_development.md
+    - Observing your app:
+      - Tracing: foo.md
+      - Swagger: foo.md
   - Contributing: contributing.md
+
+markdown_extensions:
+  # For adding check-lists
+  - def_list
+  - pymdownx.tasklist:
+      custom_checkbox: true
+  # For adding 'notes'
+  - admonition
+  - pymdownx.details
+  - pymdownx.superfences
 
 extra:
   generator: false

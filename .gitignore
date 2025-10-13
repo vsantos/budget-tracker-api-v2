@@ -1,4 +1,5 @@
 docker-compose.yaml
+budget-tracker-api
 budget-tracker-api-v2
 .scannerwork
 docs/site

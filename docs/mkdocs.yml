@@ -51,10 +51,19 @@ nav:
         - Crypt: api/packages/crypt.md
   - Local Development:
     - Getting started:
-      - Running locally: development/local_development.md
+      - Requisites: development/local/requisites.md
+      - Run without containers: development/local/run_without_containers.md
+      - Run with containers: development/local/run_with_containers.md
+
     - Observing your app:
-      - Tracing: foo.md
+      - Traces: foo.md
       - Swagger: foo.md
+    
+    - Updating documentation:
+      - MKDocs: foo.md
+      - Swagger: swagger.md
+    - CI:
+      - Running tests: foo.md
   - Contributing: contributing.md
 
 markdown_extensions:

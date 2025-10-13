@@ -10,7 +10,7 @@ As a “classical” REST API application, you can also use it as your personal 
 
 !!! note "Proceed with learning purposes in mind"
 
-    This app has some overengineering spread around the ecossystem, it's not necessarialy aimed to be "production ready" out-of-the-box but it tries to follow most production best-practices.
+    This app contains some overengineering throughout the ecosystem. It isn’t necessarily intended to be “production-ready” out of the box, but it aims to follow most production best practices.
 
 ## Target Audience
 

@@ -2,6 +2,7 @@ package mongodb
 
 import (
 	"context"
+	"time"
 
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.opentelemetry.io/otel"
@@ -19,7 +20,10 @@ func (c *HealthCollectionConfig) Ping(ctx context.Context) (healthy bool, err er
 	spanC, span := tracer.Start(ctx, "healthcheck")
 	defer span.End()
 
-	err = c.MongoCollection.Database().Client().Ping(spanC, nil)
+	tcontext, can := context.WithTimeout(spanC, time.Second*2)
+	defer can()
+
+	err = c.MongoCollection.Database().Client().Ping(tcontext, nil)
 	if err != nil {
 		return false, err
 	}

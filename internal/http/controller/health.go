@@ -23,7 +23,7 @@ func (uc *HealthController) RegisterRoutes(r *mux.Router) {
 
 // Ping handler list of all card within the platform without filters. Deprecated.
 func (uc *HealthController) HealthCheck(w http.ResponseWriter, r *http.Request) {
-	sCtx, span := uc.Tracer.Start(r.Context(), "CardsController.Health")
+	sCtx, span := uc.Tracer.Start(r.Context(), "healthController.ping")
 	defer span.End()
 
 	status, err := uc.HealthRepo.Ping(sCtx)
@@ -33,6 +33,7 @@ func (uc *HealthController) HealthCheck(w http.ResponseWriter, r *http.Request) 
 		if err != nil {
 			log.Error("Could not write response: ", err)
 		}
+		return
 	}
 	w.WriteHeader(http.StatusOK)
 	_, err = w.Write([]byte(`{"message": "healthy", "app": true, "database": true}`))

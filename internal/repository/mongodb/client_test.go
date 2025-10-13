@@ -47,7 +47,7 @@ func TestClientNoEnvs(t *testing.T) {
 				path:               "",
 				body:               nil,
 				ExpectedStatusCode: 0,
-				ExpectedErrorMsg:   "empty HOST, USER or PASS env vars for mongodb atlas",
+				ExpectedErrorMsg:   "empty MONGODB_HOST, MONGODB_USER or MONGODB_PASS env vars for mongodb",
 			},
 		},
 		{
@@ -70,7 +70,7 @@ func TestClientNoEnvs(t *testing.T) {
 				path:               "",
 				body:               nil,
 				ExpectedStatusCode: 0,
-				ExpectedErrorMsg:   "empty HOST, USER or PASS env vars for mongodb atlas",
+				ExpectedErrorMsg:   "empty MONGODB_HOST, MONGODB_USER or MONGODB_PASS env vars for mongodb",
 			},
 		},
 		{
@@ -93,7 +93,7 @@ func TestClientNoEnvs(t *testing.T) {
 				path:               "",
 				body:               nil,
 				ExpectedStatusCode: 0,
-				ExpectedErrorMsg:   "empty HOST, USER or PASS env vars for mongodb atlas",
+				ExpectedErrorMsg:   "empty MONGODB_HOST, MONGODB_USER or MONGODB_PASS env vars for mongodb",
 			},
 		},
 	}
@@ -109,7 +109,7 @@ func TestClientNoEnvs(t *testing.T) {
 		t.Log(err)
 		// In case of expected error msg, validate `err`
 		if testCase.GetUserTest.ExpectedErrorMsg != "" {
-			assert.Error(t, err, testCase.GetUserTest.ExpectedErrorMsg)
+			assert.EqualError(t, err, testCase.GetUserTest.ExpectedErrorMsg)
 		} else {
 			assert.NoError(t, err)
 		}

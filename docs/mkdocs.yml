@@ -10,6 +10,7 @@ theme:
   name: material
   favicon: piggy-bank.svg
   logo: piggy-bank.svg
+  language: en
   features:
     - navigation.tabs
     - navigation.expand
@@ -75,11 +76,19 @@ markdown_extensions:
       alternate_style: true
 
 extra:
+  # General
   homepage: https://budget-tracker.vsantos.cc
   generator: false
+  # Multi-lang support
+  alternate:
+    - name: English
+      link: /
+      lang: en
+  # Footer
   social:
     - icon: fontawesome/brands/linkedin
       link: https://www.linkedin.com/in/vs4ntos/
+  # Cookies
   consent:
     title: Cookie consent
     description: >- 

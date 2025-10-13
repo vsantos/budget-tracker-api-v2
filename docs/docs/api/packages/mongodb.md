@@ -23,6 +23,8 @@ import "budget-tracker-api-v2/internal/repository/mongodb"
   - [func \(c \*CardMockCollectionConfig\) InsertOne\(ctx context.Context, document interface\{\}\) \(id string, err error\)](<#CardMockCollectionConfig.InsertOne>)
 - [type HealthCollectionConfig](<#HealthCollectionConfig>)
   - [func \(c \*HealthCollectionConfig\) Ping\(ctx context.Context\) \(healthy bool, err error\)](<#HealthCollectionConfig.Ping>)
+- [type HealthMockCollectionConfig](<#HealthMockCollectionConfig>)
+  - [func \(c \*HealthMockCollectionConfig\) Ping\(ctx context.Context\) \(bool, error\)](<#HealthMockCollectionConfig.Ping>)
 - [type MongoCardRepository](<#MongoCardRepository>)
   - [func \(r \*MongoCardRepository\) Delete\(ctx context.Context, empID string\) \(int64, error\)](<#MongoCardRepository.Delete>)
   - [func \(r \*MongoCardRepository\) FindByID\(ctx context.Context, empID string\) \(\*model.Card, error\)](<#MongoCardRepository.FindByID>)
@@ -189,6 +191,26 @@ func (c *HealthCollectionConfig) Ping(ctx context.Context) (healthy bool, err er
 ```
 
 
+
+<a name="HealthMockCollectionConfig"></a>
+## type [HealthMockCollectionConfig](<https://github.com/vsantos/budget-tracker-api-v2/blob/main/internal/repository/mongodb/health_collection_mock.go#L6-L8>)
+
+UserMockCollectionConfig will implement mongodb collection functions
+
+```go
+type HealthMockCollectionConfig struct {
+    Error error
+}
+```
+
+<a name="HealthMockCollectionConfig.Ping"></a>
+### func \(\*HealthMockCollectionConfig\) [Ping](<https://github.com/vsantos/budget-tracker-api-v2/blob/main/internal/repository/mongodb/health_collection_mock.go#L11>)
+
+```go
+func (c *HealthMockCollectionConfig) Ping(ctx context.Context) (bool, error)
+```
+
+CreateIndexes will create mongodb indexes
 
 <a name="MongoCardRepository"></a>
 ## type [MongoCardRepository](<https://github.com/vsantos/budget-tracker-api-v2/blob/main/internal/repository/mongodb/card.go#L19-L22>)

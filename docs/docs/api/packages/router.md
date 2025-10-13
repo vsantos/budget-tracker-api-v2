@@ -8,14 +8,14 @@ import "budget-tracker-api-v2/internal/http/router"
 
 ## Index
 
-- [func NewRouter\(tracer trace.Tracer, userCollectionInterface repository.UserCollectionInterface, cardsCollectionInterface repository.CardCollectionInterface\) \(\*mux.Router, error\)](<#NewRouter>)
+- [func NewRouter\(tracer trace.Tracer, userCollectionInterface repository.UserCollectionInterface, cardsCollectionInterface repository.CardCollectionInterface, healthCollectionInterface repository.HealthCollectionInterface\) \(\*mux.Router, error\)](<#NewRouter>)
 
 
 <a name="NewRouter"></a>
-## func [NewRouter](<https://github.com/vsantos/budget-tracker-api-v2/blob/main/internal/http/router/routes.go#L16-L20>)
+## func [NewRouter](<https://github.com/vsantos/budget-tracker-api-v2/blob/main/internal/http/router/routes.go#L16-L21>)
 
 ```go
-func NewRouter(tracer trace.Tracer, userCollectionInterface repository.UserCollectionInterface, cardsCollectionInterface repository.CardCollectionInterface) (*mux.Router, error)
+func NewRouter(tracer trace.Tracer, userCollectionInterface repository.UserCollectionInterface, cardsCollectionInterface repository.CardCollectionInterface, healthCollectionInterface repository.HealthCollectionInterface) (*mux.Router, error)
 ```
 
 NewRouter will set new User Routes

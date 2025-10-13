@@ -21,10 +21,13 @@ import "budget-tracker-api-v2/internal/repository/mongodb"
   - [func \(c \*CardMockCollectionConfig\) DeleteOne\(ctx context.Context, id string\) \(int64, error\)](<#CardMockCollectionConfig.DeleteOne>)
   - [func \(c \*CardMockCollectionConfig\) FindOne\(ctx context.Context, id string\) \(\*model.Card, error\)](<#CardMockCollectionConfig.FindOne>)
   - [func \(c \*CardMockCollectionConfig\) InsertOne\(ctx context.Context, document interface\{\}\) \(id string, err error\)](<#CardMockCollectionConfig.InsertOne>)
+- [type HealthCollectionConfig](<#HealthCollectionConfig>)
+  - [func \(c \*HealthCollectionConfig\) Ping\(ctx context.Context\) \(healthy bool, err error\)](<#HealthCollectionConfig.Ping>)
 - [type MongoCardRepository](<#MongoCardRepository>)
   - [func \(r \*MongoCardRepository\) Delete\(ctx context.Context, empID string\) \(int64, error\)](<#MongoCardRepository.Delete>)
   - [func \(r \*MongoCardRepository\) FindByID\(ctx context.Context, empID string\) \(\*model.Card, error\)](<#MongoCardRepository.FindByID>)
   - [func \(r \*MongoCardRepository\) Insert\(ctx context.Context, emp \*model.Card\) \(\*model.Card, error\)](<#MongoCardRepository.Insert>)
+- [type MongoHealthRepository](<#MongoHealthRepository>)
 - [type MongoUserRepository](<#MongoUserRepository>)
   - [func \(r \*MongoUserRepository\) Delete\(ctx context.Context, empID string\) \(int64, error\)](<#MongoUserRepository.Delete>)
   - [func \(r \*MongoUserRepository\) FindByID\(ctx context.Context, empID string\) \(\*model.User, error\)](<#MongoUserRepository.FindByID>)
@@ -166,6 +169,27 @@ func (c *CardMockCollectionConfig) InsertOne(ctx context.Context, document inter
 
 InsertOne will insert a document into mongodb
 
+<a name="HealthCollectionConfig"></a>
+## type [HealthCollectionConfig](<https://github.com/vsantos/budget-tracker-api-v2/blob/main/internal/repository/mongodb/health_collection.go#L13-L16>)
+
+HealthCollectionConfig will implement mongodb collection functions for healthchecks
+
+```go
+type HealthCollectionConfig struct {
+    Tracer          trace.Tracer
+    MongoCollection *mongo.Collection
+}
+```
+
+<a name="HealthCollectionConfig.Ping"></a>
+### func \(\*HealthCollectionConfig\) [Ping](<https://github.com/vsantos/budget-tracker-api-v2/blob/main/internal/repository/mongodb/health_collection.go#L18>)
+
+```go
+func (c *HealthCollectionConfig) Ping(ctx context.Context) (healthy bool, err error)
+```
+
+
+
 <a name="MongoCardRepository"></a>
 ## type [MongoCardRepository](<https://github.com/vsantos/budget-tracker-api-v2/blob/main/internal/repository/mongodb/card.go#L19-L22>)
 
@@ -204,6 +228,17 @@ func (r *MongoCardRepository) Insert(ctx context.Context, emp *model.Card) (*mod
 ```
 
 Insert will insert an card
+
+<a name="MongoHealthRepository"></a>
+## type [MongoHealthRepository](<https://github.com/vsantos/budget-tracker-api-v2/blob/main/internal/repository/mongodb/health.go#L6-L8>)
+
+MongoHealthRepository defines a Repository for User model
+
+```go
+type MongoHealthRepository struct {
+    MongoCollection repository.HealthCollectionInterface
+}
+```
 
 <a name="MongoUserRepository"></a>
 ## type [MongoUserRepository](<https://github.com/vsantos/budget-tracker-api-v2/blob/main/internal/repository/mongodb/user.go#L19-L21>)

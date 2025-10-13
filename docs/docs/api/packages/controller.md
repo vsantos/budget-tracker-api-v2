@@ -23,6 +23,9 @@ import "budget-tracker-api-v2/internal/http/controller"
   - [func \(uc \*CardsController\) RegisterRoutes\(r \*mux.Router\)](<#CardsController.RegisterRoutes>)
 - [type CardsCreatedMessage](<#CardsCreatedMessage>)
 - [type CardsErrorMessage](<#CardsErrorMessage>)
+- [type HealthController](<#HealthController>)
+  - [func \(uc \*HealthController\) HealthCheck\(w http.ResponseWriter, r \*http.Request\)](<#HealthController.HealthCheck>)
+  - [func \(uc \*HealthController\) RegisterRoutes\(r \*mux.Router\)](<#HealthController.RegisterRoutes>)
 - [type UsersController](<#UsersController>)
   - [func \(uc \*UsersController\) CreateUser\(w http.ResponseWriter, r \*http.Request\)](<#UsersController.CreateUser>)
   - [func \(uc \*UsersController\) GetUser\(w http.ResponseWriter, r \*http.Request\)](<#UsersController.GetUser>)
@@ -183,6 +186,36 @@ type CardsErrorMessage struct {
     StatusCode int32  `json:"status_code,omitempty"`
 }
 ```
+
+<a name="HealthController"></a>
+## type [HealthController](<https://github.com/vsantos/budget-tracker-api-v2/blob/main/internal/http/controller/health.go#L12-L15>)
+
+
+
+```go
+type HealthController struct {
+    Tracer     trace.Tracer
+    HealthRepo repository.HealthCollectionInterface
+}
+```
+
+<a name="HealthController.HealthCheck"></a>
+### func \(\*HealthController\) [HealthCheck](<https://github.com/vsantos/budget-tracker-api-v2/blob/main/internal/http/controller/health.go#L25>)
+
+```go
+func (uc *HealthController) HealthCheck(w http.ResponseWriter, r *http.Request)
+```
+
+Ping handler list of all card within the platform without filters. Deprecated.
+
+<a name="HealthController.RegisterRoutes"></a>
+### func \(\*HealthController\) [RegisterRoutes](<https://github.com/vsantos/budget-tracker-api-v2/blob/main/internal/http/controller/health.go#L18>)
+
+```go
+func (uc *HealthController) RegisterRoutes(r *mux.Router)
+```
+
+RegisterRoutes register router for handling healthcheck operations
 
 <a name="UsersController"></a>
 ## type [UsersController](<https://github.com/vsantos/budget-tracker-api-v2/blob/main/internal/http/controller/user.go#L19-L22>)

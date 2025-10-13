@@ -10,6 +10,7 @@ import "budget-tracker-api-v2/internal/repository"
 
 - [type CardCollectionInterface](<#CardCollectionInterface>)
 - [type CardRepoInterface](<#CardRepoInterface>)
+- [type HealthCollectionInterface](<#HealthCollectionInterface>)
 - [type UserCollectionInterface](<#UserCollectionInterface>)
 - [type UserRepoInterface](<#UserRepoInterface>)
 
@@ -38,6 +39,17 @@ type CardRepoInterface interface {
     Insert(ctx context.Context, emp *model.Card) (*model.Card, error)
     FindByID(ctx context.Context, empID string) (*model.Card, error)
     Delete(ctx context.Context, id string) (int64, error)
+}
+```
+
+<a name="HealthCollectionInterface"></a>
+## type [HealthCollectionInterface](<https://github.com/vsantos/budget-tracker-api-v2/blob/main/internal/repository/health_collection.go#L8-L10>)
+
+UserCollectionInterface defines a mongodb collection API to be posteriorly mocked
+
+```go
+type HealthCollectionInterface interface {
+    Ping(ctx context.Context) (bool, error)
 }
 ```
 

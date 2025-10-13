@@ -52,8 +52,8 @@ nav:
   - Local Development:
     - Getting started:
       - Requisites: development/local/requisites.md
-      - Run without containers: development/local/run_without_containers.md
-      - Run with containers: development/local/run_with_containers.md
+      - Running without containers: development/local/run_without_containers.md
+      - Running with containers: development/local/run_with_containers.md
 
     - Observing your app:
       - Traces: foo.md

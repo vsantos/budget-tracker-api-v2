@@ -6,12 +6,14 @@
 - [X] Tests Pipeline
 - [ ] Build image and push to registry
 
-## Observability
+## Non-Functional
 
 - [ ] Metrics
+- [X] health check endpoint
 - [X] Traces
 - [ ] Create tracer object
 - [ ] Structured Logs
+- [X] Docs
 
 ## Functional
 

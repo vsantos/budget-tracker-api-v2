@@ -76,7 +76,7 @@ This command - if successful - will generate a local binary called `budget-track
 
 Now, you can simply run it:
 
-``` 
+```shell
 # This command will make your binary "runnable"
 chmod +x budget-tracker
 
@@ -93,7 +93,9 @@ The only external dependency for this application is a MongoDB's database, as we
 If you try to pass a "fake" host or a non-existent mongoDB URL, the app will break as well. This is an example of a functional command passing environment variables:
 
 ```
-# This command will pass environment variables directly to your application's process
+# This command will pass environment variables directly
+## to your application's process
+
 MONGODB_HOST="mongodb+srv://localhost:27017" \
 MONGODB_USER="user" \
 MONGODB_PASS="pass" \
@@ -102,12 +104,14 @@ MONGODB_PASS="pass" \
 
 You could also export these variables globally but for simplicity we are not using this option for now:
 
-```
+=== "Shell"
+```shell
 export MONGODB_HOST="mongodb+srv://localhost:27017" \
 export MONGODB_USER="user" \
 export MONGODB_PASS="pass"
 ```
 
+=== "Shell"
 ```
 ./budget-tracker-api
 ```
@@ -116,7 +120,8 @@ export MONGODB_PASS="pass"
 
 Let's use this opportunity (if you didn't setup your MongoDB Atlas instance yet) to get the credentials from MongoDB Atlas and finally run our app for the first time. Just replace the environment variables values to your command:
 
-```
+=== "Shell"
+```shell
 MONGODB_HOST="mongodb+srv://my-example.fj2qq.mongodb.net/" \
 MONGODB_USER="my-user" \
 MONGODB_PASS="my-pass" \
@@ -129,7 +134,8 @@ You should expect then the following outcome:
 
 Now, we can simply test it locally by running a simple `curl` command:
 
-```
+=== "Shell"
+```shell
 # According to the app logs, the platform is running under port `8080`
 ## According to the swagger, we can check there is a `/health` endpoint
 

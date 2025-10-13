@@ -319,6 +319,39 @@ paths:
               example:
                 message: "error when fetching card's details"
                 details: "not able to get ID format"
+  /health:
+   get:
+      summary: "Fetches if the application is healthy"
+      description: "By evaluating external dependencies, healthcheck will validate if the app is indeed healthy"
+      security: []
+      tags:
+      - HealthCheck
+      parameters:
+        - in: header
+          name: Content-Type
+          required: true
+          schema:
+            type: string
+            example: application/json
+      responses:
+        '200':
+          description: Healthy
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Token'
+              example:
+                status: "healthy"
+                app: true
+                database: true
+        '500':
+          description: Internal Server ERror
+          content:
+            application/json:
+              example:
+                status: "unhealthy"
+                app: true
+                database: false
 components:
   securitySchemes:
     bearerAuth:

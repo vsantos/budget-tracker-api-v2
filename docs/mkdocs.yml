@@ -3,6 +3,7 @@ repo_url: https://github.com/vsantos/budget-tracker-api-v2/
 plugins:
   - offline
   - swagger-ui-tag
+  - glightbox
 theme:
   name: material
   features:
@@ -27,8 +28,8 @@ theme:
 nav:
   - Home:
     - Welcome:  index.md
-    - Concepts: concepts.md
-    - Architecture: architecture.md
+    - Architecture: home/architecture.md
+    - Concepts: home/concepts.md
   - Swagger:  swagger.md
   - API:
     - Internal:
@@ -60,6 +61,14 @@ markdown_extensions:
   - admonition
   - pymdownx.details
   - pymdownx.superfences
+  # For adding images
+  - attr_list
+  - md_in_html
+  - pymdownx.blocks.caption
+  # For adding Content tabs
+  - pymdownx.superfences
+  - pymdownx.tabbed:
+      alternate_style: true
 
 extra:
   generator: false

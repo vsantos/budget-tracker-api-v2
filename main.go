@@ -49,7 +49,13 @@ func main() {
 		MongoCollection: c.Database("budget-tracker-v2").Collection("cards"),
 	}
 
-	router, err := router.NewRouter(tracer, m, ms)
+	var mh repository.HealthCollectionInterface //nolint:staticcheck
+	mh = &mongodb.HealthCollectionConfig{
+		Tracer:          tracer,
+		MongoCollection: c.Database("budget-tracker-v2").Collection("health"),
+	}
+
+	router, err := router.NewRouter(tracer, m, ms, mh)
 	if err != nil {
 		log.Fatal(err)
 	}

@@ -16,7 +16,6 @@ rebuild:
 
 generate-docs:
 	./hack/docs/generate_api_docs.sh
-	mkdocs build -f docs/mkdocs.yml
 
 serve-docs:
 	mkdocs serve -f docs/mkdocs.yml

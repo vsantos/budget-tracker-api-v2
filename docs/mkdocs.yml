@@ -35,7 +35,7 @@ nav:
     - Welcome:  index.md
     - Architecture: home/architecture.md
     - Concepts: home/concepts.md
-  - Swagger:  swagger.md
+  - Swagger: swagger.md
   - API:
     - Internal:
       - http:
@@ -61,7 +61,7 @@ nav:
     
     - Updating documentation:
       - MKDocs: foo.md
-      - Swagger: swagger.md
+      - Swagger: foo.md
     - CI:
       - Running tests: foo.md
   - Contributing: contributing.md

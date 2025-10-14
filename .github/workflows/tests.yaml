@@ -61,3 +61,4 @@ jobs:
           helm unittest -f helm/templates/tests/service_test.yaml helm --failfast --color
           helm unittest -f helm/templates/tests/secret_test.yaml helm --failfast --color
           helm unittest -f helm/templates/tests/hpa_test.yaml helm --failfast --color
+	        helm unittest -f helm/templates/tests/namespace_test.yaml helm --failfast --color

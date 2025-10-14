@@ -1,0 +1,8 @@
+{{- if .Values.namespace.enabled }}
+apiVersion: v1
+kind: Namespace
+metadata:
+  labels:
+    kubernetes.io/metadata.name: {{ .Values.namespace.name }}
+  name: {{ .Values.namespace.name }}
+{{- end }}

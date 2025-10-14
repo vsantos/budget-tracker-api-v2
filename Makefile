@@ -6,6 +6,9 @@ sonar:
 		-v "$(pwd):/usr/src" \
 		sonarsource/sonar-scanner-cli
 
+static-docker-build:
+	docker build . -t budget-tracker-api:local
+
 test:
 	staticcheck -checks='-S1021' ./...
 	go test ./... -cover
@@ -16,6 +19,7 @@ helm-test:
 	helm unittest -f helm/templates/tests/service_test.yaml helm --failfast --color
 	helm unittest -f helm/templates/tests/secret_test.yaml helm --failfast --color
 	helm unittest -f helm/templates/tests/hpa_test.yaml helm --failfast --color
+	helm unittest -f helm/templates/tests/namespace_test.yaml helm --failfast --color
 
 rebuild:
 	$(MAKE) helm-test
@@ -27,7 +31,6 @@ rebuild-standalone:
 
 k8s-apply:
 	$(MAKE) helm-test
-	kubectl create namespace demo
 	helm template --release-name local-dev ./helm | kubectl apply -n demo -f -
 
 generate-docs:

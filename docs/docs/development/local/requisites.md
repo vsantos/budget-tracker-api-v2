@@ -21,6 +21,8 @@ This guide will help you to: build, run and observe `budget-tracker-api` locally
     * [ ] `kubectl`
     * [ ] `kubectx`
     * [ ] `helm` `v3+`
+    * [ ] `helm-unittest`
+    * [ ] `helm-docs`
 - [X] External requisites
     * [X] Github setup - for [Github actions](https://github.com/features/actions) usage
 - [ ] Mongo's External requisites

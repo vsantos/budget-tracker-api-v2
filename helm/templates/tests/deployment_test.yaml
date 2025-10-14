@@ -1,0 +1,83 @@
+suite: test deployment generation
+templates:
+  - deployment.yaml
+release:
+  name: local-dev
+  namespace: demo
+tests:
+  - it: test default manifest
+    set:
+      fullnameOverride: "local-dev-budget-tracker-api"
+    asserts:
+      - isKind:
+          of: Deployment
+      - matchRegex:
+          path: metadata.name
+          pattern: local-dev-budget-tracker-api
+      - equal:
+          path: spec.template.spec.containers[0].image
+          value: budget-tracker-api:local
+      - equal:
+          path: spec.replicas
+          value: 2
+      - equal:
+          path: metadata.labels["app.kubernetes.io/instance"]
+          value: "local-dev"
+      - equal:
+          path: spec.selector.matchLabels["app.kubernetes.io/name"]
+          value: "budget-tracker-api"
+      - equal:
+          path: spec.selector.matchLabels["app.kubernetes.io/instance"]
+          value: "local-dev"
+      - lengthEqual:
+          path: spec.template.spec.containers
+          count: 1
+      - contains:
+          path: spec.template.spec.containers[0].env
+          content:
+            name: MONGODB_HOST
+            valueFrom:
+              secretKeyRef:
+                name: mongodb-credentials
+                key: host
+      - contains:
+          path: spec.template.spec.containers[0].env
+          content:
+            name: MONGODB_USER
+            valueFrom:
+              secretKeyRef:
+                name: mongodb-credentials
+                key: username
+      - contains:
+          path: spec.template.spec.containers[0].env
+          content:
+            name: MONGODB_PASS
+            valueFrom:
+              secretKeyRef:
+                name: mongodb-credentials
+                key: password
+      - contains:
+          path: spec.template.spec.containers[0].ports
+          content:
+            name: http
+            containerPort: 8080
+            protocol: TCP
+      - equal:
+          path: spec.template.spec.containers[0].livenessProbe
+          value:
+            httpGet:
+              path: /health
+              port: 8080
+      - equal:
+          path: spec.template.spec.containers[0].readinessProbe
+          value:
+            httpGet:
+              path: /health
+              port: 8080
+      - equal:
+          path: spec.template.spec.volumes
+          value:
+            - name: mongodb
+              secret:
+                optional: false
+                secretName: mongodb-credentials

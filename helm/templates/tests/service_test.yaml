@@ -1,0 +1,26 @@
+suite: test service generation
+templates:
+  - service.yaml
+release:
+  name: local-dev
+  namespace: demo
+tests:
+  - it: test default manifest
+    set:
+      fullnameOverride: "local-dev-budget-tracker-api"
+    asserts:
+      - isKind:
+          of: Service
+      - matchRegex:
+          path: metadata.name
+          pattern: local-dev-budget-tracker-api
+      - equal:
+          path: spec.type
+          value: LoadBalancer
+      - contains:
+          path: spec.ports
+          content:
+              port: 8080
+              targetPort: http
+              protocol: TCP
+              name: http

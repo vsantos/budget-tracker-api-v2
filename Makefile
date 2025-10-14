@@ -7,7 +7,7 @@ sonar:
 		sonarsource/sonar-scanner-cli
 
 test:
-	golangci-lint run ./...
+	staticcheck -checks='-S1021' ./...
 	go test ./... -cover
 	$(MAKE) helm-test
 

@@ -13,6 +13,7 @@ This guide will help you to: build, run and observe `budget-tracker-api` locally
     * [X] `docker` and `docker-compose` binaries
     * [X] make (for `Makefile` usage)
     * [X] git
+    * [X] curl (for local testing)
     * [X] Python 3.x
     * [X] Golang 1.25+
 - [ ] External requisites

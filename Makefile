@@ -14,6 +14,10 @@ rebuild:
 	go test ./... -cover
 	docker-compose down; docker-compose up -d --build
 
+rebuild-standalone:
+	go test ./... -cover
+	docker-compose -f docker-compose-standalone.yml down; docker-compose -f docker-compose-standalone.yml up -d --build
+
 generate-docs:
 	./hack/docs/generate_api_docs.sh
 

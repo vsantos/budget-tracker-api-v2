@@ -56,7 +56,7 @@ nav:
       - Running with containers: development/local/run_with_containers.md
 
     - Observing your app:
-      - Traces: foo.md
+      - Traces: development/observability/traces.md
       - Swagger: foo.md
     
     - Updating documentation:

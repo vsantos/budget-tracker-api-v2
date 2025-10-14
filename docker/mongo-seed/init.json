@@ -1,0 +1,13 @@
+[
+    {
+        "_id": {
+            "$oid": "5143afc66d44e1ceb372121e"
+        },
+        "login": "admin",
+        "firstname": "Temporary",
+        "lastname": "Seeded User",
+        "email": "admin@domain.com",
+        "salted_password": "$2a$10$HOrmuqyfwr575K4P9tjQXe0QKqbddMA/KFZ.YZhWVKPLMUF3LS4gi",
+        "created_at": {"$date": "1994-05-03T17:58:16.530+00:00"}
+    }
+]

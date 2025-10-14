@@ -19,7 +19,8 @@ rebuild-standalone:
 	docker-compose -f docker-compose-standalone.yml down; docker-compose -f docker-compose-standalone.yml up -d --build
 
 k8s-apply:
-	helm template --release-name local-dev ./helm | kubectl apply -n bud -f -
+	kubectl create namespace demo
+	helm template --release-name local-dev ./helm | kubectl apply -n demo -f -
 
 generate-docs:
 	./hack/docs/generate_api_docs.sh

@@ -53,20 +53,28 @@ A local cluster using the current latest k8s' version was created and be accesse
 ### Build your local's container image
 
 ```shell
-  docker build . -t budget-tracker-api:local
+docker build . -t budget-tracker-api:local
 ```
 
 ### Load your newest image to your local k8s cluster
 
 ```shell
-  kind load docker-image budget-tracker-api:local --name budget-tracker-cluster
+kind load docker-image budget-tracker-api:local --name budget-tracker-cluster
 ```
 
 ## Deploying the app through a helm chart
 
-```shell
-  make k8s-apply
-```
+=== "Shell"
+    ```shell
+    make k8s-apply
+    ```
+=== "Shell output"
+    ```shell
+    namespace/demo created
+    secret/mongodb-credentials created
+    service/local-dev-budget-tracker-api created
+    deployment.apps/local-dev-budget-tracker-api created
+    ```
 
 <script src="https://giscus.app/client.js"
         data-repo="vsantos/budget-tracker-api-v2-discussions"

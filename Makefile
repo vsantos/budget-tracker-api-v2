@@ -21,6 +21,9 @@ helm-test:
 	helm unittest -f helm/templates/tests/hpa_test.yaml helm --failfast --color
 	helm unittest -f helm/templates/tests/namespace_test.yaml helm --failfast --color
 
+helm-docs:
+	helm-docs helm/
+
 rebuild:
 	$(MAKE) helm-test
 	docker-compose down; docker-compose up -d --build
@@ -31,10 +34,12 @@ rebuild-standalone:
 
 k8s-apply:
 	$(MAKE) helm-test
+	$(MAKE) helm-docs
 	helm template --release-name local-dev ./helm | kubectl apply -n demo -f -
 
 generate-docs:
 	$(MAKE) helm-test
+	$(MAKE) helm-docs
 	./hack/docs/generate_api_docs.sh
 
 serve-docs:

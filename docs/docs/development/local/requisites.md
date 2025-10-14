@@ -18,12 +18,12 @@ This guide will help you to: build, run and observe `budget-tracker-api` locally
     * [X] Golang 1.25+
     * [X] staticcheck
 - [ ] Kubernetes local requisites
-    * [ ] `kind`
+    * [ ] [`kind`](https://kind.sigs.k8s.io/)
     * [ ] `kubectl`
     * [ ] `kubectx`
     * [ ] `helm` `v3+`
-    * [ ] `helm-unittest`
-    * [ ] `helm-docs`
+    * [ ] [`helm-unittest`](https://github.com/helm-unittest/helm-unittest)
+    * [ ] [`helm-docs`](https://github.com/norwoodj/helm-docs)
 - [X] External requisites
     * [X] Github setup - for [Github actions](https://github.com/features/actions) usage
 - [ ] Mongo's External requisites

@@ -16,6 +16,11 @@ This guide will help you to: build, run and observe `budget-tracker-api` locally
     * [X] curl (for local testing)
     * [X] Python 3.x
     * [X] Golang 1.25+
+- [ ] Kubernetes local requisites
+    * [ ] `kind`
+    * [ ] `kubectl`
+    * [ ] `kubectx`
+    * [ ] `helm` `v3+`
 - [X] External requisites
     * [X] Github setup - for [Github actions](https://github.com/features/actions) usage
 - [ ] Mongo's External requisites

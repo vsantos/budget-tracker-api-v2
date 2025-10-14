@@ -14,7 +14,8 @@ test:
 helm-test:
 	helm unittest -f helm/templates/tests/deployment_test.yaml helm
 	helm unittest -f helm/templates/tests/service_test.yaml helm
-	helm unittest -f helm/templates/tests/deployment.yaml helm
+	helm unittest -f helm/templates/tests/deployment_test.yaml helm
+	helm unittest -f helm/templates/tests/hpa_test.yaml helm
 
 rebuild:
 	$(MAKE) helm-test

@@ -7,7 +7,6 @@ on:
     branches: [main, feat/initial_version]
 
 jobs:
-
   ci:
     runs-on: ubuntu-24.04
     steps:
@@ -41,3 +40,24 @@ jobs:
 
     - name: Run tests
       run: go test -race -cover -vet=off ./...
+  helm-unit-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Install Helm
+        uses: azure/setup-helm@v4
+        with:
+          version: '3.x' # Specify your desired Helm version
+
+      - name: Install helm-unittest plugin
+        run: |
+          helm plugin install https://github.com/helm-unittest/helm-unittest.git --version 0.3.3
+
+      - name: Run Helm Unit Tests
+        run: |
+          helm unittest helm/templates/tests/deployment_test.yaml helm
+          helm unittest helm/templates/tests/service_test.yaml helm
+          helm unittest helm/templates/tests/secret_test.yaml helm
+          helm unittest helm/templates/tests/hpa_test.yaml helm

@@ -57,7 +57,7 @@ jobs:
 
       - name: Run Helm Unit Tests
         run: |
-          helm unittest helm/templates/tests/deployment_test.yaml helm
-          helm unittest helm/templates/tests/service_test.yaml helm
-          helm unittest helm/templates/tests/secret_test.yaml helm
-          helm unittest helm/templates/tests/hpa_test.yaml helm
+          helm unittest -f helm/templates/tests/deployment_test.yaml helm --failfast --color
+          helm unittest -f helm/templates/tests/service_test.yaml helm --failfast --color
+          helm unittest -f helm/templates/tests/secret_test.yaml helm --failfast --color
+          helm unittest -f helm/templates/tests/hpa_test.yaml helm --failfast --color

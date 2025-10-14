@@ -12,10 +12,10 @@ test:
 	$(MAKE) helm-test
 
 helm-test:
-	helm unittest -f helm/templates/tests/deployment_test.yaml helm
-	helm unittest -f helm/templates/tests/service_test.yaml helm
-	helm unittest -f helm/templates/tests/deployment_test.yaml helm
-	helm unittest -f helm/templates/tests/hpa_test.yaml helm
+	helm unittest -f helm/templates/tests/deployment_test.yaml helm --failfast --color
+	helm unittest -f helm/templates/tests/service_test.yaml helm --failfast --color
+	helm unittest -f helm/templates/tests/secret_test.yaml helm --failfast --color
+	helm unittest -f helm/templates/tests/hpa_test.yaml helm --failfast --color
 
 rebuild:
 	$(MAKE) helm-test

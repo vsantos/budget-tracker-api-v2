@@ -50,15 +50,23 @@ A local cluster using the current latest k8s' version was created and be accesse
 !!! success "All set!"
     If you are able to reach your local k8s cluster, you can proceed by deployment the app to k8s.
 
-## Build your local's container image
+### Build your local's container image
 
 ```shell
-  docker build . -t budget-tracker-api
+  docker build . -t budget-tracker-api:local
+```
+
+### Load your newest image to your local k8s cluster
+
+```shell
+  kind load docker-image budget-tracker-api:local --name budget-tracker-cluster
 ```
 
 ## Deploying the app through a helm chart
 
-<WIP>
+```shell
+  make k8s-apply
+```
 
 <script src="https://giscus.app/client.js"
         data-repo="vsantos/budget-tracker-api-v2-discussions"

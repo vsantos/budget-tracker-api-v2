@@ -2,7 +2,7 @@
 
 ## Purpose
 
-This simple platform was created for personal use, with the goal of refining and improving knowledge across several best practices: CI/CD, software engineering, observability, and security.
+This simple platform was created for personal use, with the goal of refining and improving knowledge across several best practices: CI/CD, software engineering, observability, and security. A version of [budget-tracker-api](https://github.com/vsantos/budget-tracker-api) but with steroids.
 
 As an additional outcome, it provides a functional CRUD system designed to help manage day-to-day finances — keeping track of them to enable smarter decisions later on. This will become clearer once you reach the #architecture section.
 

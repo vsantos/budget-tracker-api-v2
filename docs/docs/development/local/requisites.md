@@ -16,9 +16,12 @@ This guide will help you to: build, run and observe `budget-tracker-api` locally
     * [X] curl (for local testing)
     * [X] Python 3.x
     * [X] Golang 1.25+
-- [ ] External requisites
+- [X] External requisites
+    * [X] Github setup - for [Github actions](https://github.com/features/actions) usage
+- [ ] Mongo's External requisites
     * [ ] [MongoDB Atlas database](https://www.mongodb.com/cloud/atlas/register) - (Optional)
-    * [X] Github - for [Github actions](https://github.com/features/actions) usage
+    * [ ] `mongosh` (Optional)
+    * [ ] [MongoDB Compass](https://www.mongodb.com/products/tools/compass)
 
 ### Fetching the code
 
@@ -32,7 +35,7 @@ git clone https://github.com/vsantos/budget-tracker-api-v2
 This command will create a local directory called `budget-tracker-api-v2` with the source code within.
 
 
-### Setting up an external MongoDB
+### Setting up an external MongoDB (Optional)
 
 If you don't want to run a local MongoDB instance, you can use Atlas' one since they offer a free-tier. You will endup having a mongodb instance along with credentials, make sure you are able to access before you pointing the app to it.
 

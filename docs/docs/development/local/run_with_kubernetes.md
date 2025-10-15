@@ -249,7 +249,7 @@ You can also validate through the logs if the user was injected successfuly:
 !!! Success "Milestone reached"
     Congrats! You pass throught a lot of steps to run such containers within a k8s cluster. The next section will be about validating with some valid requests.
 
-#### Validating `budget-tracker-api` API rest
+### Validating `budget-tracker-api` API rest
 
 
 <script src="https://giscus.app/client.js"

@@ -53,11 +53,12 @@ nav:
   - Local Development:
     - Getting started:
       - Requisites: development/local/requisites.md
-      - Running locally without containers: development/local/run_without_containers.md
-      - Running locally with containers: development/local/run_with_containers.md
-      - Running locally with Kubernetes: 
-        - Kubernetes: development/local/run_with_kubernetes.md
-        - Chart's README.md: development/local/chart_readme.md
+      - Running locally:
+        - Without containers: development/local/run_without_containers.md
+        - With containers: development/local/run_with_containers.md
+        - With Kubernetes: 
+          - Runbook: development/local/run_with_kubernetes.md
+          - Chart's README.md: development/local/chart_readme.md
 
     - Observing your app:
       - Traces: development/observability/traces.md

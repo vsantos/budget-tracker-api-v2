@@ -69,7 +69,7 @@ nav:
       - Swagger: foo.md
     - CI:
       - Running tests: foo.md
-  - Contributing: contributing.md
+  - Roadmap: roadmap.md
 
 markdown_extensions:
   # For adding check-lists

@@ -15,14 +15,14 @@ test:
 	$(MAKE) helm-test
 
 helm-test:
-	helm unittest -f helm/templates/tests/deployment_test.yaml helm --failfast --color
-	helm unittest -f helm/templates/tests/service_test.yaml helm --failfast --color
-	helm unittest -f helm/templates/tests/secret_test.yaml helm --failfast --color
-	helm unittest -f helm/templates/tests/hpa_test.yaml helm --failfast --color
-	helm unittest -f helm/templates/tests/namespace_test.yaml helm --failfast --color
+	helm unittest -f helm/budget-tracker/templates/tests/deployment_test.yaml helm/budget-tracker --failfast --color
+	helm unittest -f helm/budget-tracker/templates/tests/service_test.yaml helm/budget-tracker --failfast --color
+	helm unittest -f helm/budget-tracker/templates/tests/secret_test.yaml helm/budget-tracker --failfast --color
+	helm unittest -f helm/budget-tracker/templates/tests/hpa_test.yaml helm/budget-tracker --failfast --color
+	helm unittest -f helm/budget-tracker/templates/tests/namespace_test.yaml helm/budget-tracker --failfast --color
 
 helm-docs:
-	helm-docs helm/
+	helm-docs helm/budget-tracker/
 
 rebuild:
 	$(MAKE) helm-test
@@ -33,9 +33,22 @@ rebuild-standalone:
 	docker-compose -f docker-compose-standalone.yml down; docker-compose -f docker-compose-standalone.yml up -d --build
 
 k8s-apply:
+	if [[ -f helm/budget-tracker/Chat.lock ]]; then rm helm/budget-tracker/Chart.lock; fi
 	$(MAKE) helm-test
 	$(MAKE) helm-docs
-	helm template --release-name local-dev ./helm | kubectl apply -n demo -f -
+	helm repo add bitnami https://charts.bitnami.com/bitnami
+	helm repo update
+	helm dependency build helm/budget-tracker
+	helm template --release-name local-dev ./helm/budget-tracker | kubectl apply -f -
+	if [[ -f helm/budget-tracker/Chart.lock ]]; then rm helm/budget-tracker/Chart.lock; fi
+
+k8s-destroy:
+	if [[ -f helm/budget-tracker/Chat.lock ]]; then rm helm/budget-tracker/Chart.lock; fi
+	helm repo add bitnami https://charts.bitnami.com/bitnami
+	helm repo update
+	helm dependency build helm/budget-tracker
+	helm template --release-name local-dev ./helm/budget-tracker | kubectl delete -f -
+	if [[ -f helm/budget-tracker/Chart.lock ]]; then rm helm/budget-tracker/Chart.lock; fi
 
 generate-docs:
 	$(MAKE) helm-test
@@ -44,4 +57,5 @@ generate-docs:
 
 serve-docs:
 	$(MAKE) generate-docs
+	$(MAKE) helm-docs
 	mkdocs serve -f docs/mkdocs.yml

@@ -115,6 +115,9 @@ To actually deploy some app in k8s, you will need a container image. Since there
 
 ## Deploying the app through a helm chart
 
+!!! Warning "No external dependencies"
+    This method will only deploy `budget-tracker-api` itself to k8s and no other dependencies such as: jaeger or a k8s' version of mongoDB.
+
 ### Blindly
 
 If you already built your image with the default suggested name, you can simply use the `make` command to generate all chart's manifests and apply them to your local k8s cluster through `demo` namespace:
@@ -145,6 +148,109 @@ Once you are satisfied with them, simply apply it:
 ```shell
 kubectl apply -f manifests.yaml -n demo
 ```
+
+### Checking the status of deployment
+
+If you inspect your pods, you will see both replicas will be throwing error. Why is that? We set a static secret with dummy credentials, is not pointing to any MongoDB's instance:
+
+=== "Shell"
+    ```shell
+    kubectl get pods -n demo
+    ```
+=== "Shell outcome"
+    ```shell
+    NAME                                            READY   STATUS   RESTARTS     AGE
+    local-dev-budget-tracker-api-6675886dd7-6s8wl   0/1     Error    1 (1s ago)   2s
+    local-dev-budget-tracker-api-6675886dd7-v7gp8   0/1     Error    1 (1s ago)   2s
+    ```
+
+---
+
+Let's validate the logs of one of those:
+=== "Shell"
+    ```shell
+    kubectl logs local-dev-budget-tracker-api-6675886dd7-6s8wl -n demo
+    ```
+=== "Shell outcome"
+    ```shell
+    mongodb+srv://mongodb-atlas-example.mongodb.net/
+    {"level":"fatal","msg":"error parsing uri: lookup _mongodb._tcp.mongodb-atlas-example.mongodb.net on 10.96.0.10:53: no such host","time":"2025-10-14T17:47:03Z"}
+    ```
+
+Indeed, there is no such host `mongodb-atlas-example.mongodb.net` created. You must change your credentials within your Kubernetes to match your correct MongoDB's credentials.
+
+=== "Shell"
+    ```shell
+    kubectl get secret -n demo mongodb-credentials -o yaml
+    ```
+=== "Shell outcome"
+    ```shell
+    apiVersion: v1
+    data:
+      host: bW9uZ29kYitzcnY6Ly9tb25nb2RiLWF0bGFzLWV4YW1wbGUubW9uZ29kYi5uZXQv
+      password: ZXhhbXBsZQ==
+      username: cm9vdA==
+    kind: Secret
+    metadata:
+      name: mongodb-credentials
+      namespace: demo
+    type: Opaque
+    ```
+
+Use your favorite method to edit this file.
+
+### Working with a mongoDB installed within k8s as well
+
+If you prefer to install mongoDB as a kubernetes application as well instead of using the Mongo Atlas version, you can do it.
+
+Go to your `values.yaml` and enable mongodb's integration by setting the following property as `true`:
+
+```yaml
+mongodb:
+  enabled: true
+```
+
+Once true, if you generate all manifests through `make k8s-apply` the mongoDB dependency will be installed in `default` namespace.
+
+A sidecar will be injected automatically to insert the initial user, similar approach used during [Running locally with containers](/development/local/run_with_containers.html)
+
+You can also validate through the logs if the user was injected successfuly:
+
+=== "Shell"
+    ```shell
+    kubectl get pods -n default
+    ```
+=== "Shell output"
+    ```shell
+    NAME                                READY   STATUS    RESTARTS   AGE
+    local-dev-mongodb-7dc8b8474-x9bpn   2/2     Running   0          3h21m
+    ```
+
+---
+
+=== "Shell"
+    ```shell
+    kubectl logs local-dev-mongodb-7dc8b8474-x9bpn -c seed-data
+    ```
+=== "Shell output"
+    ```shell
+    Waiting for MongoDB to start...
+    Injecting initial user data...
+    2025-10-14T21:59:18.728+0000	connected to: mongodb://local-dev-mongodb:27017/
+    2025-10-14T21:59:18.738+0000	1 document(s) imported successfully. 0 document(s) failed to import.
+    Done seeding, sleeping forever...
+    ```
+
+!!! Warning "Credentials"
+    Be aware that for the sake of testing, local mongoDB will be created with default credentials. Feel free to change it locally to a one on your one as a good practice.
+
+---
+
+!!! Success "Milestone reached"
+    Congrats! You pass throught a lot of steps to run such containers within a k8s cluster. The next section will be about validating with some valid requests.
+
+#### Validating `budget-tracker-api` API rest
+
 
 <script src="https://giscus.app/client.js"
         data-repo="vsantos/budget-tracker-api-v2-discussions"

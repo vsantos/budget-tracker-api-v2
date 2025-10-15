@@ -57,8 +57,8 @@ jobs:
 
       - name: Run Helm Unit Tests
         run: |
-          helm unittest -f helm/templates/tests/deployment_test.yaml helm --failfast --color
-          helm unittest -f helm/templates/tests/service_test.yaml helm --failfast --color
-          helm unittest -f helm/templates/tests/secret_test.yaml helm --failfast --color
-          helm unittest -f helm/templates/tests/hpa_test.yaml helm --failfast --color
-	        helm unittest -f helm/templates/tests/namespace_test.yaml helm --failfast --color
+          helm unittest -f helm/budget-tracker/templates/tests/deployment_test.yaml helm/budget-tracker --failfast --color
+          helm unittest -f helm/budget-tracker/templates/tests/service_test.yaml helm/budget-tracker --failfast --color
+          helm unittest -f helm/budget-tracker/templates/tests/secret_test.yaml helm/budget-tracker --failfast --color
+          helm unittest -f helm/budget-tracker/templates/tests/hpa_test.yaml helm/budget-tracker --failfast --color
+	        helm unittest -f helm/budget-tracker/templates/tests/namespace_test.yaml helm/budget-tracker --failfast --color

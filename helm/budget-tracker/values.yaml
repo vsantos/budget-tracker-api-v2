@@ -93,3 +93,69 @@ nodeSelector: {}
 tolerations: []
 
 affinity: {}
+
+mongodb:
+  enabled: false
+
+  image:
+    repository: bitnami/mongodb
+    tag: "latest"
+  namespace: mongodb
+  architecture: standalone
+  auth:
+    enabled: true
+    rootUser: root
+    rootPassword: root
+    username: admin
+    password: example
+    database: budget-tracker-api-v2
+
+  sidecars:
+    - name: seed-data
+      image: bitnami/mongodb:latest
+      command:
+        - /bin/sh
+        - -c
+        - |
+          echo "Waiting for MongoDB to start..."
+          until mongosh --host localhost --port 27017 --eval "db.adminCommand('ping')" &>/dev/null; do
+            sleep 2
+          done
+          echo "Injecting initial user data..."
+          echo '
+          [
+              {
+                  "_id": {
+                      "$oid": "5143afc66d44e1ceb372121e"
+                  },
+                  "login": "admin",
+                  "firstname": "Temporary",
+                  "lastname": "Seeded User",
+                  "email": "admin@domain.com",
+                  "salted_password": "$2a$10$HOrmuqyfwr575K4P9tjQXe0QKqbddMA/KFZ.YZhWVKPLMUF3LS4gi",
+                  "created_at": {"$date": "1994-05-03T17:58:16.530+00:00"}
+              }
+            ]' > /tmp/init.json
+
+          mongoimport \
+              --db budget-tracker-v2 \
+              --host "local-dev-mongodb:27017" \
+              --username root \
+              --password root \
+              --collection users \
+              --type json \
+              --file /tmp/init.json \
+              --authenticationDatabase=admin \
+              --jsonArray \
+              --mode upsert
+
+            echo "Done seeding, sleeping forever..."
+            tail -f /dev/null
+      lifecycle:
+        postStart:
+          exec:
+            command: ["/bin/true"]
+
+  persistence:
+    enabled: false
+    namespaceOverride: "mongodb"

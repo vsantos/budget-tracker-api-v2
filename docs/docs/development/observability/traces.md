@@ -10,7 +10,7 @@ To access jaeger UI local container, simply access: [http://localhost:16686](htt
 
 ## Generating traces
 
-Let's explore a new request and see it's flow through the traces. Let's say I have a valid user and I would like to generate a new token:cd do
+Let's explore a new request and see it's flow through the traces. Let's say I have a valid user and I would like to generate a new token:
 
 ![NewJWTToken](./assets/jwt_token.png){ align="center" }
 

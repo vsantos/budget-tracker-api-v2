@@ -10,6 +10,7 @@ This process as a simple list once finished, it will be migrated to Github's iss
     * [ ] MongoDB's index must be created at startup
     * [ ] Prometheus' compliant /metrics
     * [ ] Contribution process
+    * [ ] CD process
 
 ---
 

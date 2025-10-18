@@ -69,6 +69,7 @@ nav:
       - Swagger: foo.md
     - CI:
       - Running tests: foo.md
+      - Sonarqube: foo.md
   - Roadmap: roadmap.md
 
 markdown_extensions:

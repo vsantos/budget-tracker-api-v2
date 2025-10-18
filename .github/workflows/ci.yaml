@@ -1,4 +1,4 @@
-name: Tests
+name: CI Workflow
 
 on:
   push:
@@ -61,4 +61,4 @@ jobs:
           helm unittest -f helm/budget-tracker/templates/tests/service_test.yaml helm/budget-tracker --failfast --color
           helm unittest -f helm/budget-tracker/templates/tests/secret_test.yaml helm/budget-tracker --failfast --color
           helm unittest -f helm/budget-tracker/templates/tests/hpa_test.yaml helm/budget-tracker --failfast --color
-	        helm unittest -f helm/budget-tracker/templates/tests/namespace_test.yaml helm/budget-tracker --failfast --color
+          helm unittest -f helm/budget-tracker/templates/tests/namespace_test.yaml helm/budget-tracker --failfast --color

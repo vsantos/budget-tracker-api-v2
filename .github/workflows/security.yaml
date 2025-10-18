@@ -1,4 +1,4 @@
-name: Run gosec
+name: Security Workflow
 
 on:
   push:

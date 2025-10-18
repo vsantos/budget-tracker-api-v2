@@ -10,6 +10,7 @@ static-docker-build:
 	docker build . -t budget-tracker-api:local
 
 test:
+	shellcheck hack/docs/generate_api_docs.sh
 	staticcheck -checks='-S1021' ./...
 	go test ./... -cover -coverprofile=coverage.out 
 	$(MAKE) helm-test

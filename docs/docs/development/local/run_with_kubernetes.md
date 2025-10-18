@@ -213,7 +213,7 @@ mongodb:
 
 Once true, if you generate all manifests through `make k8s-apply` the mongoDB dependency will be installed in `default` namespace.
 
-A sidecar will be injected automatically to insert the initial user, similar approach used during [Running locally with containers](/development/local/run_with_containers.html)
+A sidecar will be injected automatically to insert the initial user, similar approach used during [Running locally with containers](run_with_containers.md)
 
 You can also validate through the logs if the user was injected successfuly:
 

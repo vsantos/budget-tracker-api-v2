@@ -6,6 +6,7 @@ plugins:
   - swagger-ui-tag
   - glightbox
   - search
+  - macros
 
 theme:
   name: material
@@ -53,6 +54,7 @@ nav:
   - Local Development:
     - Getting started:
       - Requisites: development/local/requisites.md
+      - Makefile abstraction: development/local/makefile.md
       - Running locally:
         - Without containers: development/local/run_without_containers.md
         - With containers: development/local/run_with_containers.md
@@ -68,7 +70,7 @@ nav:
       - MKDocs: foo.md
       - Swagger: foo.md
     - CI:
-      - Running tests: foo.md
+      - Running tests: ci/running_tests_locally.md
       - Sonarqube: foo.md
   - Roadmap: roadmap.md
 
@@ -89,7 +91,11 @@ markdown_extensions:
   - pymdownx.superfences
   - pymdownx.tabbed:
       alternate_style: true
-
+  ## For supporting snippets
+  - pymdownx.snippets
+  # To includ global snippets and .md
+  - markdown_include.include:
+      base_path: docs
 extra:
   # General
   homepage: https://budget-tracker.vsantos.cc

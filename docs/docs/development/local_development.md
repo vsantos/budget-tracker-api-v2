@@ -103,7 +103,7 @@ The only external dependency for this application is a MongoDB database, as show
 
 If you don't want to run a local MongoDB instance, you can use Atlas' one since they offer a free-tier. You will endup having a mongodb instance along with credentials, make sure you are able to access before you pointing the app to it.
 
-![Architecture](./assets/mongodb_atlas_free_tier.png){ align="center" }
+![Architecture](./local/assets/mongodb_atlas_free_tier.png){ align="center" }
 
 You can achieve this goal by either running [MongoDB Compass](https://www.mongodb.com/products/tools/compass) or MongoDB CLI `mongosh`.
 

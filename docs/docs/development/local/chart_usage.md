@@ -27,3 +27,5 @@ You can run `helm-unittest` to validate budget-tracker's chart:
 ```shell
 make helm-test
 ```
+
+{% include "discussions.md" %}

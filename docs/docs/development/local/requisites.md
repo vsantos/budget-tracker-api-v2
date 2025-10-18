@@ -17,6 +17,7 @@ This guide will help you to: build, run and observe `budget-tracker-api` locally
     * [X] Python 3.x
     * [X] Golang 1.25+
     * [X] staticcheck
+    * [X] shellcheck
 - [ ] Kubernetes local requisites
     * [ ] [`kind`](https://kind.sigs.k8s.io/)
     * [ ] `kubectl`

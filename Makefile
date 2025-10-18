@@ -13,6 +13,7 @@ test:
 	staticcheck -checks='-S1021' ./...
 	go test ./... -cover
 	$(MAKE) helm-test
+	shellcheck hack/docs/generate_api_docs.sh
 
 helm-test:
 	helm unittest -f helm/budget-tracker/templates/tests/deployment_test.yaml helm/budget-tracker --failfast --color

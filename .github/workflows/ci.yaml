@@ -63,10 +63,14 @@ jobs:
           helm unittest -f helm/budget-tracker/templates/tests/hpa_test.yaml helm/budget-tracker --failfast --color
           helm unittest -f helm/budget-tracker/templates/tests/namespace_test.yaml helm/budget-tracker --failfast --color
   shellcheck:
-    image: koalaman/shellcheck-alpine
-    script:
-      - shellcheck --version
-      - shellcheck hack/docs/generate_api_docs.sh
+    name: Shellcheck
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run ShellCheck
+        uses: ludeeus/action-shellcheck@master
+        with:
+          scandir: './hack/docs/'
   sonarqube:
     name: SonarQube
     runs-on: ubuntu-latest

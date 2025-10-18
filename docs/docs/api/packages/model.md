@@ -11,6 +11,7 @@ import "budget-tracker-api-v2/internal/model"
 - [type Balance](<#Balance>)
 - [type BalanceInfo](<#BalanceInfo>)
 - [type Card](<#Card>)
+- [type FixedTransaction](<#FixedTransaction>)
 - [type JWTResponse](<#JWTResponse>)
 - [type JWTUser](<#JWTUser>)
 - [type PaymentMethod](<#PaymentMethod>)
@@ -67,6 +68,35 @@ type Card struct {
 }
 ```
 
+<a name="FixedTransaction"></a>
+## type [FixedTransaction](<https://github.com/vsantos/budget-tracker-api-v2/blob/main/internal/model/transaction.go#L30-L50>)
+
+FixedTransaction defines a user transaction which will be applied every month until expires \- if expires. Example: stream services or gym
+
+```go
+type FixedTransaction struct {
+    // swagger:ignore
+    ID      primitive.ObjectID `json:"id,omitempty" bson:"_id,omitempty"`
+    OwnerID primitive.ObjectID `json:"owner_id,omitempty" bson:"owner_id,omitempty"`
+    // example: guitar lessons
+    Description string `json:"description" bson:"description"`
+    // example: 12.90
+    Amount float64 `json:"amount" bson:"amount"`
+    // example: BRL
+    Currency string `json:"currency" bson:"currency"`
+    // example: Credit
+    PaymentMethod PaymentMethod `json:"payment_method" bson:"payment_method"`
+    // example: 2025-09-16T17:33:10.64Z
+    TransactionDate primitive.DateTime `json:"transaction_date,omitempty" bson:"transaction_date,omitempty"`
+    // example: "categories": ["stream service"]
+    Categories []string `json:"categories,omitempty" bson:"categories,omitempty"`
+    // example: 2026-09-21T20:58:16.53Z
+    ExpirationDate primitive.DateTime
+    // example: 2025-09-21T20:58:16.53Z
+    CreatedAt primitive.DateTime `json:"created_at,omitempty" bson:"created_at,omitempty"`
+}
+```
+
 <a name="JWTResponse"></a>
 ## type [JWTResponse](<https://github.com/vsantos/budget-tracker-api-v2/blob/main/internal/model/auth.go#L13-L18>)
 
@@ -96,7 +126,7 @@ type JWTUser struct {
 ```
 
 <a name="PaymentMethod"></a>
-## type [PaymentMethod](<https://github.com/vsantos/budget-tracker-api-v2/blob/main/internal/model/transaction.go#L30-L35>)
+## type [PaymentMethod](<https://github.com/vsantos/budget-tracker-api-v2/blob/main/internal/model/transaction.go#L53-L58>)
 
 PaymentMethod defines which payment method was used for a certain transaction
 

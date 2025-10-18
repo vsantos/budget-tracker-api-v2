@@ -14,6 +14,8 @@ RUN CGO_ENABLED=0 GOOS=linux go build -o budget-tracker-api-v2 .
 
 FROM gcr.io/distroless/base-debian10:nonroot
 
+USER nonroot
+
 WORKDIR /app
 
 COPY --from=builder /app/swagger ./swagger/

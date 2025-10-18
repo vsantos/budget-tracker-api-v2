@@ -1,0 +1,113 @@
+site_name: Budget Tracker API V2
+title: "foo"
+repo_url: https://github.com/vsantos/budget-tracker-api-v2/
+plugins:
+  - offline
+  - swagger-ui-tag
+  - glightbox
+  - search
+
+theme:
+  name: material
+  favicon: piggy-bank.svg
+  logo: piggy-bank.svg
+  language: en
+  features:
+    - navigation.tabs
+    - navigation.expand
+    - content.code.copy
+    - content.tabs.link
+    - navigation.footer
+  palette:
+    - scheme: default
+      primary: blue grey
+      toggle:
+        icon: material/weather-night
+        name: Switch to dark mode
+
+    # Palette toggle for dark mode
+    - scheme: slate
+      primary: blue grey
+      toggle:
+        icon: material/weather-sunny
+        name: Switch to light mode
+nav:
+  - Home:
+    - Welcome:  index.md
+    - Architecture: home/architecture.md
+    - Concepts: home/concepts.md
+  - Swagger: swagger.md
+  - API:
+    - Internal:
+      - http:
+        - Controller: api/packages/controller.md
+        - Middleware: api/packages/middleware.md
+        - Router: api/packages/router.md
+      - Model: api/packages/model.md
+      - Repository:
+        - Repository: api/packages/repository.md
+        - MongoDB: api/packages/mongodb.md
+      - Observability: api/packages/observability.md
+      - Utils:
+        - Crypt: api/packages/crypt.md
+  - Local Development:
+    - Getting started:
+      - Requisites: development/local/requisites.md
+      - Running locally:
+        - Without containers: development/local/run_without_containers.md
+        - With containers: development/local/run_with_containers.md
+        - With Kubernetes: 
+          - Runbook: development/local/run_with_kubernetes.md
+          - Chart's README.md: development/local/chart_readme.md
+
+    - Observing your app:
+      - Traces: development/observability/traces.md
+      - Swagger: foo.md
+    
+    - Updating documentation:
+      - MKDocs: foo.md
+      - Swagger: foo.md
+    - CI:
+      - Running tests: foo.md
+      - Sonarqube: foo.md
+  - Roadmap: roadmap.md
+
+markdown_extensions:
+  # For adding check-lists
+  - def_list
+  - pymdownx.tasklist:
+      custom_checkbox: true
+  # For adding 'notes'
+  - admonition
+  - pymdownx.details
+  - pymdownx.superfences
+  # For adding images
+  - attr_list
+  - md_in_html
+  - pymdownx.blocks.caption
+  # For adding Content tabs
+  - pymdownx.superfences
+  - pymdownx.tabbed:
+      alternate_style: true
+
+extra:
+  # General
+  homepage: https://budget-tracker.vsantos.cc
+  generator: false
+  # Multi-lang support
+  alternate:
+    - name: English
+      link: /
+      lang: en
+  # Footer
+  social:
+    - icon: fontawesome/brands/linkedin
+      link: https://www.linkedin.com/in/vs4ntos/
+  # Cookies
+  consent:
+    title: Cookie consent
+    description: >- 
+      We use cookies to recognize your repeated visits and preferences, as well
+      as to measure the effectiveness of our documentation and whether users
+      find what they're searching for. With your consent, you're helping us to
+      make our documentation better.

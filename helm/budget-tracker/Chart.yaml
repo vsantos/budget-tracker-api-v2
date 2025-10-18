@@ -1,0 +1,14 @@
+apiVersion: v
+name: budget-tracker-api
+description: A Helm chart for budget-tracker-api platform
+
+type: application
+
+version: 0.1.0
+appVersion: "1.0.0"
+
+dependencies:
+  - name: mongodb
+    version: "15.6.26"
+    repository: "https://charts.bitnami.com/bitnami"
+    condition: mongodb.enabled

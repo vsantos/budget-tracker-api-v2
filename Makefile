@@ -11,7 +11,7 @@ static-docker-build:
 
 test:
 	staticcheck -checks='-S1021' ./...
-	go test ./... -cover
+	go test ./... -cover -coverprofile=coverage.out 
 	$(MAKE) helm-test
 	shellcheck hack/docs/generate_api_docs.sh
 

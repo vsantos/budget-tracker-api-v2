@@ -18,6 +18,8 @@ The idea behind this app is to develop features similar to those a simple financ
 
 This application is aimed at technology enthusiasts and IT professionals. It’s not a SaaS application ready to be used directly from a public URL. Instead, it requires you to clone the repository and explore it locally before considering deploying your own instance.
 
+---
+
 <script src="https://giscus.app/client.js"
         data-repo="vsantos/budget-tracker-api-v2-discussions"
         data-repo-id="R_kgDOQApX1g"

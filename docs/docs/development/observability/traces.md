@@ -27,3 +27,21 @@ Now that you completed the request and got a `201`, let's see how it ends up wit
 This is how Jaeger will looks like after a few different requests:
 
 ![NewJWTToken4](./assets/jwt_tracer_4.png){ align="center" }
+
+---
+
+<script src="https://giscus.app/client.js"
+        data-repo="vsantos/budget-tracker-api-v2-discussions"
+        data-repo-id="R_kgDOQApX1g"
+        data-category="General"
+        data-category-id="DIC_kwDOQApX1s4CwhAe"
+        data-mapping="pathname"
+        data-strict="0"
+        data-reactions-enabled="1"
+        data-emit-metadata="0"
+        data-input-position="top"
+        data-theme="catppuccin_frappe"
+        data-lang="en"
+        crossorigin="anonymous"
+        async>
+</script>

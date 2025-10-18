@@ -1,5 +1,7 @@
 <swagger-ui src="swagger.yaml"/>
 
+---
+
 <script src="https://giscus.app/client.js"
         data-repo="vsantos/budget-tracker-api-v2-discussions"
         data-repo-id="R_kgDOQApX1g"

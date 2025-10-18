@@ -273,7 +273,9 @@ With any client (`curl`, Insomnia, etc), perform a simple request to `/health` f
 
 Let's test a token generation with a `POST` request, based on the mongodb credentials:
 
-![K8sNewJWTToken](./assets/k8s_health.png){ align="center" }
+![K8sNewJWTToken](./assets/k8s_new_jwt_token.png){ align="center" }
+
+---
 
 <script src="https://giscus.app/client.js"
         data-repo="vsantos/budget-tracker-api-v2-discussions"

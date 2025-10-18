@@ -6,8 +6,12 @@ This process as a simple list once finished, it will be migrated to Github's iss
     * [ ] Balance CRUD
 - [x] Non-Functional
     * [X] Documentation
+    * [ ] Integration Tests with Kind
     * [ ] MongoDB's index must be created at startup
     * [ ] Prometheus' compliant /metrics
+    * [ ] Contribution process
+
+---
 
 <script src="https://giscus.app/client.js"
         data-repo="vsantos/budget-tracker-api-v2-discussions"

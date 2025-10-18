@@ -270,7 +270,7 @@ paths:
                 message: "error when fetching card's details"
                 details: "not able to get ID format"
     delete:
-      summary: Delete card
+      summary: Delete a card
       security:
         - bearerAuth: []
       tags:

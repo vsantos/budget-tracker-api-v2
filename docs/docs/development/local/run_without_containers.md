@@ -136,6 +136,7 @@ curl http://localhost:8080/health
 
 This means we made a request to our app, which validated if it's connection with MongoDB is working properly. This endpoint is particularly useful when you have High-Availability mechanisms such as [Kubernetes' healthcheck](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/).
 
+---
 
 <script src="https://giscus.app/client.js"
         data-repo="vsantos/budget-tracker-api-v2-discussions"

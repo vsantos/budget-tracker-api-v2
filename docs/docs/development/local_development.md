@@ -248,6 +248,8 @@ If you won't want to deal with an external mongoDB but to test with a local one 
       MONGODB_PASS: "<REPLACE_ME>"
 ```
 
+---
+
 <script src="https://giscus.app/client.js"
         data-repo="vsantos/budget-tracker-api-v2-discussions"
         data-repo-id="R_kgDOQApX1g"

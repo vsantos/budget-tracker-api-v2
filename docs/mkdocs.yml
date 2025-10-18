@@ -60,7 +60,10 @@ nav:
         - With containers: development/local/run_with_containers.md
         - With Kubernetes: 
           - Runbook: development/local/run_with_kubernetes.md
-          - Chart's README.md: development/local/chart_readme.md
+        - Helm:
+          - Chart:
+            - Usage: development/local/chart_usage.md
+            - Configuration options: development/local/chart_readme.md
 
     - Observing your app:
       - Traces: development/observability/traces.md

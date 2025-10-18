@@ -1,0 +1,28 @@
+suite: test HPA generation
+templates:
+  - hpa.yaml
+release:
+  name: local-dev
+  namespace: demo
+tests:
+  - it: test default manifest
+    set:
+      fullnameOverride: "local-dev-budget-tracker-api"
+    asserts:
+      - isKind:
+          of: HorizontalPodAutoscaler
+      - matchRegex:
+          path: metadata.name
+          pattern: local-dev-budget-tracker-api
+      - equal:
+          path: spec.scaleTargetRef
+          value:
+            apiVersion: apps/v1
+            kind: Deployment
+            name: local-dev-budget-tracker-api
+      - equal:
+          path: spec.minReplicas
+          value: 2
+      - equal:
+          path: spec.maxReplicas
+          value: 3

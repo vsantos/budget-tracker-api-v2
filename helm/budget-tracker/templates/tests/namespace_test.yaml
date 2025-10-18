@@ -1,0 +1,17 @@
+suite: test namespace generation
+templates:
+  - namespace.yaml
+release:
+  name: local-dev
+  namespace: demo
+tests:
+  - it: test default manifest
+    set:
+      fullnameOverride: "local-dev-budget-tracker-api"
+    asserts:
+      - isKind:
+          of: Namespace
+      - matchRegex:
+          path: metadata.name
+          pattern: demo
+

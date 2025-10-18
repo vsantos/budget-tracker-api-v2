@@ -122,6 +122,7 @@ To actually deploy some app in k8s, you will need a container image. Since there
 
 If you already built your image with the default suggested name, you can simply use the `make` command to generate all chart's manifests and apply them to your local k8s cluster through `demo` namespace:
 
+=== "Shell"
     ```shell
     make k8s-apply
     ```
@@ -251,6 +252,28 @@ You can also validate through the logs if the user was injected successfuly:
 
 ### Validating `budget-tracker-api` API rest
 
+With every pod up and running, you are now able to test your REST API. With Kubernetes, there are many ways to expose your app but for the sake of local-development, we will rely on port-forward to it:
+
+=== "Shell"
+  ```shell
+  kubectl port-forward svc/local-dev-budget-tracker-api 8080:8080 -n demo
+  ```
+=== "Shell output"
+  ```shell
+  Forwarding from 127.0.0.1:8080 -> 8080
+  Forwarding from [::1]:8080 -> 8080
+  Handling connection for 8080
+  ```
+
+This command will use the default settings of port `8080` and namespace `demo` to allow you to reach a certain k8s service, locally.
+
+With any client (`curl`, Insomnia, etc), perform a simple request to `/health` from your local machine.
+
+![K8sHealth](./assets/k8s_health.png){ align="center" }
+
+Let's test a token generation with a `POST` request, based on the mongodb credentials:
+
+![K8sNewJWTToken](./assets/k8s_health.png){ align="center" }
 
 <script src="https://giscus.app/client.js"
         data-repo="vsantos/budget-tracker-api-v2-discussions"

@@ -17,6 +17,7 @@ func NewRouter(
 	tracer trace.Tracer,
 	userCollectionInterface repository.UserCollectionInterface,
 	cardsCollectionInterface repository.CardCollectionInterface,
+	transactionsCollectionInterface repository.TransactionCollectionInterface,
 	healthCollectionInterface repository.HealthCollectionInterface,
 ) (*mux.Router, error) {
 	r := mux.NewRouter()
@@ -42,6 +43,11 @@ func NewRouter(
 		Repo:   cardsCollectionInterface,
 	}
 
+	transactionsController := controller.TransactionsController{
+		Tracer: tracer,
+		Repo:   transactionsCollectionInterface,
+	}
+
 	authController := controller.AuthController{
 		Tracer:   tracer,
 		UserRepo: userController.Repo,
@@ -56,6 +62,7 @@ func NewRouter(
 	authController.RegisterRoutes(r)
 	userController.RegisterRoutes(r)
 	cardsController.RegisterRoutes(r)
+	transactionsController.RegisterRoutes(r)
 	healthController.RegisterRoutes(r)
 
 	return r, nil

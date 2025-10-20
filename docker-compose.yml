@@ -38,6 +38,6 @@ services:
     environment:
       MONGODB_HOST: "mongodb+srv://budget-tracker.gj4ww.mongodb.net/"
       MONGODB_USER: "vsantos"
-      MONGODB_PASS: "R4hv10DP1HN6Iv2H"
+      MONGODB_PASS: "<CHANGE_ME>"
     ports:
       - "8080:8080"

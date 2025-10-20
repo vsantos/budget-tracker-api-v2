@@ -11,6 +11,8 @@ import "budget-tracker-api-v2/internal/repository"
 - [type CardCollectionInterface](<#CardCollectionInterface>)
 - [type CardRepoInterface](<#CardRepoInterface>)
 - [type HealthCollectionInterface](<#HealthCollectionInterface>)
+- [type TransactionCollectionInterface](<#TransactionCollectionInterface>)
+- [type TransactionRepoInterface](<#TransactionRepoInterface>)
 - [type UserCollectionInterface](<#UserCollectionInterface>)
 - [type UserRepoInterface](<#UserRepoInterface>)
 
@@ -50,6 +52,33 @@ UserCollectionInterface defines a mongodb collection API to be posteriorly mocke
 ```go
 type HealthCollectionInterface interface {
     Ping(ctx context.Context) (bool, error)
+}
+```
+
+<a name="TransactionCollectionInterface"></a>
+## type [TransactionCollectionInterface](<https://github.com/vsantos/budget-tracker-api-v2/blob/main/internal/repository/transaction_collection.go#L9-L14>)
+
+TransactionCollectionInterface defines a mongodb collection API to be posteriorly mocked
+
+```go
+type TransactionCollectionInterface interface {
+    CreateIndexes(ctx context.Context, indexes []string) error
+    InsertOne(ctx context.Context, document interface{}) (id string, err error)
+    FindOne(ctx context.Context, id string) (*model.Transaction, error)
+    DeleteOne(ctx context.Context, id string) (int64, error)
+}
+```
+
+<a name="TransactionRepoInterface"></a>
+## type [TransactionRepoInterface](<https://github.com/vsantos/budget-tracker-api-v2/blob/main/internal/repository/transaction.go#L9-L16>)
+
+TransactionRepoInterface defines Card CRUD operations
+
+```go
+type TransactionRepoInterface interface {
+    Insert(ctx context.Context, emp *model.Transaction) (*model.Transaction, error)
+    FindByID(ctx context.Context, empID string) (*model.Transaction, error)
+    Delete(ctx context.Context, id string) (int64, error)
 }
 ```
 

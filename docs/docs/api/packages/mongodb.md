@@ -10,6 +10,7 @@ import "budget-tracker-api-v2/internal/repository/mongodb"
 
 - [func NewCardRepository\(ctx context.Context, tracer trace.Tracer, c repository.CardCollectionInterface\) \(repository.CardRepoInterface, error\)](<#NewCardRepository>)
 - [func NewClient\(\) \(\*mongo.Client, error\)](<#NewClient>)
+- [func NewTransactionRepository\(ctx context.Context, tracer trace.Tracer, c repository.TransactionCollectionInterface\) \(repository.TransactionRepoInterface, error\)](<#NewTransactionRepository>)
 - [func NewUserRepository\(ctx context.Context, tracer trace.Tracer, c repository.UserCollectionInterface\) \(repository.UserRepoInterface, error\)](<#NewUserRepository>)
 - [type CardCollectionConfig](<#CardCollectionConfig>)
   - [func \(c \*CardCollectionConfig\) CreateIndexes\(ctx context.Context, indexes \[\]string\) error](<#CardCollectionConfig.CreateIndexes>)
@@ -30,10 +31,19 @@ import "budget-tracker-api-v2/internal/repository/mongodb"
   - [func \(r \*MongoCardRepository\) FindByID\(ctx context.Context, empID string\) \(\*model.Card, error\)](<#MongoCardRepository.FindByID>)
   - [func \(r \*MongoCardRepository\) Insert\(ctx context.Context, emp \*model.Card\) \(\*model.Card, error\)](<#MongoCardRepository.Insert>)
 - [type MongoHealthRepository](<#MongoHealthRepository>)
+- [type MongoTransactionRepository](<#MongoTransactionRepository>)
+  - [func \(r \*MongoTransactionRepository\) Delete\(ctx context.Context, empID string\) \(int64, error\)](<#MongoTransactionRepository.Delete>)
+  - [func \(r \*MongoTransactionRepository\) FindByID\(ctx context.Context, empID string\) \(\*model.Transaction, error\)](<#MongoTransactionRepository.FindByID>)
+  - [func \(r \*MongoTransactionRepository\) Insert\(ctx context.Context, emp \*model.Transaction\) \(\*model.Transaction, error\)](<#MongoTransactionRepository.Insert>)
 - [type MongoUserRepository](<#MongoUserRepository>)
   - [func \(r \*MongoUserRepository\) Delete\(ctx context.Context, empID string\) \(int64, error\)](<#MongoUserRepository.Delete>)
   - [func \(r \*MongoUserRepository\) FindByID\(ctx context.Context, empID string\) \(\*model.User, error\)](<#MongoUserRepository.FindByID>)
   - [func \(r \*MongoUserRepository\) Insert\(ctx context.Context, emp \*model.User\) \(\*model.User, error\)](<#MongoUserRepository.Insert>)
+- [type TransactionCollectionConfig](<#TransactionCollectionConfig>)
+  - [func \(c \*TransactionCollectionConfig\) CreateIndexes\(ctx context.Context, indexes \[\]string\) error](<#TransactionCollectionConfig.CreateIndexes>)
+  - [func \(c \*TransactionCollectionConfig\) DeleteOne\(ctx context.Context, id string\) \(int64, error\)](<#TransactionCollectionConfig.DeleteOne>)
+  - [func \(c \*TransactionCollectionConfig\) FindOne\(ctx context.Context, id string\) \(\*model.Transaction, error\)](<#TransactionCollectionConfig.FindOne>)
+  - [func \(c \*TransactionCollectionConfig\) InsertOne\(ctx context.Context, document interface\{\}\) \(id string, err error\)](<#TransactionCollectionConfig.InsertOne>)
 - [type UserCollectionConfig](<#UserCollectionConfig>)
   - [func \(c \*UserCollectionConfig\) CreateIndexes\(ctx context.Context, indexes \[\]string\) error](<#UserCollectionConfig.CreateIndexes>)
   - [func \(c \*UserCollectionConfig\) DeleteOne\(ctx context.Context, id string\) \(int64, error\)](<#UserCollectionConfig.DeleteOne>)
@@ -66,6 +76,15 @@ func NewClient() (*mongo.Client, error)
 ```
 
 NewClient will return a valid mongoDB connection
+
+<a name="NewTransactionRepository"></a>
+## func [NewTransactionRepository](<https://github.com/vsantos/budget-tracker-api-v2/blob/main/internal/repository/mongodb/transaction.go#L22>)
+
+```go
+func NewTransactionRepository(ctx context.Context, tracer trace.Tracer, c repository.TransactionCollectionInterface) (repository.TransactionRepoInterface, error)
+```
+
+NewTransactionRepository will return an TransactionRepoInterface for mongodb
 
 <a name="NewUserRepository"></a>
 ## func [NewUserRepository](<https://github.com/vsantos/budget-tracker-api-v2/blob/main/internal/repository/mongodb/user.go#L24>)
@@ -262,6 +281,45 @@ type MongoHealthRepository struct {
 }
 ```
 
+<a name="MongoTransactionRepository"></a>
+## type [MongoTransactionRepository](<https://github.com/vsantos/budget-tracker-api-v2/blob/main/internal/repository/mongodb/transaction.go#L16-L19>)
+
+
+
+```go
+type MongoTransactionRepository struct {
+    Tracer          trace.Tracer
+    MongoCollection repository.TransactionCollectionInterface
+}
+```
+
+<a name="MongoTransactionRepository.Delete"></a>
+### func \(\*MongoTransactionRepository\) [Delete](<https://github.com/vsantos/budget-tracker-api-v2/blob/main/internal/repository/mongodb/transaction.go#L128>)
+
+```go
+func (r *MongoTransactionRepository) Delete(ctx context.Context, empID string) (int64, error)
+```
+
+Delete will delete an card based on its ID
+
+<a name="MongoTransactionRepository.FindByID"></a>
+### func \(\*MongoTransactionRepository\) [FindByID](<https://github.com/vsantos/budget-tracker-api-v2/blob/main/internal/repository/mongodb/transaction.go#L68>)
+
+```go
+func (r *MongoTransactionRepository) FindByID(ctx context.Context, empID string) (*model.Transaction, error)
+```
+
+FindByID will fetch an card based on its ID
+
+<a name="MongoTransactionRepository.Insert"></a>
+### func \(\*MongoTransactionRepository\) [Insert](<https://github.com/vsantos/budget-tracker-api-v2/blob/main/internal/repository/mongodb/transaction.go#L42>)
+
+```go
+func (r *MongoTransactionRepository) Insert(ctx context.Context, emp *model.Transaction) (*model.Transaction, error)
+```
+
+Insert will insert an card
+
 <a name="MongoUserRepository"></a>
 ## type [MongoUserRepository](<https://github.com/vsantos/budget-tracker-api-v2/blob/main/internal/repository/mongodb/user.go#L19-L21>)
 
@@ -299,6 +357,54 @@ func (r *MongoUserRepository) Insert(ctx context.Context, emp *model.User) (*mod
 ```
 
 Insert will insert an user
+
+<a name="TransactionCollectionConfig"></a>
+## type [TransactionCollectionConfig](<https://github.com/vsantos/budget-tracker-api-v2/blob/main/internal/repository/mongodb/transaction_collection.go#L19-L22>)
+
+TransactionCollectionConfig will implement mongodb collection functions
+
+```go
+type TransactionCollectionConfig struct {
+    Tracer          trace.Tracer
+    MongoCollection *mongo.Collection
+}
+```
+
+<a name="TransactionCollectionConfig.CreateIndexes"></a>
+### func \(\*TransactionCollectionConfig\) [CreateIndexes](<https://github.com/vsantos/budget-tracker-api-v2/blob/main/internal/repository/mongodb/transaction_collection.go#L25>)
+
+```go
+func (c *TransactionCollectionConfig) CreateIndexes(ctx context.Context, indexes []string) error
+```
+
+CreateIndexes will create mongodb indexes
+
+<a name="TransactionCollectionConfig.DeleteOne"></a>
+### func \(\*TransactionCollectionConfig\) [DeleteOne](<https://github.com/vsantos/budget-tracker-api-v2/blob/main/internal/repository/mongodb/transaction_collection.go#L85>)
+
+```go
+func (c *TransactionCollectionConfig) DeleteOne(ctx context.Context, id string) (int64, error)
+```
+
+DeleteOne will find a Transaction from collection
+
+<a name="TransactionCollectionConfig.FindOne"></a>
+### func \(\*TransactionCollectionConfig\) [FindOne](<https://github.com/vsantos/budget-tracker-api-v2/blob/main/internal/repository/mongodb/transaction_collection.go#L62>)
+
+```go
+func (c *TransactionCollectionConfig) FindOne(ctx context.Context, id string) (*model.Transaction, error)
+```
+
+FindOne will find a Transaction from collection
+
+<a name="TransactionCollectionConfig.InsertOne"></a>
+### func \(\*TransactionCollectionConfig\) [InsertOne](<https://github.com/vsantos/budget-tracker-api-v2/blob/main/internal/repository/mongodb/transaction_collection.go#L47>)
+
+```go
+func (c *TransactionCollectionConfig) InsertOne(ctx context.Context, document interface{}) (id string, err error)
+```
+
+InsertOne will insert a document into mongodb
 
 <a name="UserCollectionConfig"></a>
 ## type [UserCollectionConfig](<https://github.com/vsantos/budget-tracker-api-v2/blob/main/internal/repository/mongodb/user_collection.go#L18-L21>)

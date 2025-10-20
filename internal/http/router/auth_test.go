@@ -76,7 +76,7 @@ func TestAuthRoute(t *testing.T) {
 
 	for _, testCase := range cases {
 
-		r, err := NewRouter(tracer, m, nil, nil)
+		r, err := NewRouter(tracer, m, nil, nil, nil)
 
 		if testCase.ExpectedErrorMsg != "" {
 			assert.Error(t, err, testCase.ExpectedErrorMsg)

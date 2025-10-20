@@ -97,7 +97,16 @@ func (uc *AuthController) CreateToken(w http.ResponseWriter, r *http.Request) {
 	}
 
 	var aToken, rToken string
-	// if jwtUser.Login == user.Login {
+
+	if user == nil {
+		w.WriteHeader(http.StatusNotFound)
+		_, err := w.Write([]byte(`{"message": "could not find given user"}`))
+		if err != nil {
+			log.Error("Could not write response: ", err)
+		}
+		return
+	}
+
 	match := crypt.CheckPasswordHash(jwtUser.Password, user.Password)
 	if match {
 		aToken, err = GenerateJWTAccessToken(ctx, "myhellokey", user.ID.Hex(), user.Login)

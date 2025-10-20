@@ -26,6 +26,11 @@ import "budget-tracker-api-v2/internal/http/controller"
 - [type HealthController](<#HealthController>)
   - [func \(uc \*HealthController\) HealthCheck\(w http.ResponseWriter, r \*http.Request\)](<#HealthController.HealthCheck>)
   - [func \(uc \*HealthController\) RegisterRoutes\(r \*mux.Router\)](<#HealthController.RegisterRoutes>)
+- [type TransactionCreatedMessage](<#TransactionCreatedMessage>)
+- [type TransactionErrorMessage](<#TransactionErrorMessage>)
+- [type TransactionsController](<#TransactionsController>)
+  - [func \(tc \*TransactionsController\) CreateTransaction\(w http.ResponseWriter, r \*http.Request\)](<#TransactionsController.CreateTransaction>)
+  - [func \(uc \*TransactionsController\) RegisterRoutes\(r \*mux.Router\)](<#TransactionsController.RegisterRoutes>)
 - [type UsersController](<#UsersController>)
   - [func \(uc \*UsersController\) CreateUser\(w http.ResponseWriter, r \*http.Request\)](<#UsersController.CreateUser>)
   - [func \(uc \*UsersController\) GetUser\(w http.ResponseWriter, r \*http.Request\)](<#UsersController.GetUser>)
@@ -216,6 +221,64 @@ func (uc *HealthController) RegisterRoutes(r *mux.Router)
 ```
 
 RegisterRoutes register router for handling healthcheck operations
+
+<a name="TransactionCreatedMessage"></a>
+## type [TransactionCreatedMessage](<https://github.com/vsantos/budget-tracker-api-v2/blob/main/internal/http/controller/transactions.go#L30-L36>)
+
+
+
+```go
+type TransactionCreatedMessage struct {
+    Message     string            `json:"message"`
+    ID          string            `json:"id"`
+    OwnerID     string            `json:"owner_id"`
+    StatusCode  int32             `json:"status_code"`
+    Transaction model.Transaction `json:"transaction"`
+}
+```
+
+<a name="TransactionErrorMessage"></a>
+## type [TransactionErrorMessage](<https://github.com/vsantos/budget-tracker-api-v2/blob/main/internal/http/controller/transactions.go#L24-L28>)
+
+
+
+```go
+type TransactionErrorMessage struct {
+    Message    string `json:"message"`
+    Details    string `json:"details"`
+    StatusCode int32  `json:"status_code,omitempty"`
+}
+```
+
+<a name="TransactionsController"></a>
+## type [TransactionsController](<https://github.com/vsantos/budget-tracker-api-v2/blob/main/internal/http/controller/transactions.go#L19-L22>)
+
+TransactionsController injects CardRepository to controllers
+
+```go
+type TransactionsController struct {
+    Tracer trace.Tracer
+    Repo   repository.TransactionCollectionInterface
+}
+```
+
+<a name="TransactionsController.CreateTransaction"></a>
+### func \(\*TransactionsController\) [CreateTransaction](<https://github.com/vsantos/budget-tracker-api-v2/blob/main/internal/http/controller/transactions.go#L46>)
+
+```go
+func (tc *TransactionsController) CreateTransaction(w http.ResponseWriter, r *http.Request)
+```
+
+
+
+<a name="TransactionsController.RegisterRoutes"></a>
+### func \(\*TransactionsController\) [RegisterRoutes](<https://github.com/vsantos/budget-tracker-api-v2/blob/main/internal/http/controller/transactions.go#L39>)
+
+```go
+func (uc *TransactionsController) RegisterRoutes(r *mux.Router)
+```
+
+RegisterRoutes register router for handling Card operations
 
 <a name="UsersController"></a>
 ## type [UsersController](<https://github.com/vsantos/budget-tracker-api-v2/blob/main/internal/http/controller/user.go#L19-L22>)

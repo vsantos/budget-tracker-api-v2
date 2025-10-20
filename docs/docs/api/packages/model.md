@@ -132,8 +132,8 @@ PaymentMethod defines which payment method was used for a certain transaction
 
 ```go
 type PaymentMethod struct {
-    Credit      Card `json:"credit" bson:"credit"`
-    Debit       Card `json:"debit" bson:"debit"`
+    Credit      Card `json:"credit,omitempty" bson:"credit,omitempty"`
+    Debit       Card `json:"debit,omitempty" bson:"debit,omitempty"`
     Pix         bool `json:"pix,omitempty" bson:"pix,omitempty"`
     PaymentSlip bool `json:"payment_slip,omitempty" bson:"payment_slip,omitempty"`
 }

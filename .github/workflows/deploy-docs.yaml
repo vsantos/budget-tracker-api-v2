@@ -29,8 +29,10 @@ jobs:
       - name: Deploy to GitHub Pages
         # run: mkdocs gh-deploy --force -f docs/mkdocs.yml
         run: |
+          set +e
           VERSION=$(git describe --tags --abbrev=0)
           VERSION_STATUS_CODE=$?
+          set -e
 
           if [[ $VERSION_STATUS_CODE == 128 ]]; then
             mike deploy --push --update-aliases development

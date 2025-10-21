@@ -24,7 +24,7 @@ jobs:
           python-version: '3.x'
 
       - name: Install dependencies
-        run: pip install mkdocs mkdocs-material mkdocs-swagger-ui-tag mkdocs-glightbox markdown-include mkdocs-macros-plugin
+        run: pip install mkdocs mkdocs-material mkdocs-swagger-ui-tag mkdocs-glightbox markdown-include mkdocs-macros-plugin mike
 
       - name: Deploy to GitHub Pages
         # run: mkdocs gh-deploy --force -f docs/mkdocs.yml

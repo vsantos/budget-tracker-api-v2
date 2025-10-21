@@ -1,5 +1,10 @@
 [
   {
+    "version": "transactions",
+    "title": "transactions",
+    "aliases": []
+  },
+  {
     "version": "main",
     "title": "main",
     "aliases": [

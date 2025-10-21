@@ -35,10 +35,10 @@ jobs:
           set -e
 
           if [[ $VERSION_STATUS_CODE == 128 ]]; then
-            mike deploy --push --update-aliases development
-            mike set-default --push development
+            mike deploy --push --update-aliases development --config-file=docs/mkdocs.yml
+            mike set-default --push development --config-file=docs/mkdocs.yml
           else
-            mike deploy --push --update-aliases $VERSION development
-            mike set-default --push latest
+            mike deploy --push --update-aliases $VERSION development --config-file=docs/mkdocs.yml
+            mike set-default --push latest --config-file=docs/mkdocs.yml
           fi
 

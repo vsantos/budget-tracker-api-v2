@@ -1,1 +1,9 @@
-[]
+[
+  {
+    "version": "pr",
+    "title": "pr",
+    "aliases": [
+      "latest"
+    ]
+  }
+]

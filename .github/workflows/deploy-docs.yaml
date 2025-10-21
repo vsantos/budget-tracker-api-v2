@@ -29,6 +29,9 @@ jobs:
       - name: Deploy to GitHub Pages
         # run: mkdocs gh-deploy --force -f docs/mkdocs.yml
         run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
           set +e
           VERSION=$(git describe --tags --abbrev=0)
           VERSION_STATUS_CODE=$?

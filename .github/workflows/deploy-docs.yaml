@@ -2,7 +2,7 @@ name: Documentation Deployment
 
 on:
   push:
-    branches: [main]
+    branches: [main, feat/*, docs/*, fix/*, break/*]
   pull_request:
     branches: [main, feat/*, docs/*, fix/*, break/*]
 

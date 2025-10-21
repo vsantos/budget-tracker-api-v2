@@ -37,7 +37,7 @@ services:
     container_name: budger-tracker-api-v2
     environment:
       MONGODB_HOST: "mongodb+srv://budget-tracker.gj4ww.mongodb.net/"
-      MONGODB_USER: "vsantos"
+      MONGODB_USER: "<CHANGE_ME>"
       MONGODB_PASS: "<CHANGE_ME>"
     ports:
       - "8080:8080"

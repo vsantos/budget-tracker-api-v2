@@ -294,7 +294,7 @@ type MongoTransactionRepository struct {
 ```
 
 <a name="MongoTransactionRepository.Delete"></a>
-### func \(\*MongoTransactionRepository\) [Delete](<https://github.com/vsantos/budget-tracker-api-v2/blob/main/internal/repository/mongodb/transaction.go#L128>)
+### func \(\*MongoTransactionRepository\) [Delete](<https://github.com/vsantos/budget-tracker-api-v2/blob/main/internal/repository/mongodb/transaction.go#L132>)
 
 ```go
 func (r *MongoTransactionRepository) Delete(ctx context.Context, empID string) (int64, error)
@@ -303,7 +303,7 @@ func (r *MongoTransactionRepository) Delete(ctx context.Context, empID string) (
 Delete will delete an card based on its ID
 
 <a name="MongoTransactionRepository.FindByID"></a>
-### func \(\*MongoTransactionRepository\) [FindByID](<https://github.com/vsantos/budget-tracker-api-v2/blob/main/internal/repository/mongodb/transaction.go#L68>)
+### func \(\*MongoTransactionRepository\) [FindByID](<https://github.com/vsantos/budget-tracker-api-v2/blob/main/internal/repository/mongodb/transaction.go#L72>)
 
 ```go
 func (r *MongoTransactionRepository) FindByID(ctx context.Context, empID string) (*model.Transaction, error)

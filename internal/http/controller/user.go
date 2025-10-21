@@ -91,6 +91,7 @@ func (uc *UsersController) CreateUser(w http.ResponseWriter, r *http.Request) {
 		log.Error("Could not write response: ", err)
 	}
 
+	log.Info("user created")
 }
 
 // GetUser will find a single user based on ID

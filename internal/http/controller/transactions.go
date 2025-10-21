@@ -71,7 +71,7 @@ func (tc *TransactionsController) CreateTransaction(w http.ResponseWriter, r *ht
 		return
 	}
 
-	transaction, err = t.Insert(ctx, transaction)
+	rt, err := t.Insert(ctx, transaction)
 	if err != nil {
 
 		span.RecordError(err)
@@ -86,16 +86,18 @@ func (tc *TransactionsController) CreateTransaction(w http.ResponseWriter, r *ht
 			}
 			if err := json.NewEncoder(w).Encode(msg); err != nil {
 				http.Error(w, err.Error(), http.StatusInternalServerError)
+				log.Error("could not encode response for transaction creation", err)
 				return
 			}
 
+			log.Error(msg)
 			return
 		}
 
 		w.WriteHeader(http.StatusInternalServerError)
 		_, err := w.Write([]byte(`{"message": "could not create transaction", "details": "` + err.Error() + `"}`))
 		if err != nil {
-			log.Error("Could not write response: ", err)
+			log.Error("could not write response for transaction creation", err)
 		}
 
 		return
@@ -104,14 +106,16 @@ func (tc *TransactionsController) CreateTransaction(w http.ResponseWriter, r *ht
 	w.WriteHeader(http.StatusCreated)
 	sMsg := TransactionCreatedMessage{
 		Message:     "transaction created",
-		ID:          transaction.ID.Hex(),
-		OwnerID:     transaction.OwnerID.Hex(),
+		ID:          rt.ID.Hex(),
+		OwnerID:     rt.OwnerID.Hex(),
 		StatusCode:  http.StatusCreated,
-		Transaction: *transaction,
+		Transaction: *rt,
 	}
 	if err := json.NewEncoder(w).Encode(sMsg); err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
+		log.Error("could not encode response for transaction creation", err)
 		return
 	}
 
+	log.Info(sMsg)
 }

@@ -50,6 +50,10 @@ func (r *MongoTransactionRepository) Insert(ctx context.Context, emp *model.Tran
 	t := time.Now()
 	emp.CreatedAt = primitive.NewDateTimeFromTime(t)
 
+	if emp.TransactionDate == 0 {
+		emp.TransactionDate = emp.CreatedAt
+	}
+
 	_, err := r.MongoCollection.
 		InsertOne(ctx, emp)
 

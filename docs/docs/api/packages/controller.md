@@ -302,7 +302,7 @@ func (uc *UsersController) CreateUser(w http.ResponseWriter, r *http.Request)
 CreateUser create a new user within the platform
 
 <a name="UsersController.GetUser"></a>
-### func \(\*UsersController\) [GetUser](<https://github.com/vsantos/budget-tracker-api-v2/blob/main/internal/http/controller/user.go#L97>)
+### func \(\*UsersController\) [GetUser](<https://github.com/vsantos/budget-tracker-api-v2/blob/main/internal/http/controller/user.go#L98>)
 
 ```go
 func (uc *UsersController) GetUser(w http.ResponseWriter, r *http.Request)

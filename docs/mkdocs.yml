@@ -1,5 +1,5 @@
 site_name: Budget Tracker API V2
-title: "foo"
+site_url: 'https://budget-tracker.vsantos.cc/'
 repo_url: https://github.com/vsantos/budget-tracker-api-v2/
 plugins:
   - offline
@@ -109,10 +109,11 @@ extra:
     - name: English
       link: /
       lang: en
-  # Docs versioning
+  # Doc versioning
   version:
     provider: mike
-    default: main
+    default: latest
+    alias: true
   # Footer
   social:
     - icon: fontawesome/brands/linkedin

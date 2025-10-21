@@ -136,6 +136,8 @@ func (uc *CardsController) CreateCard(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	log.Info(sMsg)
+
 }
 
 func (uc *CardsController) GetCard(w http.ResponseWriter, r *http.Request) {

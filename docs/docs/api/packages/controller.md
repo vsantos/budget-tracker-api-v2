@@ -129,7 +129,7 @@ func (uc *CardsController) CreateCard(w http.ResponseWriter, r *http.Request)
 
 
 <a name="CardsController.DeleteCard"></a>
-### func \(\*CardsController\) [DeleteCard](<https://github.com/vsantos/budget-tracker-api-v2/blob/main/internal/http/controller/cards.go#L225>)
+### func \(\*CardsController\) [DeleteCard](<https://github.com/vsantos/budget-tracker-api-v2/blob/main/internal/http/controller/cards.go#L227>)
 
 ```go
 func (uc *CardsController) DeleteCard(w http.ResponseWriter, r *http.Request)
@@ -138,7 +138,7 @@ func (uc *CardsController) DeleteCard(w http.ResponseWriter, r *http.Request)
 
 
 <a name="CardsController.GetCard"></a>
-### func \(\*CardsController\) [GetCard](<https://github.com/vsantos/budget-tracker-api-v2/blob/main/internal/http/controller/cards.go#L141>)
+### func \(\*CardsController\) [GetCard](<https://github.com/vsantos/budget-tracker-api-v2/blob/main/internal/http/controller/cards.go#L143>)
 
 ```go
 func (uc *CardsController) GetCard(w http.ResponseWriter, r *http.Request)

@@ -6,6 +6,7 @@ plugins:
   - glightbox
   - search
   - macros
+  - mike
 
 theme:
   name: material

@@ -107,6 +107,11 @@ extra:
     - name: English
       link: /
       lang: en
+  # Doc versioning
+  version:
+    provider: mike
+    default: latest
+    alias: true
   # Footer
   social:
     - icon: fontawesome/brands/linkedin

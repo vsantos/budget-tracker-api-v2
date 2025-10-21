@@ -17,7 +17,10 @@ func NewRouter(
 	tracer trace.Tracer,
 	userCollectionInterface repository.UserCollectionInterface,
 	cardsCollectionInterface repository.CardCollectionInterface,
+<<<<<<< HEAD
 	transactionsCollectionInterface repository.TransactionCollectionInterface,
+=======
+>>>>>>> main
 	healthCollectionInterface repository.HealthCollectionInterface,
 ) (*mux.Router, error) {
 	r := mux.NewRouter()
@@ -43,11 +46,14 @@ func NewRouter(
 		Repo:   cardsCollectionInterface,
 	}
 
+<<<<<<< HEAD
 	transactionsController := controller.TransactionsController{
 		Tracer: tracer,
 		Repo:   transactionsCollectionInterface,
 	}
 
+=======
+>>>>>>> main
 	authController := controller.AuthController{
 		Tracer:   tracer,
 		UserRepo: userController.Repo,

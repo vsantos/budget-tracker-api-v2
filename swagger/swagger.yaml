@@ -319,6 +319,7 @@ paths:
               example:
                 message: "error when fetching card's details"
                 details: "not able to get ID format"
+<<<<<<< HEAD
   /api/v1/transactions:
     post:
       summary: Create a transactions
@@ -398,6 +399,8 @@ paths:
                 message: "could not create transaction"
                 details: "internal error when posting transaction"
                 status_code: 500
+=======
+>>>>>>> main
   /health:
    get:
       summary: "Fetches if the application is healthy"

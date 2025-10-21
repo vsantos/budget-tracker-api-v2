@@ -1,4 +1,5 @@
 site_name: Budget Tracker API V2
+site_url: 'https://budget-tracker.vsantos.cc/'
 repo_url: https://github.com/vsantos/budget-tracker-api-v2/
 plugins:
   - offline

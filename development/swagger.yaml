@@ -319,85 +319,6 @@ paths:
               example:
                 message: "error when fetching card's details"
                 details: "not able to get ID format"
-  /api/v1/transactions:
-    post:
-      summary: Create a transactions
-      description: Endpoint to create a new expense or income transaction for a given owner_id
-      security:
-        - bearerAuth: []
-      tags:
-      - Transactions
-      parameters:
-        - in: header
-          name: Content-Type
-          required: true
-          schema:
-            type: string
-            example: application/json
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/Transaction'
-            example:
-              owner_id: 687baad049572fb8c4e305f3
-              balance_id: 687baad049572fb8c4e305f3
-              type: expense
-              description: Restaurante bomdebico
-              amount: 10.9
-              currency: BRL
-              payment_method:
-                credit:
-                  owner_id: 687baad049572fb8c4e305f3
-                  alias: Platinum
-                  type: Debit
-                  network: Mastertransaction
-                  bank: Itau
-                  color: "#ffffff"
-                  last_digits: 7049
-              categories:
-              - food
-
-      responses:
-        '201':
-          description: Created
-          content:
-            application/json:
-              schema:
-                type: object
-              example:
-                message: "transaction created"
-                status_code: 201
-                transaction:
-                  id: "68d036ba865f1ea380a77fa9"
-                  owner_id: "687baad049572fb8c4e305f3"
-                  alias: "Platinum"
-                  type: "Debit"
-                  network: "VISA"
-                  bank: "Citibank"
-                  color: "#fff"
-                  last_digits: 1234
-        '409':
-          description: Conflict
-          content:
-            application/json:
-              schema:
-                type: object
-              example:
-                message: "could not create transaction"
-                details: "transaction already registered with the same ID"
-                status_code: 409
-        '500':
-          description: Internal Server Error
-          content:
-            application/json:
-              schema:
-                type: object
-              example:
-                message: "could not create transaction"
-                details: "internal error when posting transaction"
-                status_code: 500
   /health:
    get:
       summary: "Fetches if the application is healthy"
@@ -467,7 +388,6 @@ components:
           type: string
         email:
           type: string
-          format: email
         password:
           type: string
         created_at:
@@ -489,30 +409,3 @@ components:
           type: string
         last_digits:
           type: integer
-    Transaction:
-      properties:
-        owner_id:
-          type: string
-        balance_id:
-          type: string
-        type:
-          type: string
-        description:
-          type: string
-        amount:
-          type: number
-        currency:
-          type: string
-        payment_method:
-          type: object
-          properties:
-            credit:
-              $ref: '#/components/schemas/Card'
-            debit:
-              $ref: '#/components/schemas/Card'
-            pix:
-              type: boolean
-            PaymentSlip:
-              type: boolean
-        categories:
-          type: array

@@ -942,57 +942,6 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#type-transactioncreatedmessage" class="md-nav__link">
-    <span class="md-ellipsis">
-      type TransactionCreatedMessage
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#type-transactionerrormessage" class="md-nav__link">
-    <span class="md-ellipsis">
-      type TransactionErrorMessage
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#type-transactionscontroller" class="md-nav__link">
-    <span class="md-ellipsis">
-      type TransactionsController
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="type TransactionsController">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#func-transactionscontroller-createtransaction" class="md-nav__link">
-    <span class="md-ellipsis">
-      func (*TransactionsController) CreateTransaction
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#func-transactionscontroller-registerroutes" class="md-nav__link">
-    <span class="md-ellipsis">
-      func (*TransactionsController) RegisterRoutes
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
   <a href="#type-userscontroller" class="md-nav__link">
     <span class="md-ellipsis">
       type UsersController
@@ -2324,57 +2273,6 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#type-transactioncreatedmessage" class="md-nav__link">
-    <span class="md-ellipsis">
-      type TransactionCreatedMessage
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#type-transactionerrormessage" class="md-nav__link">
-    <span class="md-ellipsis">
-      type TransactionErrorMessage
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#type-transactionscontroller" class="md-nav__link">
-    <span class="md-ellipsis">
-      type TransactionsController
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="type TransactionsController">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#func-transactionscontroller-createtransaction" class="md-nav__link">
-    <span class="md-ellipsis">
-      func (*TransactionsController) CreateTransaction
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#func-transactionscontroller-registerroutes" class="md-nav__link">
-    <span class="md-ellipsis">
-      func (*TransactionsController) RegisterRoutes
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
   <a href="#type-userscontroller" class="md-nav__link">
     <span class="md-ellipsis">
       type UsersController
@@ -2458,11 +2356,6 @@
 <li><a href="#HealthController">type HealthController</a></li>
 <li><a href="#HealthController.HealthCheck">func (uc *HealthController) HealthCheck(w http.ResponseWriter, r *http.Request)</a></li>
 <li><a href="#HealthController.RegisterRoutes">func (uc *HealthController) RegisterRoutes(r *mux.Router)</a></li>
-<li><a href="#TransactionCreatedMessage">type TransactionCreatedMessage</a></li>
-<li><a href="#TransactionErrorMessage">type TransactionErrorMessage</a></li>
-<li><a href="#TransactionsController">type TransactionsController</a></li>
-<li><a href="#TransactionsController.CreateTransaction">func (tc *TransactionsController) CreateTransaction(w http.ResponseWriter, r *http.Request)</a></li>
-<li><a href="#TransactionsController.RegisterRoutes">func (uc *TransactionsController) RegisterRoutes(r *mux.Router)</a></li>
 <li><a href="#UsersController">type UsersController</a></li>
 <li><a href="#UsersController.CreateUser">func (uc *UsersController) CreateUser(w http.ResponseWriter, r *http.Request)</a></li>
 <li><a href="#UsersController.GetUser">func (uc *UsersController) GetUser(w http.ResponseWriter, r *http.Request)</a></li>
@@ -2572,41 +2465,6 @@
 <div class="highlight"><pre><span></span><code><span class="kd">func</span><span class="w"> </span><span class="p">(</span><span class="nx">uc</span><span class="w"> </span><span class="o">*</span><span class="nx">HealthController</span><span class="p">)</span><span class="w"> </span><span class="nx">RegisterRoutes</span><span class="p">(</span><span class="nx">r</span><span class="w"> </span><span class="o">*</span><span class="nx">mux</span><span class="p">.</span><span class="nx">Router</span><span class="p">)</span>
 </code></pre></div>
 <p>RegisterRoutes register router for handling healthcheck operations</p>
-<p><a name="TransactionCreatedMessage"></a></p>
-<h2 id="type-transactioncreatedmessage">type <a href="https://github.com/vsantos/budget-tracker-api-v2/blob/main/internal/http/controller/transactions.go#L30-L36">TransactionCreatedMessage</a></h2>
-<div class="highlight"><pre><span></span><code><span class="kd">type</span><span class="w"> </span><span class="nx">TransactionCreatedMessage</span><span class="w"> </span><span class="kd">struct</span><span class="w"> </span><span class="p">{</span>
-<span class="w">    </span><span class="nx">Message</span><span class="w">     </span><span class="kt">string</span><span class="w">            </span><span class="s">`json:"message"`</span>
-<span class="w">    </span><span class="nx">ID</span><span class="w">          </span><span class="kt">string</span><span class="w">            </span><span class="s">`json:"id"`</span>
-<span class="w">    </span><span class="nx">OwnerID</span><span class="w">     </span><span class="kt">string</span><span class="w">            </span><span class="s">`json:"owner_id"`</span>
-<span class="w">    </span><span class="nx">StatusCode</span><span class="w">  </span><span class="kt">int32</span><span class="w">             </span><span class="s">`json:"status_code"`</span>
-<span class="w">    </span><span class="nx">Transaction</span><span class="w"> </span><span class="nx">model</span><span class="p">.</span><span class="nx">Transaction</span><span class="w"> </span><span class="s">`json:"transaction"`</span>
-<span class="p">}</span>
-</code></pre></div>
-<p><a name="TransactionErrorMessage"></a></p>
-<h2 id="type-transactionerrormessage">type <a href="https://github.com/vsantos/budget-tracker-api-v2/blob/main/internal/http/controller/transactions.go#L24-L28">TransactionErrorMessage</a></h2>
-<div class="highlight"><pre><span></span><code><span class="kd">type</span><span class="w"> </span><span class="nx">TransactionErrorMessage</span><span class="w"> </span><span class="kd">struct</span><span class="w"> </span><span class="p">{</span>
-<span class="w">    </span><span class="nx">Message</span><span class="w">    </span><span class="kt">string</span><span class="w"> </span><span class="s">`json:"message"`</span>
-<span class="w">    </span><span class="nx">Details</span><span class="w">    </span><span class="kt">string</span><span class="w"> </span><span class="s">`json:"details"`</span>
-<span class="w">    </span><span class="nx">StatusCode</span><span class="w"> </span><span class="kt">int32</span><span class="w">  </span><span class="s">`json:"status_code,omitempty"`</span>
-<span class="p">}</span>
-</code></pre></div>
-<p><a name="TransactionsController"></a></p>
-<h2 id="type-transactionscontroller">type <a href="https://github.com/vsantos/budget-tracker-api-v2/blob/main/internal/http/controller/transactions.go#L19-L22">TransactionsController</a></h2>
-<p>TransactionsController injects CardRepository to controllers</p>
-<div class="highlight"><pre><span></span><code><span class="kd">type</span><span class="w"> </span><span class="nx">TransactionsController</span><span class="w"> </span><span class="kd">struct</span><span class="w"> </span><span class="p">{</span>
-<span class="w">    </span><span class="nx">Tracer</span><span class="w"> </span><span class="nx">trace</span><span class="p">.</span><span class="nx">Tracer</span>
-<span class="w">    </span><span class="nx">Repo</span><span class="w">   </span><span class="nx">repository</span><span class="p">.</span><span class="nx">TransactionCollectionInterface</span>
-<span class="p">}</span>
-</code></pre></div>
-<p><a name="TransactionsController.CreateTransaction"></a></p>
-<h3 id="func-transactionscontroller-createtransaction">func (*TransactionsController) <a href="https://github.com/vsantos/budget-tracker-api-v2/blob/main/internal/http/controller/transactions.go#L46">CreateTransaction</a></h3>
-<div class="highlight"><pre><span></span><code><span class="kd">func</span><span class="w"> </span><span class="p">(</span><span class="nx">tc</span><span class="w"> </span><span class="o">*</span><span class="nx">TransactionsController</span><span class="p">)</span><span class="w"> </span><span class="nx">CreateTransaction</span><span class="p">(</span><span class="nx">w</span><span class="w"> </span><span class="nx">http</span><span class="p">.</span><span class="nx">ResponseWriter</span><span class="p">,</span><span class="w"> </span><span class="nx">r</span><span class="w"> </span><span class="o">*</span><span class="nx">http</span><span class="p">.</span><span class="nx">Request</span><span class="p">)</span>
-</code></pre></div>
-<p><a name="TransactionsController.RegisterRoutes"></a></p>
-<h3 id="func-transactionscontroller-registerroutes">func (*TransactionsController) <a href="https://github.com/vsantos/budget-tracker-api-v2/blob/main/internal/http/controller/transactions.go#L39">RegisterRoutes</a></h3>
-<div class="highlight"><pre><span></span><code><span class="kd">func</span><span class="w"> </span><span class="p">(</span><span class="nx">uc</span><span class="w"> </span><span class="o">*</span><span class="nx">TransactionsController</span><span class="p">)</span><span class="w"> </span><span class="nx">RegisterRoutes</span><span class="p">(</span><span class="nx">r</span><span class="w"> </span><span class="o">*</span><span class="nx">mux</span><span class="p">.</span><span class="nx">Router</span><span class="p">)</span>
-</code></pre></div>
-<p>RegisterRoutes register router for handling Card operations</p>
 <p><a name="UsersController"></a></p>
 <h2 id="type-userscontroller">type <a href="https://github.com/vsantos/budget-tracker-api-v2/blob/main/internal/http/controller/user.go#L19-L22">UsersController</a></h2>
 <p>UsersController injects UserRepository to controllers</p>
@@ -2621,7 +2479,7 @@
 </code></pre></div>
 <p>CreateUser create a new user within the platform</p>
 <p><a name="UsersController.GetUser"></a></p>
-<h3 id="func-userscontroller-getuser">func (*UsersController) <a href="https://github.com/vsantos/budget-tracker-api-v2/blob/main/internal/http/controller/user.go#L98">GetUser</a></h3>
+<h3 id="func-userscontroller-getuser">func (*UsersController) <a href="https://github.com/vsantos/budget-tracker-api-v2/blob/main/internal/http/controller/user.go#L97">GetUser</a></h3>
 <div class="highlight"><pre><span></span><code><span class="kd">func</span><span class="w"> </span><span class="p">(</span><span class="nx">uc</span><span class="w"> </span><span class="o">*</span><span class="nx">UsersController</span><span class="p">)</span><span class="w"> </span><span class="nx">GetUser</span><span class="p">(</span><span class="nx">w</span><span class="w"> </span><span class="nx">http</span><span class="p">.</span><span class="nx">ResponseWriter</span><span class="p">,</span><span class="w"> </span><span class="nx">r</span><span class="w"> </span><span class="o">*</span><span class="nx">http</span><span class="p">.</span><span class="nx">Request</span><span class="p">)</span>
 </code></pre></div>
 <p>GetUser will find a single user based on ID</p>

@@ -932,24 +932,6 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#type-transactioncollectioninterface" class="md-nav__link">
-    <span class="md-ellipsis">
-      type TransactionCollectionInterface
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#type-transactionrepointerface" class="md-nav__link">
-    <span class="md-ellipsis">
-      type TransactionRepoInterface
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
   <a href="#type-usercollectioninterface" class="md-nav__link">
     <span class="md-ellipsis">
       type UserCollectionInterface
@@ -1961,24 +1943,6 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#type-transactioncollectioninterface" class="md-nav__link">
-    <span class="md-ellipsis">
-      type TransactionCollectionInterface
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#type-transactionrepointerface" class="md-nav__link">
-    <span class="md-ellipsis">
-      type TransactionRepoInterface
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
   <a href="#type-usercollectioninterface" class="md-nav__link">
     <span class="md-ellipsis">
       type UserCollectionInterface
@@ -2023,8 +1987,6 @@
 <li><a href="#CardCollectionInterface">type CardCollectionInterface</a></li>
 <li><a href="#CardRepoInterface">type CardRepoInterface</a></li>
 <li><a href="#HealthCollectionInterface">type HealthCollectionInterface</a></li>
-<li><a href="#TransactionCollectionInterface">type TransactionCollectionInterface</a></li>
-<li><a href="#TransactionRepoInterface">type TransactionRepoInterface</a></li>
 <li><a href="#UserCollectionInterface">type UserCollectionInterface</a></li>
 <li><a href="#UserRepoInterface">type UserRepoInterface</a></li>
 </ul>
@@ -2052,25 +2014,6 @@
 <p>UserCollectionInterface defines a mongodb collection API to be posteriorly mocked</p>
 <div class="highlight"><pre><span></span><code><span class="kd">type</span><span class="w"> </span><span class="nx">HealthCollectionInterface</span><span class="w"> </span><span class="kd">interface</span><span class="w"> </span><span class="p">{</span>
 <span class="w">    </span><span class="nx">Ping</span><span class="p">(</span><span class="nx">ctx</span><span class="w"> </span><span class="nx">context</span><span class="p">.</span><span class="nx">Context</span><span class="p">)</span><span class="w"> </span><span class="p">(</span><span class="kt">bool</span><span class="p">,</span><span class="w"> </span><span class="kt">error</span><span class="p">)</span>
-<span class="p">}</span>
-</code></pre></div>
-<p><a name="TransactionCollectionInterface"></a></p>
-<h2 id="type-transactioncollectioninterface">type <a href="https://github.com/vsantos/budget-tracker-api-v2/blob/main/internal/repository/transaction_collection.go#L9-L14">TransactionCollectionInterface</a></h2>
-<p>TransactionCollectionInterface defines a mongodb collection API to be posteriorly mocked</p>
-<div class="highlight"><pre><span></span><code><span class="kd">type</span><span class="w"> </span><span class="nx">TransactionCollectionInterface</span><span class="w"> </span><span class="kd">interface</span><span class="w"> </span><span class="p">{</span>
-<span class="w">    </span><span class="nx">CreateIndexes</span><span class="p">(</span><span class="nx">ctx</span><span class="w"> </span><span class="nx">context</span><span class="p">.</span><span class="nx">Context</span><span class="p">,</span><span class="w"> </span><span class="nx">indexes</span><span class="w"> </span><span class="p">[]</span><span class="kt">string</span><span class="p">)</span><span class="w"> </span><span class="kt">error</span>
-<span class="w">    </span><span class="nx">InsertOne</span><span class="p">(</span><span class="nx">ctx</span><span class="w"> </span><span class="nx">context</span><span class="p">.</span><span class="nx">Context</span><span class="p">,</span><span class="w"> </span><span class="nx">document</span><span class="w"> </span><span class="kd">interface</span><span class="p">{})</span><span class="w"> </span><span class="p">(</span><span class="nx">id</span><span class="w"> </span><span class="kt">string</span><span class="p">,</span><span class="w"> </span><span class="nx">err</span><span class="w"> </span><span class="kt">error</span><span class="p">)</span>
-<span class="w">    </span><span class="nx">FindOne</span><span class="p">(</span><span class="nx">ctx</span><span class="w"> </span><span class="nx">context</span><span class="p">.</span><span class="nx">Context</span><span class="p">,</span><span class="w"> </span><span class="nx">id</span><span class="w"> </span><span class="kt">string</span><span class="p">)</span><span class="w"> </span><span class="p">(</span><span class="o">*</span><span class="nx">model</span><span class="p">.</span><span class="nx">Transaction</span><span class="p">,</span><span class="w"> </span><span class="kt">error</span><span class="p">)</span>
-<span class="w">    </span><span class="nx">DeleteOne</span><span class="p">(</span><span class="nx">ctx</span><span class="w"> </span><span class="nx">context</span><span class="p">.</span><span class="nx">Context</span><span class="p">,</span><span class="w"> </span><span class="nx">id</span><span class="w"> </span><span class="kt">string</span><span class="p">)</span><span class="w"> </span><span class="p">(</span><span class="kt">int64</span><span class="p">,</span><span class="w"> </span><span class="kt">error</span><span class="p">)</span>
-<span class="p">}</span>
-</code></pre></div>
-<p><a name="TransactionRepoInterface"></a></p>
-<h2 id="type-transactionrepointerface">type <a href="https://github.com/vsantos/budget-tracker-api-v2/blob/main/internal/repository/transaction.go#L9-L16">TransactionRepoInterface</a></h2>
-<p>TransactionRepoInterface defines Card CRUD operations</p>
-<div class="highlight"><pre><span></span><code><span class="kd">type</span><span class="w"> </span><span class="nx">TransactionRepoInterface</span><span class="w"> </span><span class="kd">interface</span><span class="w"> </span><span class="p">{</span>
-<span class="w">    </span><span class="nx">Insert</span><span class="p">(</span><span class="nx">ctx</span><span class="w"> </span><span class="nx">context</span><span class="p">.</span><span class="nx">Context</span><span class="p">,</span><span class="w"> </span><span class="nx">emp</span><span class="w"> </span><span class="o">*</span><span class="nx">model</span><span class="p">.</span><span class="nx">Transaction</span><span class="p">)</span><span class="w"> </span><span class="p">(</span><span class="o">*</span><span class="nx">model</span><span class="p">.</span><span class="nx">Transaction</span><span class="p">,</span><span class="w"> </span><span class="kt">error</span><span class="p">)</span>
-<span class="w">    </span><span class="nx">FindByID</span><span class="p">(</span><span class="nx">ctx</span><span class="w"> </span><span class="nx">context</span><span class="p">.</span><span class="nx">Context</span><span class="p">,</span><span class="w"> </span><span class="nx">empID</span><span class="w"> </span><span class="kt">string</span><span class="p">)</span><span class="w"> </span><span class="p">(</span><span class="o">*</span><span class="nx">model</span><span class="p">.</span><span class="nx">Transaction</span><span class="p">,</span><span class="w"> </span><span class="kt">error</span><span class="p">)</span>
-<span class="w">    </span><span class="nx">Delete</span><span class="p">(</span><span class="nx">ctx</span><span class="w"> </span><span class="nx">context</span><span class="p">.</span><span class="nx">Context</span><span class="p">,</span><span class="w"> </span><span class="nx">id</span><span class="w"> </span><span class="kt">string</span><span class="p">)</span><span class="w"> </span><span class="p">(</span><span class="kt">int64</span><span class="p">,</span><span class="w"> </span><span class="kt">error</span><span class="p">)</span>
 <span class="p">}</span>
 </code></pre></div>
 <p><a name="UserCollectionInterface"></a></p>

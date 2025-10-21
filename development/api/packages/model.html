@@ -2150,8 +2150,8 @@
 <h2 id="type-paymentmethod">type <a href="https://github.com/vsantos/budget-tracker-api-v2/blob/main/internal/model/transaction.go#L53-L58">PaymentMethod</a></h2>
 <p>PaymentMethod defines which payment method was used for a certain transaction</p>
 <div class="highlight"><pre><span></span><code><span class="kd">type</span><span class="w"> </span><span class="nx">PaymentMethod</span><span class="w"> </span><span class="kd">struct</span><span class="w"> </span><span class="p">{</span>
-<span class="w">    </span><span class="nx">Credit</span><span class="w">      </span><span class="nx">Card</span><span class="w"> </span><span class="s">`json:"credit,omitempty" bson:"credit,omitempty"`</span>
-<span class="w">    </span><span class="nx">Debit</span><span class="w">       </span><span class="nx">Card</span><span class="w"> </span><span class="s">`json:"debit,omitempty" bson:"debit,omitempty"`</span>
+<span class="w">    </span><span class="nx">Credit</span><span class="w">      </span><span class="nx">Card</span><span class="w"> </span><span class="s">`json:"credit" bson:"credit"`</span>
+<span class="w">    </span><span class="nx">Debit</span><span class="w">       </span><span class="nx">Card</span><span class="w"> </span><span class="s">`json:"debit" bson:"debit"`</span>
 <span class="w">    </span><span class="nx">Pix</span><span class="w">         </span><span class="kt">bool</span><span class="w"> </span><span class="s">`json:"pix,omitempty" bson:"pix,omitempty"`</span>
 <span class="w">    </span><span class="nx">PaymentSlip</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="s">`json:"payment_slip,omitempty" bson:"payment_slip,omitempty"`</span>
 <span class="p">}</span>

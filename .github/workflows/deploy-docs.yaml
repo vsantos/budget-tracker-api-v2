@@ -2,7 +2,9 @@ name: Documentation Deployment
 
 on:
   push:
-    branches: [main, docs/*]
+    branches: [main]
+  pull_request:
+    branches: [main, feat/*, docs/*, fix/*, break/*]
 
 permissions:
   contents: write
@@ -13,6 +15,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Setup Python
         uses: actions/setup-python@v5
@@ -20,7 +24,23 @@ jobs:
           python-version: '3.x'
 
       - name: Install dependencies
-        run: pip install mkdocs mkdocs-material mkdocs-swagger-ui-tag mkdocs-glightbox markdown-include mkdocs-macros-plugin
+        run: pip install mkdocs mkdocs-material mkdocs-swagger-ui-tag mkdocs-glightbox markdown-include mkdocs-macros-plugin mike
 
       - name: Deploy to GitHub Pages
-        run: mkdocs gh-deploy --force -f docs/mkdocs.yml
+        # run: mkdocs gh-deploy --force -f docs/mkdocs.yml
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+          set +e
+          VERSION=$(git describe --tags --abbrev=0)
+          VERSION_STATUS_CODE=$?
+          set -e
+
+          if [[ $VERSION_STATUS_CODE == 128 ]]; then
+            mike deploy --push --update-aliases development --config-file=docs/mkdocs.yml
+            mike set-default --push development --config-file=docs/mkdocs.yml
+          else
+            mike deploy --push --update-aliases $VERSION development --config-file=docs/mkdocs.yml
+            mike set-default --push latest --config-file=docs/mkdocs.yml
+          fi

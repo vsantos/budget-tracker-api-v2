@@ -84,39 +84,40 @@ func (tc *TransactionsController) CreateTransaction(w http.ResponseWriter, r *ht
 		return
 	}
 
-	cardFilter := bson.M{"alias": transaction.PaymentMethod.Credit.Alias}
-	card, err := c.FindByFilter(ctx, cardFilter)
-	if err != nil {
-		span.SetStatus(codes.Error, err.Error())
+	if !transaction.PaymentMethod.Pix && !transaction.PaymentMethod.PaymentSlip {
+		cardFilter := bson.M{"alias": transaction.PaymentMethod.Credit.Alias}
+		card, err := c.FindByFilter(ctx, cardFilter)
+		if err != nil {
+			span.SetStatus(codes.Error, err.Error())
 
-		if strings.Contains(err.Error(), "not found") {
-			span.AddEvent("card not found")
+			if strings.Contains(err.Error(), "not found") {
+				span.AddEvent("card not found")
 
-			notFoundMsg := CardsErrorMessage{
-				Message:    "could not find card",
-				Details:    err.Error(),
-				StatusCode: http.StatusNotFound,
+				notFoundMsg := CardsErrorMessage{
+					Message:    "could not find card",
+					Details:    err.Error(),
+					StatusCode: http.StatusNotFound,
+				}
+
+				w.WriteHeader(http.StatusNotFound)
+				err := json.NewEncoder(w).Encode(notFoundMsg)
+				if err != nil {
+					log.Error("Could not write response: ", err)
+				}
+
+				return
 			}
 
-			w.WriteHeader(http.StatusNotFound)
-			err := json.NewEncoder(w).Encode(notFoundMsg)
+			w.WriteHeader(http.StatusInternalServerError)
+			_, err := w.Write([]byte(`{"message": "could not create transaction", "details": "` + err.Error() + `"}`))
 			if err != nil {
 				log.Error("Could not write response: ", err)
 			}
 
 			return
 		}
-
-		w.WriteHeader(http.StatusInternalServerError)
-		_, err := w.Write([]byte(`{"message": "could not create transaction", "details": "` + err.Error() + `"}`))
-		if err != nil {
-			log.Error("Could not write response: ", err)
-		}
-
-		return
+		transaction.PaymentMethod.Credit = *card
 	}
-	transaction.PaymentMethod.Credit = *card
-
 	rt, err := t.Insert(ctx, transaction)
 	if err != nil {
 

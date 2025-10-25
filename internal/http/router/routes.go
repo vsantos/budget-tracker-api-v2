@@ -44,8 +44,9 @@ func NewRouter(
 	}
 
 	transactionsController := controller.TransactionsController{
-		Tracer: tracer,
-		Repo:   transactionsCollectionInterface,
+		Tracer:          tracer,
+		TransactionRepo: transactionsCollectionInterface,
+		CardsRepo:       cardsCollectionInterface,
 	}
 
 	authController := controller.AuthController{

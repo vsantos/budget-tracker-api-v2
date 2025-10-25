@@ -81,6 +81,22 @@ func (c *CardCollectionConfig) FindOne(ctx context.Context, id string) (*model.C
 	return &emp, nil
 }
 
+// FindOne will find a Card from collection
+func (c *CardCollectionConfig) FindOneByFilter(ctx context.Context, filter bson.M) (*model.Card, error) {
+	tracer := otel.Tracer("budget-tracker-api-v2")
+	fCtx, span := tracer.Start(ctx, "find one")
+	defer span.End()
+
+	var emp model.Card
+
+	err := c.MongoCollection.FindOne(fCtx, filter).Decode(&emp)
+	if err != nil {
+		return nil, err
+	}
+
+	return &emp, nil
+}
+
 // DeleteOne will find a Card from collection
 func (c *CardCollectionConfig) DeleteOne(ctx context.Context, id string) (int64, error) {
 	ctx, span := c.Tracer.Start(ctx, "CardCollection.DeleteOne")

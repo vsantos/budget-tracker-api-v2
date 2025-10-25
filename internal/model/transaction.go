@@ -51,8 +51,7 @@ type FixedTransaction struct {
 
 // PaymentMethod defines which payment method was used for a certain transaction
 type PaymentMethod struct {
-	Credit      Card `json:"credit,omitempty" bson:"credit,omitempty"`
-	Debit       Card `json:"debit,omitempty" bson:"debit,omitempty"`
-	Pix         bool `json:"pix,omitempty" bson:"pix,omitempty"`
-	PaymentSlip bool `json:"payment_slip,omitempty" bson:"payment_slip,omitempty"`
+	Credit      Card `json:"credit" bson:"credit,omitempty"`
+	Pix         bool `json:"pix" bson:"pix,omitempty"`
+	PaymentSlip bool `json:"payment_slip" bson:"payment_slip,omitempty"`
 }

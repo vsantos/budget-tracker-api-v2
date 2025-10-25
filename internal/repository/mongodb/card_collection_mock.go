@@ -4,6 +4,7 @@ import (
 	"budget-tracker-api-v2/internal/model"
 	"context"
 
+	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
@@ -34,6 +35,14 @@ func (c *CardMockCollectionConfig) FindOne(ctx context.Context, id string) (*mod
 		// Login: "mockcard",
 		// Name:  "Mock Card Torres",
 		// Email: "mock.card@gmail.com",
+	}, nil
+}
+
+// FindOne will insert a document into mongodb
+func (c *CardMockCollectionConfig) FindOneByFilter(ctx context.Context, filter bson.M) (*model.Card, error) {
+
+	return &model.Card{
+		ID: primitive.NewObjectID(),
 	}, nil
 }
 

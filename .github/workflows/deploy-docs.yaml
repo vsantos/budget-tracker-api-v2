@@ -4,6 +4,7 @@ on:
   push:
     tags:
     - '*'
+    branches: [feat/*, docs/*, fix/*, break/*]
   pull_request:
     branches: [main, feat/*, docs/*, fix/*, break/*]
 

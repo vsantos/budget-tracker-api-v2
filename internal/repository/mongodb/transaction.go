@@ -10,6 +10,7 @@ import (
 	"time"
 
 	"go.mongodb.org/mongo-driver/bson/primitive"
+	"go.opentelemetry.io/otel/attribute"
 	"go.opentelemetry.io/otel/trace"
 )
 
@@ -65,6 +66,7 @@ func (r *MongoTransactionRepository) Insert(ctx context.Context, transaction *mo
 // FindByID will fetch an card based on its ID
 func (r *MongoTransactionRepository) FindByID(ctx context.Context, empID string) (*model.Transaction, error) {
 	ctx, span := r.Tracer.Start(ctx, "TransactionsRepository.FindByID")
+	span.SetAttributes(attribute.String("id", empID))
 	defer span.End()
 
 	emp, err := r.MongoCollection.FindOne(ctx, empID)

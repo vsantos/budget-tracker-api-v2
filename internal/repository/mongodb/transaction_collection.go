@@ -71,7 +71,8 @@ func (c *TransactionCollectionConfig) InsertOne(ctx context.Context, t *model.Tr
 // FindOne will find a Transaction from collection
 func (c *TransactionCollectionConfig) FindOne(ctx context.Context, id string) (*model.Transaction, error) {
 	tracer := otel.Tracer("budget-tracker-api-v2")
-	fCtx, span := tracer.Start(ctx, "find one")
+	fCtx, span := tracer.Start(ctx, "TransactionsCollection.FindOne")
+	span.SetAttributes(attribute.String("id", id))
 	defer span.End()
 
 	var transaction model.Transaction

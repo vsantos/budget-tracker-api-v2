@@ -3121,7 +3121,7 @@
 </code></pre></div>
 <p>NewClient will return a valid mongoDB connection</p>
 <p><a name="NewTransactionRepository"></a></p>
-<h2 id="func-newtransactionrepository">func <a href="https://github.com/vsantos/budget-tracker-api-v2/blob/main/internal/repository/mongodb/transaction.go#L22">NewTransactionRepository</a></h2>
+<h2 id="func-newtransactionrepository">func <a href="https://github.com/vsantos/budget-tracker-api-v2/blob/main/internal/repository/mongodb/transaction.go#L23">NewTransactionRepository</a></h2>
 <div class="highlight"><pre><span></span><code><span class="kd">func</span><span class="w"> </span><span class="nx">NewTransactionRepository</span><span class="p">(</span><span class="nx">ctx</span><span class="w"> </span><span class="nx">context</span><span class="p">.</span><span class="nx">Context</span><span class="p">,</span><span class="w"> </span><span class="nx">tracer</span><span class="w"> </span><span class="nx">trace</span><span class="p">.</span><span class="nx">Tracer</span><span class="p">,</span><span class="w"> </span><span class="nx">c</span><span class="w"> </span><span class="nx">repository</span><span class="p">.</span><span class="nx">TransactionCollectionInterface</span><span class="p">)</span><span class="w"> </span><span class="p">(</span><span class="nx">repository</span><span class="p">.</span><span class="nx">TransactionRepoInterface</span><span class="p">,</span><span class="w"> </span><span class="kt">error</span><span class="p">)</span>
 </code></pre></div>
 <p>NewTransactionRepository will return an TransactionRepoInterface for mongodb</p>
@@ -3255,24 +3255,24 @@
 <span class="p">}</span>
 </code></pre></div>
 <p><a name="MongoTransactionRepository"></a></p>
-<h2 id="type-mongotransactionrepository">type <a href="https://github.com/vsantos/budget-tracker-api-v2/blob/main/internal/repository/mongodb/transaction.go#L16-L19">MongoTransactionRepository</a></h2>
+<h2 id="type-mongotransactionrepository">type <a href="https://github.com/vsantos/budget-tracker-api-v2/blob/main/internal/repository/mongodb/transaction.go#L17-L20">MongoTransactionRepository</a></h2>
 <div class="highlight"><pre><span></span><code><span class="kd">type</span><span class="w"> </span><span class="nx">MongoTransactionRepository</span><span class="w"> </span><span class="kd">struct</span><span class="w"> </span><span class="p">{</span>
 <span class="w">    </span><span class="nx">Tracer</span><span class="w">          </span><span class="nx">trace</span><span class="p">.</span><span class="nx">Tracer</span>
 <span class="w">    </span><span class="nx">MongoCollection</span><span class="w"> </span><span class="nx">repository</span><span class="p">.</span><span class="nx">TransactionCollectionInterface</span>
 <span class="p">}</span>
 </code></pre></div>
 <p><a name="MongoTransactionRepository.Delete"></a></p>
-<h3 id="func-mongotransactionrepository-delete">func (*MongoTransactionRepository) <a href="https://github.com/vsantos/budget-tracker-api-v2/blob/main/internal/repository/mongodb/transaction.go#L84">Delete</a></h3>
+<h3 id="func-mongotransactionrepository-delete">func (*MongoTransactionRepository) <a href="https://github.com/vsantos/budget-tracker-api-v2/blob/main/internal/repository/mongodb/transaction.go#L86">Delete</a></h3>
 <div class="highlight"><pre><span></span><code><span class="kd">func</span><span class="w"> </span><span class="p">(</span><span class="nx">r</span><span class="w"> </span><span class="o">*</span><span class="nx">MongoTransactionRepository</span><span class="p">)</span><span class="w"> </span><span class="nx">Delete</span><span class="p">(</span><span class="nx">ctx</span><span class="w"> </span><span class="nx">context</span><span class="p">.</span><span class="nx">Context</span><span class="p">,</span><span class="w"> </span><span class="nx">empID</span><span class="w"> </span><span class="kt">string</span><span class="p">)</span><span class="w"> </span><span class="p">(</span><span class="kt">int64</span><span class="p">,</span><span class="w"> </span><span class="kt">error</span><span class="p">)</span>
 </code></pre></div>
 <p>Delete will delete an card based on its ID</p>
 <p><a name="MongoTransactionRepository.FindByID"></a></p>
-<h3 id="func-mongotransactionrepository-findbyid">func (*MongoTransactionRepository) <a href="https://github.com/vsantos/budget-tracker-api-v2/blob/main/internal/repository/mongodb/transaction.go#L66">FindByID</a></h3>
+<h3 id="func-mongotransactionrepository-findbyid">func (*MongoTransactionRepository) <a href="https://github.com/vsantos/budget-tracker-api-v2/blob/main/internal/repository/mongodb/transaction.go#L67">FindByID</a></h3>
 <div class="highlight"><pre><span></span><code><span class="kd">func</span><span class="w"> </span><span class="p">(</span><span class="nx">r</span><span class="w"> </span><span class="o">*</span><span class="nx">MongoTransactionRepository</span><span class="p">)</span><span class="w"> </span><span class="nx">FindByID</span><span class="p">(</span><span class="nx">ctx</span><span class="w"> </span><span class="nx">context</span><span class="p">.</span><span class="nx">Context</span><span class="p">,</span><span class="w"> </span><span class="nx">empID</span><span class="w"> </span><span class="kt">string</span><span class="p">)</span><span class="w"> </span><span class="p">(</span><span class="o">*</span><span class="nx">model</span><span class="p">.</span><span class="nx">Transaction</span><span class="p">,</span><span class="w"> </span><span class="kt">error</span><span class="p">)</span>
 </code></pre></div>
 <p>FindByID will fetch an card based on its ID</p>
 <p><a name="MongoTransactionRepository.Insert"></a></p>
-<h3 id="func-mongotransactionrepository-insert">func (*MongoTransactionRepository) <a href="https://github.com/vsantos/budget-tracker-api-v2/blob/main/internal/repository/mongodb/transaction.go#L36">Insert</a></h3>
+<h3 id="func-mongotransactionrepository-insert">func (*MongoTransactionRepository) <a href="https://github.com/vsantos/budget-tracker-api-v2/blob/main/internal/repository/mongodb/transaction.go#L37">Insert</a></h3>
 <div class="highlight"><pre><span></span><code><span class="kd">func</span><span class="w"> </span><span class="p">(</span><span class="nx">r</span><span class="w"> </span><span class="o">*</span><span class="nx">MongoTransactionRepository</span><span class="p">)</span><span class="w"> </span><span class="nx">Insert</span><span class="p">(</span><span class="nx">ctx</span><span class="w"> </span><span class="nx">context</span><span class="p">.</span><span class="nx">Context</span><span class="p">,</span><span class="w"> </span><span class="nx">transaction</span><span class="w"> </span><span class="o">*</span><span class="nx">model</span><span class="p">.</span><span class="nx">Transaction</span><span class="p">)</span><span class="w"> </span><span class="p">(</span><span class="o">*</span><span class="nx">model</span><span class="p">.</span><span class="nx">Transaction</span><span class="p">,</span><span class="w"> </span><span class="kt">error</span><span class="p">)</span>
 </code></pre></div>
 <p>Insert will insert an card</p>
@@ -3312,12 +3312,12 @@
 </code></pre></div>
 <p>CreateIndexes will create mongodb indexes</p>
 <p><a name="TransactionCollectionConfig.DeleteOne"></a></p>
-<h3 id="func-transactioncollectionconfig-deleteone">func (*TransactionCollectionConfig) <a href="https://github.com/vsantos/budget-tracker-api-v2/blob/main/internal/repository/mongodb/transaction_collection.go#L95">DeleteOne</a></h3>
+<h3 id="func-transactioncollectionconfig-deleteone">func (*TransactionCollectionConfig) <a href="https://github.com/vsantos/budget-tracker-api-v2/blob/main/internal/repository/mongodb/transaction_collection.go#L92">DeleteOne</a></h3>
 <div class="highlight"><pre><span></span><code><span class="kd">func</span><span class="w"> </span><span class="p">(</span><span class="nx">c</span><span class="w"> </span><span class="o">*</span><span class="nx">TransactionCollectionConfig</span><span class="p">)</span><span class="w"> </span><span class="nx">DeleteOne</span><span class="p">(</span><span class="nx">ctx</span><span class="w"> </span><span class="nx">context</span><span class="p">.</span><span class="nx">Context</span><span class="p">,</span><span class="w"> </span><span class="nx">id</span><span class="w"> </span><span class="kt">string</span><span class="p">)</span><span class="w"> </span><span class="p">(</span><span class="kt">int64</span><span class="p">,</span><span class="w"> </span><span class="kt">error</span><span class="p">)</span>
 </code></pre></div>
 <p>DeleteOne will find a Transaction from collection</p>
 <p><a name="TransactionCollectionConfig.FindOne"></a></p>
-<h3 id="func-transactioncollectionconfig-findone">func (*TransactionCollectionConfig) <a href="https://github.com/vsantos/budget-tracker-api-v2/blob/main/internal/repository/mongodb/transaction_collection.go#L72">FindOne</a></h3>
+<h3 id="func-transactioncollectionconfig-findone">func (*TransactionCollectionConfig) <a href="https://github.com/vsantos/budget-tracker-api-v2/blob/main/internal/repository/mongodb/transaction_collection.go#L68">FindOne</a></h3>
 <div class="highlight"><pre><span></span><code><span class="kd">func</span><span class="w"> </span><span class="p">(</span><span class="nx">c</span><span class="w"> </span><span class="o">*</span><span class="nx">TransactionCollectionConfig</span><span class="p">)</span><span class="w"> </span><span class="nx">FindOne</span><span class="p">(</span><span class="nx">ctx</span><span class="w"> </span><span class="nx">context</span><span class="p">.</span><span class="nx">Context</span><span class="p">,</span><span class="w"> </span><span class="nx">id</span><span class="w"> </span><span class="kt">string</span><span class="p">)</span><span class="w"> </span><span class="p">(</span><span class="o">*</span><span class="nx">model</span><span class="p">.</span><span class="nx">Transaction</span><span class="p">,</span><span class="w"> </span><span class="kt">error</span><span class="p">)</span>
 </code></pre></div>
 <p>FindOne will find a Transaction from collection</p>

@@ -31,7 +31,6 @@ jobs:
       - name: Deploy to GitHub Pages
         env:
           GITHUB_REF: ${{ github.ref }}
-          FEATURE_BRANCH: ${{ github.ref_name }}
         # run: mkdocs gh-deploy --force -f docs/mkdocs.yml
         run: |
           git config user.name "github-actions[bot]"
@@ -47,6 +46,6 @@ jobs:
             mike deploy --push --update-aliases $VERSION latest --config-file=docs/mkdocs.yml
             mike set-default --push latest --config-file=docs/mkdocs.yml
           else
-            PULL_REQUEST=PR-$(echo ${FEATURE_BRANCH} | cut -d'/' -f3)
+            PULL_REQUEST=PR-$(echo ${GITHUB_REF} | cut -d'/' -f3)
             mike deploy --push --update-aliases ${PULL_REQUEST} dev --config-file=docs/mkdocs.yml
           fi

@@ -40,7 +40,6 @@ jobs:
           set -e
 
           if [[ $VERSION_STATUS_CODE == 128 ]]; then
-<<<<<<< HEAD
             VERSION=$(git describe --tags --abbrev=0 --always | cut -c1-10)
             mike deploy --push --update-aliases $version development --config-file=docs/mkdocs.yml
             mike set-default --push development --config-file=docs/mkdocs.yml
@@ -49,11 +48,3 @@ jobs:
             mike set-default --push latest --config-file=docs/mkdocs.yml
           fi
 
-=======
-            mike deploy --push --update-aliases development --config-file=docs/mkdocs.yml
-            mike set-default --push development --config-file=docs/mkdocs.yml
-          else
-            mike deploy --push --update-aliases $VERSION development --config-file=docs/mkdocs.yml
-            mike set-default --push latest --config-file=docs/mkdocs.yml
-          fi
->>>>>>> main

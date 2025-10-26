@@ -66,9 +66,7 @@ func NewRouter(
 	authController.RegisterRoutes(r)
 	userController.RegisterRoutes(r)
 
-	fmt.Println("creating indexes")
 	if userController.Repo != nil {
-		fmt.Println("not null")
 		err = userController.Repo.CreateIndexes(context.Background(), []string{"login", "email"})
 		if err != nil {
 			return nil, err

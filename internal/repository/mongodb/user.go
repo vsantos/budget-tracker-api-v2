@@ -23,17 +23,13 @@ type MongoUserRepository struct {
 // NewUserRepository will return an UserRepoInterface for mongodb
 func NewUserRepository(ctx context.Context, tracer trace.Tracer, c repository.UserCollectionInterface) (repository.UserRepoInterface, error) {
 
-	ctx, span := tracer.Start(ctx, "UserRepository.NewRepository")
+	_, span := tracer.Start(ctx, "UsersRepository.NewRepository")
 	defer span.End()
 
 	r := MongoUserRepository{
 		MongoCollection: c,
 	}
 
-	err := r.MongoCollection.CreateIndexes(ctx, []string{"login", "email"})
-	if err != nil {
-		return nil, err
-	}
 	return &r, nil
 }
 
@@ -60,7 +56,7 @@ func (r *MongoUserRepository) Insert(ctx context.Context, emp *model.User) (*mod
 	emp.Password = sPassword
 
 	_, err = r.MongoCollection.
-		InsertOne(context.Background(), emp)
+		InsertOne(ctx, emp)
 
 	if err != nil {
 		if strings.Contains(err.Error(), "duplicate key error collection") {
@@ -87,48 +83,6 @@ func (r *MongoUserRepository) FindByID(ctx context.Context, empID string) (*mode
 
 	return emp, nil
 }
-
-// // FindAllUser will fetch all user
-// func (r *MongoUserRepository) FindAllUser(ctx context.Context) ([]model.User, error) {
-// 	var emps []model.User
-
-// 	results, err := r.MongoCollection.
-// 		Find(context.Background(), bson.D{})
-
-// 	if err != nil {
-// 		return nil, err
-// 	}
-
-// 	err = results.All(context.Background(), &emps)
-// 	if err != nil {
-// 		return nil, errors.New("unable to decode")
-// 	}
-
-// 	return emps, nil
-// }
-
-// // UpdateUserByID will update an user based on its ID
-// func (r *MongoUserRepository) UpdateUserByID(ctx context.Context, empID string, updatedEmp *model.User) (int64, error) {
-// 	result, err := r.MongoCollection.
-// 		UpdateOne(context.Background(),
-// 			bson.D{
-// 				{
-// 					Key:   "user_id",
-// 					Value: empID,
-// 				}},
-// 			bson.D{
-// 				{
-// 					Key:   "$set",
-// 					Value: updatedEmp,
-// 				}},
-// 		)
-
-// 	if err != nil {
-// 		return 0, err
-// 	}
-
-// 	return result.ModifiedCount, nil
-// }
 
 // Delete will delete an user based on its ID
 func (r *MongoUserRepository) Delete(ctx context.Context, empID string) (int64, error) {

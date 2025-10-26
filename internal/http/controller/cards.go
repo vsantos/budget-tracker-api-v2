@@ -11,6 +11,7 @@ import (
 	"strings"
 
 	"github.com/gorilla/mux"
+	"go.mongodb.org/mongo-driver/bson"
 
 	log "github.com/sirupsen/logrus"
 	"go.opentelemetry.io/otel/codes"
@@ -70,6 +71,16 @@ func (uc *CardsController) CreateCard(w http.ResponseWriter, r *http.Request) {
 
 	ctx, span := uc.Tracer.Start(r.Context(), "CardsController.CreateCard")
 	defer span.End()
+
+	if r.Body == nil {
+		w.WriteHeader(http.StatusBadRequest)
+		_, err := w.Write([]byte(`{"message": "could not create card", "details": "missing body"}`))
+		if err != nil {
+			log.Error("Could not write response: ", err)
+		}
+
+		return
+	}
 
 	err := json.NewDecoder(r.Body).Decode(&card)
 	if err != nil {
@@ -136,6 +147,8 @@ func (uc *CardsController) CreateCard(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	log.Info(sMsg)
+
 }
 
 func (uc *CardsController) GetCard(w http.ResponseWriter, r *http.Request) {
@@ -177,13 +190,14 @@ func (uc *CardsController) GetCard(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	card, err = u.FindByID(ctx, params["id"])
+	cardFilter := bson.M{"_id": params["id"]}
+	card, err = u.FindByFilter(ctx, cardFilter)
 	if err != nil {
 		span.RecordError(err)
 		span.SetStatus(codes.Error, err.Error())
 
 		if strings.Contains(err.Error(), "not found") {
-			span.AddEvent("user not found")
+			span.AddEvent("card not found")
 
 			notFoundMsg := CardsErrorMessage{
 				Message:    "could not find card",

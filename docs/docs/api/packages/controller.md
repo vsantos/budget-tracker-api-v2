@@ -26,6 +26,12 @@ import "budget-tracker-api-v2/internal/http/controller"
 - [type HealthController](<#HealthController>)
   - [func \(uc \*HealthController\) HealthCheck\(w http.ResponseWriter, r \*http.Request\)](<#HealthController.HealthCheck>)
   - [func \(uc \*HealthController\) RegisterRoutes\(r \*mux.Router\)](<#HealthController.RegisterRoutes>)
+- [type TransactionCreatedMessage](<#TransactionCreatedMessage>)
+- [type TransactionErrorMessage](<#TransactionErrorMessage>)
+- [type TransactionsController](<#TransactionsController>)
+  - [func \(tc \*TransactionsController\) CreateTransaction\(w http.ResponseWriter, r \*http.Request\)](<#TransactionsController.CreateTransaction>)
+  - [func \(tc \*TransactionsController\) Getransaction\(w http.ResponseWriter, r \*http.Request\)](<#TransactionsController.Getransaction>)
+  - [func \(uc \*TransactionsController\) RegisterRoutes\(r \*mux.Router\)](<#TransactionsController.RegisterRoutes>)
 - [type UsersController](<#UsersController>)
   - [func \(uc \*UsersController\) CreateUser\(w http.ResponseWriter, r \*http.Request\)](<#UsersController.CreateUser>)
   - [func \(uc \*UsersController\) GetUser\(w http.ResponseWriter, r \*http.Request\)](<#UsersController.GetUser>)
@@ -90,7 +96,7 @@ func (ac *AuthController) RegisterRoutes(r *mux.Router)
 RegisterRoutes register router for handling Card operations
 
 <a name="CardDeletedMessage"></a>
-## type [CardDeletedMessage](<https://github.com/vsantos/budget-tracker-api-v2/blob/main/internal/http/controller/cards.go#L26-L30>)
+## type [CardDeletedMessage](<https://github.com/vsantos/budget-tracker-api-v2/blob/main/internal/http/controller/cards.go#L27-L31>)
 
 
 
@@ -103,7 +109,7 @@ type CardDeletedMessage struct {
 ```
 
 <a name="CardsController"></a>
-## type [CardsController](<https://github.com/vsantos/budget-tracker-api-v2/blob/main/internal/http/controller/cards.go#L40-L43>)
+## type [CardsController](<https://github.com/vsantos/budget-tracker-api-v2/blob/main/internal/http/controller/cards.go#L41-L44>)
 
 CardsController injects CardRepository to controllers
 
@@ -115,7 +121,7 @@ type CardsController struct {
 ```
 
 <a name="CardsController.CreateCard"></a>
-### func \(\*CardsController\) [CreateCard](<https://github.com/vsantos/budget-tracker-api-v2/blob/main/internal/http/controller/cards.go#L68>)
+### func \(\*CardsController\) [CreateCard](<https://github.com/vsantos/budget-tracker-api-v2/blob/main/internal/http/controller/cards.go#L69>)
 
 ```go
 func (uc *CardsController) CreateCard(w http.ResponseWriter, r *http.Request)
@@ -124,7 +130,7 @@ func (uc *CardsController) CreateCard(w http.ResponseWriter, r *http.Request)
 
 
 <a name="CardsController.DeleteCard"></a>
-### func \(\*CardsController\) [DeleteCard](<https://github.com/vsantos/budget-tracker-api-v2/blob/main/internal/http/controller/cards.go#L225>)
+### func \(\*CardsController\) [DeleteCard](<https://github.com/vsantos/budget-tracker-api-v2/blob/main/internal/http/controller/cards.go#L239>)
 
 ```go
 func (uc *CardsController) DeleteCard(w http.ResponseWriter, r *http.Request)
@@ -133,7 +139,7 @@ func (uc *CardsController) DeleteCard(w http.ResponseWriter, r *http.Request)
 
 
 <a name="CardsController.GetCard"></a>
-### func \(\*CardsController\) [GetCard](<https://github.com/vsantos/budget-tracker-api-v2/blob/main/internal/http/controller/cards.go#L141>)
+### func \(\*CardsController\) [GetCard](<https://github.com/vsantos/budget-tracker-api-v2/blob/main/internal/http/controller/cards.go#L154>)
 
 ```go
 func (uc *CardsController) GetCard(w http.ResponseWriter, r *http.Request)
@@ -142,7 +148,7 @@ func (uc *CardsController) GetCard(w http.ResponseWriter, r *http.Request)
 
 
 <a name="CardsController.GetCards"></a>
-### func \(\*CardsController\) [GetCards](<https://github.com/vsantos/budget-tracker-api-v2/blob/main/internal/http/controller/cards.go#L57>)
+### func \(\*CardsController\) [GetCards](<https://github.com/vsantos/budget-tracker-api-v2/blob/main/internal/http/controller/cards.go#L58>)
 
 ```go
 func (uc *CardsController) GetCards(w http.ResponseWriter, r *http.Request)
@@ -151,7 +157,7 @@ func (uc *CardsController) GetCards(w http.ResponseWriter, r *http.Request)
 GetCards handler list of all card within the platform without filters. Deprecated.
 
 <a name="CardsController.RegisterRoutes"></a>
-### func \(\*CardsController\) [RegisterRoutes](<https://github.com/vsantos/budget-tracker-api-v2/blob/main/internal/http/controller/cards.go#L46>)
+### func \(\*CardsController\) [RegisterRoutes](<https://github.com/vsantos/budget-tracker-api-v2/blob/main/internal/http/controller/cards.go#L47>)
 
 ```go
 func (uc *CardsController) RegisterRoutes(r *mux.Router)
@@ -160,7 +166,7 @@ func (uc *CardsController) RegisterRoutes(r *mux.Router)
 RegisterRoutes register router for handling Card operations
 
 <a name="CardsCreatedMessage"></a>
-## type [CardsCreatedMessage](<https://github.com/vsantos/budget-tracker-api-v2/blob/main/internal/http/controller/cards.go#L31-L37>)
+## type [CardsCreatedMessage](<https://github.com/vsantos/budget-tracker-api-v2/blob/main/internal/http/controller/cards.go#L32-L38>)
 
 
 
@@ -175,7 +181,7 @@ type CardsCreatedMessage struct {
 ```
 
 <a name="CardsErrorMessage"></a>
-## type [CardsErrorMessage](<https://github.com/vsantos/budget-tracker-api-v2/blob/main/internal/http/controller/cards.go#L20-L24>)
+## type [CardsErrorMessage](<https://github.com/vsantos/budget-tracker-api-v2/blob/main/internal/http/controller/cards.go#L21-L25>)
 
 
 
@@ -217,6 +223,74 @@ func (uc *HealthController) RegisterRoutes(r *mux.Router)
 
 RegisterRoutes register router for handling healthcheck operations
 
+<a name="TransactionCreatedMessage"></a>
+## type [TransactionCreatedMessage](<https://github.com/vsantos/budget-tracker-api-v2/blob/main/internal/http/controller/transactions.go#L32-L38>)
+
+
+
+```go
+type TransactionCreatedMessage struct {
+    Message     string            `json:"message"`
+    ID          string            `json:"id"`
+    OwnerID     string            `json:"owner_id"`
+    StatusCode  int32             `json:"status_code"`
+    Transaction model.Transaction `json:"transaction"`
+}
+```
+
+<a name="TransactionErrorMessage"></a>
+## type [TransactionErrorMessage](<https://github.com/vsantos/budget-tracker-api-v2/blob/main/internal/http/controller/transactions.go#L26-L30>)
+
+
+
+```go
+type TransactionErrorMessage struct {
+    Message    string `json:"message"`
+    Details    string `json:"details"`
+    StatusCode int32  `json:"status_code,omitempty"`
+}
+```
+
+<a name="TransactionsController"></a>
+## type [TransactionsController](<https://github.com/vsantos/budget-tracker-api-v2/blob/main/internal/http/controller/transactions.go#L20-L24>)
+
+TransactionsController injects CardRepository to controllers
+
+```go
+type TransactionsController struct {
+    Tracer          trace.Tracer
+    TransactionRepo repository.TransactionCollectionInterface
+    CardsRepo       repository.CardCollectionInterface
+}
+```
+
+<a name="TransactionsController.CreateTransaction"></a>
+### func \(\*TransactionsController\) [CreateTransaction](<https://github.com/vsantos/budget-tracker-api-v2/blob/main/internal/http/controller/transactions.go#L103>)
+
+```go
+func (tc *TransactionsController) CreateTransaction(w http.ResponseWriter, r *http.Request)
+```
+
+
+
+<a name="TransactionsController.Getransaction"></a>
+### func \(\*TransactionsController\) [Getransaction](<https://github.com/vsantos/budget-tracker-api-v2/blob/main/internal/http/controller/transactions.go#L49>)
+
+```go
+func (tc *TransactionsController) Getransaction(w http.ResponseWriter, r *http.Request)
+```
+
+
+
+<a name="TransactionsController.RegisterRoutes"></a>
+### func \(\*TransactionsController\) [RegisterRoutes](<https://github.com/vsantos/budget-tracker-api-v2/blob/main/internal/http/controller/transactions.go#L41>)
+
+```go
+func (uc *TransactionsController) RegisterRoutes(r *mux.Router)
+```
+
+RegisterRoutes register router for handling Card operations
+
 <a name="UsersController"></a>
 ## type [UsersController](<https://github.com/vsantos/budget-tracker-api-v2/blob/main/internal/http/controller/user.go#L19-L22>)
 
@@ -239,7 +313,7 @@ func (uc *UsersController) CreateUser(w http.ResponseWriter, r *http.Request)
 CreateUser create a new user within the platform
 
 <a name="UsersController.GetUser"></a>
-### func \(\*UsersController\) [GetUser](<https://github.com/vsantos/budget-tracker-api-v2/blob/main/internal/http/controller/user.go#L97>)
+### func \(\*UsersController\) [GetUser](<https://github.com/vsantos/budget-tracker-api-v2/blob/main/internal/http/controller/user.go#L112>)
 
 ```go
 func (uc *UsersController) GetUser(w http.ResponseWriter, r *http.Request)

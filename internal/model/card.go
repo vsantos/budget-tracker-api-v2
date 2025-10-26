@@ -11,7 +11,7 @@ type Card struct {
 	Type       string             `json:"type" bson:"type"`
 	Network    string             `json:"network" bson:"network"`
 	Bank       string             `json:"bank" bson:"bank"`
-	Color      string             `json:"color" bson:"color"`
+	Color      string             `json:"color,omitempty" bson:"color"`
 	LastDigits int32              `json:"last_digits" bson:"last_digits"`
 	CreatedAt  primitive.DateTime `json:"created_at,omitempty" bson:"created_at,omitempty" swaggerignore:"true"`
 }

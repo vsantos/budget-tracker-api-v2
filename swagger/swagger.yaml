@@ -319,6 +319,166 @@ paths:
               example:
                 message: "error when fetching card's details"
                 details: "not able to get ID format"
+  /api/v1/transactions/{id}:
+    get:
+      summary: Get a single transaction
+      description: Endpoint to get a expense or income transaction for a given ID
+      security:
+        - bearerAuth: []
+      tags:
+      - Transactions
+      parameters:
+        - in: header
+          name: Content-Type
+          required: true
+          schema:
+            type: string
+            example: application/json
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Transaction'
+            example:
+              owner_id: 687baad049572fb8c4e305f3
+              balance_id: 687baad049572fb8c4e305f3
+              type: expense
+              description: Restaurante bomdebico
+              amount: 10.9
+              currency: BRL
+              payment_method:
+                credit:
+                  alias: Platinum
+              categories:
+              - food
+
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Transaction'
+              example:
+                id: 68fd6b00f4c9e77e59aaf97e
+                balance_id: 687baad049572fb8c4e305f3
+                owner_id: 687baad049572fb8c4e305f3
+                type: expense
+                description: Restaurante bomdebico
+                amount: 10.9
+                currency: BRL
+                payment_method:
+                  credit:
+                    id: 68d036ba865f1ea380a77fa9
+                    owner_id: 687baad049572fb8c4e305f3
+                    alias: Platinum
+                    type: Debit
+                    network: Mastercard
+                    bank: Itau
+                    color: "#ffffff"
+                    last_digits: 7049
+                    created_at: '2025-09-21T17:32:42.217Z'
+                  pix: false
+                  payment_slip: false
+                categories:
+                - food
+                transaction_date: '2025-10-26T00:27:44.265Z'
+                created_at: '2025-10-26T00:27:44.265Z'
+
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                message: "could not find transaction"
+                id: "68fd6b00f4c9e77e59aaf97e"
+                status_code: 404
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                message: "could not find transaction"
+                details: "internal error when fetching transaction"
+                status_code: 500
+  /api/v1/transactions:
+    post:
+      summary: Create a transactions
+      description: Endpoint to create a new expense or income transaction for a given owner_id
+      security:
+        - bearerAuth: []
+      tags:
+      - Transactions
+      parameters:
+        - in: header
+          name: Content-Type
+          required: true
+          schema:
+            type: string
+            example: application/json
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Transaction'
+            example:
+              owner_id: 687baad049572fb8c4e305f3
+              balance_id: 687baad049572fb8c4e305f3
+              type: expense
+              description: Restaurante bomdebico
+              amount: 10.9
+              currency: BRL
+              payment_method:
+                credit:
+                  alias: Platinum
+              categories:
+              - food
+
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                message: "transaction created"
+                status_code: 201
+                transaction:
+                  id: "68d036ba865f1ea380a77fa9"
+                  owner_id: "687baad049572fb8c4e305f3"
+                  alias: "Platinum"
+                  type: "Debit"
+                  network: "VISA"
+                  bank: "Citibank"
+                  color: "#fff"
+                  last_digits: 1234
+        '409':
+          description: Conflict
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                message: "could not create transaction"
+                details: "transaction already registered with the same ID"
+                status_code: 409
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                message: "could not create transaction"
+                details: "internal error when posting transaction"
+                status_code: 500
   /health:
    get:
       summary: "Fetches if the application is healthy"
@@ -388,6 +548,7 @@ components:
           type: string
         email:
           type: string
+          format: email
         password:
           type: string
         created_at:
@@ -409,3 +570,28 @@ components:
           type: string
         last_digits:
           type: integer
+    Transaction:
+      properties:
+        owner_id:
+          type: string
+        balance_id:
+          type: string
+        type:
+          type: string
+        description:
+          type: string
+        amount:
+          type: number
+        currency:
+          type: string
+        payment_method:
+          type: object
+          properties:
+            credit:
+              $ref: '#/components/schemas/Card'
+            pix:
+              type: boolean
+            PaymentSlip:
+              type: boolean
+        categories:
+          type: array

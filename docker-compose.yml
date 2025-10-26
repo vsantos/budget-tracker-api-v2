@@ -32,12 +32,14 @@ services:
     depends_on:
       - jaeger
 
-  budger-tracker-api-v2:
+  budget-tracker-api-v2:
     build: ./
-    container_name: budger-tracker-api-v2
+    container_name: budget-tracker-api-v2
     environment:
       MONGODB_HOST: "mongodb+srv://budget-tracker.gj4ww.mongodb.net/"
       MONGODB_USER: "<CHANGE_ME>"
       MONGODB_PASS: "<CHANGE_ME>"
     ports:
       - "8080:8080"
+    networks:
+      - otel-network

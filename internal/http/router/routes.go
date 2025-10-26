@@ -4,6 +4,7 @@ import (
 	"budget-tracker-api-v2/internal/http/controller"
 	"budget-tracker-api-v2/internal/http/middleware"
 	"budget-tracker-api-v2/internal/repository"
+	"context"
 	"fmt"
 	"net/http"
 
@@ -17,6 +18,7 @@ func NewRouter(
 	tracer trace.Tracer,
 	userCollectionInterface repository.UserCollectionInterface,
 	cardsCollectionInterface repository.CardCollectionInterface,
+	transactionsCollectionInterface repository.TransactionCollectionInterface,
 	healthCollectionInterface repository.HealthCollectionInterface,
 ) (*mux.Router, error) {
 	r := mux.NewRouter()
@@ -31,6 +33,8 @@ func NewRouter(
 		),
 	)
 
+	var err error
+
 	// API Routes
 	userController := controller.UsersController{
 		Tracer: tracer,
@@ -40,6 +44,12 @@ func NewRouter(
 	cardsController := controller.CardsController{
 		Tracer: tracer,
 		Repo:   cardsCollectionInterface,
+	}
+
+	transactionsController := controller.TransactionsController{
+		Tracer:          tracer,
+		TransactionRepo: transactionsCollectionInterface,
+		CardsRepo:       cardsCollectionInterface,
 	}
 
 	authController := controller.AuthController{
@@ -55,7 +65,24 @@ func NewRouter(
 	controller.SwaggerRegisterRouter(r)
 	authController.RegisterRoutes(r)
 	userController.RegisterRoutes(r)
+
+	if userController.Repo != nil {
+		err = userController.Repo.CreateIndexes(context.Background(), []string{"login", "email"})
+		if err != nil {
+			return nil, err
+		}
+	}
+
 	cardsController.RegisterRoutes(r)
+
+	if cardsController.Repo != nil {
+		err = cardsController.Repo.CreateIndexes(context.Background(), []string{"last_digits"})
+		if err != nil {
+			return nil, err
+		}
+	}
+
+	transactionsController.RegisterRoutes(r)
 	healthController.RegisterRoutes(r)
 
 	return r, nil

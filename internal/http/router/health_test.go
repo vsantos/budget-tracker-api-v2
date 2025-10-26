@@ -46,7 +46,7 @@ func TestHealthRoute(t *testing.T) {
 	}
 	for _, testCase := range cases {
 
-		r, err := NewRouter(tracer, nil, nil, mh)
+		r, err := NewRouter(tracer, nil, nil, nil, mh)
 		if testCase.ExpectedErrorMsg != "" {
 			assert.Error(t, err, testCase.ExpectedErrorMsg)
 		} else {

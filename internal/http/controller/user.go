@@ -37,6 +37,16 @@ func (uc *UsersController) CreateUser(w http.ResponseWriter, r *http.Request) {
 	ctx, span := uc.Tracer.Start(r.Context(), "UsersController.CreateUser")
 	defer span.End()
 
+	if r.Body == nil {
+		w.WriteHeader(http.StatusBadRequest)
+		_, err := w.Write([]byte(`{"message": "could not create user", "details": "missing body"}`))
+		if err != nil {
+			log.Error("Could not write response: ", err)
+		}
+
+		return
+	}
+
 	err := json.NewDecoder(r.Body).Decode(&user)
 	if err != nil {
 		span.RecordError(err)
@@ -64,9 +74,13 @@ func (uc *UsersController) CreateUser(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	user, err = u.Insert(r.Context(), user)
+	user, err = u.Insert(ctx, user)
 	if err != nil {
 		if strings.Contains(err.Error(), "user or email already registered") {
+
+			span.RecordError(err)
+			span.SetStatus(codes.Error, err.Error())
+
 			w.WriteHeader(http.StatusConflict)
 			_, err := w.Write([]byte(`{"message": "could not create user", "details": "` + err.Error() + `"}`))
 			if err != nil {
@@ -91,6 +105,7 @@ func (uc *UsersController) CreateUser(w http.ResponseWriter, r *http.Request) {
 		log.Error("Could not write response: ", err)
 	}
 
+	log.Info("user created")
 }
 
 // GetUser will find a single user based on ID

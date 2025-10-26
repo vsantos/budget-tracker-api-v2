@@ -16,16 +16,16 @@ import (
 	"go.opentelemetry.io/otel/trace"
 )
 
-// CardCollectionConfig will implement mongodb collection functions
-type CardCollectionConfig struct {
+// TransactionCollectionConfig will implement mongodb collection functions
+type TransactionCollectionConfig struct {
 	Tracer          trace.Tracer
 	MongoCollection *mongo.Collection
 }
 
 // CreateIndexes will create mongodb indexes
-func (c *CardCollectionConfig) CreateIndexes(ctx context.Context, indexes []string) error {
+func (c *TransactionCollectionConfig) CreateIndexes(ctx context.Context, indexes []string) error {
 	tracer := otel.Tracer("budget-tracker-api-v2")
-	indCtx, span := tracer.Start(ctx, "CardCollection.CreateIndexes")
+	indCtx, span := tracer.Start(ctx, "TransactionCollection.CreateIndexes")
 	defer span.End()
 
 	var indexModels []mongo.IndexModel
@@ -48,27 +48,30 @@ func (c *CardCollectionConfig) CreateIndexes(ctx context.Context, indexes []stri
 }
 
 // InsertOne will insert a document into mongodb
-func (c *CardCollectionConfig) InsertOne(ctx context.Context, document interface{}) (id string, err error) {
-	ctx, span := c.Tracer.Start(ctx, "CardCollection.InsertOne")
+func (c *TransactionCollectionConfig) InsertOne(ctx context.Context, t *model.Transaction) (transaction *model.Transaction, err error) {
+	ctx, span := c.Tracer.Start(ctx, "TransactionCollection.InsertOne")
 	defer span.End()
 
-	r, err := c.MongoCollection.InsertOne(ctx, document)
+	r, err := c.MongoCollection.InsertOne(ctx, t)
+	fmt.Println(r.InsertedID)
+	fmt.Println(err)
 	if err != nil {
 		span.RecordError(err)
 		span.SetStatus(codes.Error, err.Error())
-		return "", err
+		return nil, err
 	}
 
-	return fmt.Sprintf("%v", r.InsertedID), nil
+	return t, nil
 }
 
-// FindOne will find a Card from collection
-func (c *CardCollectionConfig) FindOne(ctx context.Context, id string) (*model.Card, error) {
+// FindOne will find a Transaction from collection
+func (c *TransactionCollectionConfig) FindOne(ctx context.Context, id string) (*model.Transaction, error) {
 	tracer := otel.Tracer("budget-tracker-api-v2")
-	fCtx, span := tracer.Start(ctx, "find one")
+	fCtx, span := tracer.Start(ctx, "TransactionsCollection.FindOne")
+	span.SetAttributes(attribute.String("id", id))
 	defer span.End()
 
-	var emp model.Card
+	var transaction model.Transaction
 
 	i, err := primitive.ObjectIDFromHex(id)
 	if err != nil {
@@ -76,34 +79,18 @@ func (c *CardCollectionConfig) FindOne(ctx context.Context, id string) (*model.C
 	}
 
 	filter := bson.M{"_id": i}
-	err = c.MongoCollection.FindOne(fCtx, filter).Decode(&emp)
+	err = c.MongoCollection.FindOne(fCtx, filter).Decode(&transaction)
 
 	if err != nil {
 		return nil, err
 	}
 
-	return &emp, nil
+	return &transaction, nil
 }
 
-// FindOne will find a Card from collection
-func (c *CardCollectionConfig) FindOneByFilter(ctx context.Context, filter bson.M) (*model.Card, error) {
-	tracer := otel.Tracer("budget-tracker-api-v2")
-	fCtx, span := tracer.Start(ctx, "find one")
-	defer span.End()
-
-	var emp model.Card
-
-	err := c.MongoCollection.FindOne(fCtx, filter).Decode(&emp)
-	if err != nil {
-		return nil, err
-	}
-
-	return &emp, nil
-}
-
-// DeleteOne will find a Card from collection
-func (c *CardCollectionConfig) DeleteOne(ctx context.Context, id string) (int64, error) {
-	ctx, span := c.Tracer.Start(ctx, "CardCollection.DeleteOne")
+// DeleteOne will find a Transaction from collection
+func (c *TransactionCollectionConfig) DeleteOne(ctx context.Context, id string) (int64, error) {
+	ctx, span := c.Tracer.Start(ctx, "TransactionCollection.DeleteOne")
 	defer span.End()
 
 	i, err := primitive.ObjectIDFromHex(id)

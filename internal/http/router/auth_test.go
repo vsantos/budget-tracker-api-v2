@@ -52,7 +52,7 @@ func TestAuthRoute(t *testing.T) {
 			path:               "/api/v1/jwt/issue",
 			body:               nil,
 			ExpectedStatusCode: 400,
-			ExpectedBodyMsg:    "{\"message\": \"empty body\"}",
+			ExpectedBodyMsg:    "{\"message\": \"could not create token\", \"details\": \"missing body\"}",
 		},
 		{
 			verb:               "POST",
@@ -76,7 +76,7 @@ func TestAuthRoute(t *testing.T) {
 
 	for _, testCase := range cases {
 
-		r, err := NewRouter(tracer, m, nil, nil)
+		r, err := NewRouter(tracer, m, nil, nil, nil)
 
 		if testCase.ExpectedErrorMsg != "" {
 			assert.Error(t, err, testCase.ExpectedErrorMsg)

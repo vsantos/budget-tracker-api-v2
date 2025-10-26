@@ -52,7 +52,7 @@ func TestAuthRoute(t *testing.T) {
 			path:               "/api/v1/jwt/issue",
 			body:               nil,
 			ExpectedStatusCode: 400,
-			ExpectedBodyMsg:    "{\"message\": \"empty body\"}",
+			ExpectedBodyMsg:    "{\"message\": \"could not create token\", \"details\": \"missing body\"}",
 		},
 		{
 			verb:               "POST",

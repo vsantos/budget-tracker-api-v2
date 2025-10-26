@@ -72,6 +72,16 @@ func (uc *CardsController) CreateCard(w http.ResponseWriter, r *http.Request) {
 	ctx, span := uc.Tracer.Start(r.Context(), "CardsController.CreateCard")
 	defer span.End()
 
+	if r.Body == nil {
+		w.WriteHeader(http.StatusBadRequest)
+		_, err := w.Write([]byte(`{"message": "could not create card", "details": "missing body"}`))
+		if err != nil {
+			log.Error("Could not write response: ", err)
+		}
+
+		return
+	}
+
 	err := json.NewDecoder(r.Body).Decode(&card)
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)

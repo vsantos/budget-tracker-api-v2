@@ -4,6 +4,7 @@ import (
 	"budget-tracker-api-v2/internal/http/controller"
 	"budget-tracker-api-v2/internal/http/middleware"
 	"budget-tracker-api-v2/internal/repository"
+	"context"
 	"fmt"
 	"net/http"
 
@@ -31,6 +32,8 @@ func NewRouter(
 			}),
 		),
 	)
+
+	var err error
 
 	// API Routes
 	userController := controller.UsersController{
@@ -62,7 +65,25 @@ func NewRouter(
 	controller.SwaggerRegisterRouter(r)
 	authController.RegisterRoutes(r)
 	userController.RegisterRoutes(r)
+
+	fmt.Println("creating indexes")
+	if userController.Repo != nil {
+		fmt.Println("not null")
+		err = userController.Repo.CreateIndexes(context.Background(), []string{"login", "email"})
+		if err != nil {
+			return nil, err
+		}
+	}
+
 	cardsController.RegisterRoutes(r)
+
+	if cardsController.Repo != nil {
+		err = cardsController.Repo.CreateIndexes(context.Background(), []string{"last_digits"})
+		if err != nil {
+			return nil, err
+		}
+	}
+
 	transactionsController.RegisterRoutes(r)
 	healthController.RegisterRoutes(r)
 

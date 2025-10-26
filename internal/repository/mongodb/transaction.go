@@ -21,7 +21,7 @@ type MongoTransactionRepository struct {
 // NewTransactionRepository will return an TransactionRepoInterface for mongodb
 func NewTransactionRepository(ctx context.Context, tracer trace.Tracer, c repository.TransactionCollectionInterface) (repository.TransactionRepoInterface, error) {
 
-	_, span := tracer.Start(ctx, "TransactionRepository.NewRepository")
+	_, span := tracer.Start(ctx, "TransactionsRepository.NewRepository")
 	defer span.End()
 
 	r := MongoTransactionRepository{
@@ -29,33 +29,27 @@ func NewTransactionRepository(ctx context.Context, tracer trace.Tracer, c reposi
 		MongoCollection: c,
 	}
 
-	// err := r.MongoCollection.CreateIndexes(ctx, []string{"_id"})
-	// if err != nil {
-	// 	span.RecordError(err)
-	// 	span.SetStatus(codes.Error, err.Error())
-	// 	return nil, err
-	// }
 	return &r, nil
 }
 
 // Insert will insert an card
-func (r *MongoTransactionRepository) Insert(ctx context.Context, emp *model.Transaction) (*model.Transaction, error) {
-	ctx, span := r.Tracer.Start(ctx, "TransactionRepository.Insert")
+func (r *MongoTransactionRepository) Insert(ctx context.Context, transaction *model.Transaction) (*model.Transaction, error) {
+	ctx, span := r.Tracer.Start(ctx, "TransactionsRepository.Insert")
 	defer span.End()
 
-	if emp.ID.IsZero() {
-		emp.ID = primitive.NewObjectID()
+	if transaction.ID.IsZero() {
+		transaction.ID = primitive.NewObjectID()
 	}
 
 	t := time.Now()
-	emp.CreatedAt = primitive.NewDateTimeFromTime(t)
+	transaction.CreatedAt = primitive.NewDateTimeFromTime(t)
 
-	if emp.TransactionDate == 0 {
-		emp.TransactionDate = emp.CreatedAt
+	if transaction.TransactionDate == 0 {
+		transaction.TransactionDate = transaction.CreatedAt
 	}
 
-	_, err := r.MongoCollection.
-		InsertOne(ctx, emp)
+	returnedTransaction, err := r.MongoCollection.
+		InsertOne(ctx, transaction)
 
 	if err != nil {
 		if strings.Contains(err.Error(), "duplicate key error collection") {
@@ -65,12 +59,12 @@ func (r *MongoTransactionRepository) Insert(ctx context.Context, emp *model.Tran
 		return nil, err
 	}
 
-	return emp, nil
+	return returnedTransaction, nil
 }
 
 // FindByID will fetch an card based on its ID
 func (r *MongoTransactionRepository) FindByID(ctx context.Context, empID string) (*model.Transaction, error) {
-	ctx, span := r.Tracer.Start(ctx, "TransactionRepository.FindByID")
+	ctx, span := r.Tracer.Start(ctx, "TransactionsRepository.FindByID")
 	defer span.End()
 
 	emp, err := r.MongoCollection.FindOne(ctx, empID)
@@ -86,51 +80,9 @@ func (r *MongoTransactionRepository) FindByID(ctx context.Context, empID string)
 	return emp, nil
 }
 
-// // FindAllTransaction will fetch all card
-// func (r *MongoTransactionRepository) FindAllTransaction(ctx context.Context) ([]model.Transaction, error) {
-// 	var emps []model.Transaction
-
-// 	results, err := r.MongoCollection.
-// 		Find(ctx, bson.D{})
-
-// 	if err != nil {
-// 		return nil, err
-// 	}
-
-// 	err = results.All(ctx, &emps)
-// 	if err != nil {
-// 		return nil, errors.New("unable to decode")
-// 	}
-
-// 	return emps, nil
-// }
-
-// // UpdateTransactionByID will update an card based on its ID
-// func (r *MongoTransactionRepository) UpdateTransactionByID(ctx context.Context, empID string, updatedEmp *model.Transaction) (int64, error) {
-// 	result, err := r.MongoCollection.
-// 		UpdateOne(ctx,
-// 			bson.D{
-// 				{
-// 					Key:   "card_id",
-// 					Value: empID,
-// 				}},
-// 			bson.D{
-// 				{
-// 					Key:   "$set",
-// 					Value: updatedEmp,
-// 				}},
-// 		)
-
-// 	if err != nil {
-// 		return 0, err
-// 	}
-
-// 	return result.ModifiedCount, nil
-// }
-
 // Delete will delete an card based on its ID
 func (r *MongoTransactionRepository) Delete(ctx context.Context, empID string) (int64, error) {
-	ctx, span := r.Tracer.Start(ctx, "TransactionRepository.Delete")
+	ctx, span := r.Tracer.Start(ctx, "TransactionsRepository.Delete")
 	defer span.End()
 
 	result, err := r.MongoCollection.

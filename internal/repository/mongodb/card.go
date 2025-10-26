@@ -12,7 +12,6 @@ import (
 
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
-	"go.opentelemetry.io/otel/codes"
 	"go.opentelemetry.io/otel/trace"
 )
 
@@ -24,8 +23,7 @@ type MongoCardRepository struct {
 
 // NewCardRepository will return an CardRepoInterface for mongodb
 func NewCardRepository(ctx context.Context, tracer trace.Tracer, c repository.CardCollectionInterface) (repository.CardRepoInterface, error) {
-
-	ctx, span := tracer.Start(ctx, "CardRepository.NewRepository")
+	_, span := tracer.Start(ctx, "CardsRepository.NewRepository")
 	defer span.End()
 
 	r := MongoCardRepository{
@@ -33,18 +31,12 @@ func NewCardRepository(ctx context.Context, tracer trace.Tracer, c repository.Ca
 		MongoCollection: c,
 	}
 
-	err := r.MongoCollection.CreateIndexes(ctx, []string{"last_digits"})
-	if err != nil {
-		span.RecordError(err)
-		span.SetStatus(codes.Error, err.Error())
-		return nil, err
-	}
 	return &r, nil
 }
 
 // Insert will insert an card
 func (r *MongoCardRepository) Insert(ctx context.Context, emp *model.Card) (*model.Card, error) {
-	ctx, span := r.Tracer.Start(ctx, "CardRepository.Insert")
+	ctx, span := r.Tracer.Start(ctx, "CardsRepository.Insert")
 	defer span.End()
 
 	if emp.ID.IsZero() {
@@ -70,7 +62,7 @@ func (r *MongoCardRepository) Insert(ctx context.Context, emp *model.Card) (*mod
 
 // FindByID will fetch an card based on its ID
 func (r *MongoCardRepository) FindByID(ctx context.Context, empID string) (*model.Card, error) {
-	ctx, span := r.Tracer.Start(ctx, "CardRepository.FindByID")
+	ctx, span := r.Tracer.Start(ctx, "CardsRepository.FindByID")
 	defer span.End()
 
 	emp, err := r.MongoCollection.FindOne(ctx, empID)
@@ -88,7 +80,7 @@ func (r *MongoCardRepository) FindByID(ctx context.Context, empID string) (*mode
 
 // FindByFilter will fetch an card based on a certain filter
 func (r *MongoCardRepository) FindByFilter(ctx context.Context, filter bson.M) (*model.Card, error) {
-	ctx, span := r.Tracer.Start(ctx, "CardRepository.FindByID")
+	ctx, span := r.Tracer.Start(ctx, "CardsRepository.FindByID")
 	defer span.End()
 
 	emp, err := r.MongoCollection.FindOneByFilter(ctx, filter)
@@ -106,7 +98,7 @@ func (r *MongoCardRepository) FindByFilter(ctx context.Context, filter bson.M) (
 
 // Delete will delete an card based on its ID
 func (r *MongoCardRepository) Delete(ctx context.Context, empID string) (int64, error) {
-	ctx, span := r.Tracer.Start(ctx, "CardRepository.Delete")
+	ctx, span := r.Tracer.Start(ctx, "CardsRepository.Delete")
 	defer span.End()
 
 	result, err := r.MongoCollection.

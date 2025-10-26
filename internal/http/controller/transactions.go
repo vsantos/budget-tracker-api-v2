@@ -42,7 +42,62 @@ func (uc *TransactionsController) RegisterRoutes(r *mux.Router) {
 	p := r.PathPrefix("/api/v1/transactions").Subrouter()
 	p.Use(middleware.RequireTokenAuthentication)
 
+	p.HandleFunc("/{id}", uc.Getransaction).Methods("GET")
 	p.HandleFunc("", uc.CreateTransaction).Methods("POST")
+}
+
+func (tc *TransactionsController) Getransaction(w http.ResponseWriter, r *http.Request) {
+	var transaction *model.Transaction
+
+	ctx, span := tc.Tracer.Start(r.Context(), "TransactionsController.GetTransaction")
+	defer span.End()
+
+	params := mux.Vars(r)
+
+	t, err := mongodb.NewTransactionRepository(ctx, tc.Tracer, tc.TransactionRepo)
+	if err != nil {
+		span.RecordError(err)
+		span.SetStatus(codes.Error, err.Error())
+
+		w.WriteHeader(http.StatusInternalServerError)
+		_, err := w.Write([]byte(`{"message": "could not get transaction", "details": "` + err.Error() + `"}`))
+		if err != nil {
+			log.Error("Could not write response: ", err)
+		}
+
+		return
+	}
+
+	transaction, err = t.FindByID(r.Context(), params["id"])
+	if err != nil {
+		if strings.Contains(err.Error(), "not found") {
+			span.AddEvent("transaction not found")
+
+			w.WriteHeader(http.StatusNotFound)
+			_, err := w.Write([]byte(`{"message": "could not find transaction", "id": "` + params["id"] + `"}`))
+			if err != nil {
+				log.Error("Could not write response: ", err)
+			}
+
+			return
+		}
+
+		w.WriteHeader(http.StatusInternalServerError)
+		span.RecordError(err)
+		span.SetStatus(codes.Error, err.Error())
+
+		_, err := w.Write([]byte(`{"message": "` + err.Error() + `"}`))
+		if err != nil {
+			log.Error("Could not write response: ", err)
+		}
+
+		return
+	}
+
+	err = json.NewEncoder(w).Encode(transaction)
+	if err != nil {
+		log.Error("Could not encode response: ", err)
+	}
 }
 
 func (tc *TransactionsController) CreateTransaction(w http.ResponseWriter, r *http.Request) {
@@ -50,6 +105,16 @@ func (tc *TransactionsController) CreateTransaction(w http.ResponseWriter, r *ht
 
 	ctx, span := tc.Tracer.Start(r.Context(), "TransactionsController.CreateTransaction")
 	defer span.End()
+
+	if r.Body == nil {
+		w.WriteHeader(http.StatusBadRequest)
+		_, err := w.Write([]byte(`{"message": "could not create transaction", "details": "missing body"}`))
+		if err != nil {
+			log.Error("Could not write response: ", err)
+		}
+
+		return
+	}
 
 	err := json.NewDecoder(r.Body).Decode(&transaction)
 	if err != nil {
@@ -118,6 +183,7 @@ func (tc *TransactionsController) CreateTransaction(w http.ResponseWriter, r *ht
 		}
 		transaction.PaymentMethod.Credit = *card
 	}
+
 	rt, err := t.Insert(ctx, transaction)
 	if err != nil {
 

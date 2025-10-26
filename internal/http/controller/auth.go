@@ -66,12 +66,14 @@ func (uc *AuthController) CreateToken(w http.ResponseWriter, r *http.Request) {
 	defer span.End()
 
 	var jwtUser model.JWTUser
+
 	if r.Body == nil {
 		w.WriteHeader(http.StatusBadRequest)
-		_, err := w.Write([]byte(`{"message": "empty body"}`))
+		_, err := w.Write([]byte(`{"message": "could not create token", "details": "missing body"}`))
 		if err != nil {
 			log.Error("Could not write response: ", err)
 		}
+
 		return
 	}
 

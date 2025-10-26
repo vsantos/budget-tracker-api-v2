@@ -11,6 +11,7 @@ import (
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 	"go.opentelemetry.io/otel"
+	"go.opentelemetry.io/otel/attribute"
 	"go.opentelemetry.io/otel/codes"
 	"go.opentelemetry.io/otel/trace"
 )
@@ -24,7 +25,7 @@ type CardCollectionConfig struct {
 // CreateIndexes will create mongodb indexes
 func (c *CardCollectionConfig) CreateIndexes(ctx context.Context, indexes []string) error {
 	tracer := otel.Tracer("budget-tracker-api-v2")
-	indCtx, span := tracer.Start(ctx, "create indexes")
+	indCtx, span := tracer.Start(ctx, "CardCollection.CreateIndexes")
 	defer span.End()
 
 	var indexModels []mongo.IndexModel
@@ -33,6 +34,9 @@ func (c *CardCollectionConfig) CreateIndexes(ctx context.Context, indexes []stri
 			Keys:    bson.D{{Key: i, Value: 1}},
 			Options: options.Index().SetUnique(true),
 		})
+
+		kv := attribute.StringSlice("indexes", indexes)
+		span.SetAttributes(kv)
 	}
 
 	_, err := c.MongoCollection.Indexes().CreateMany(indCtx, indexModels)

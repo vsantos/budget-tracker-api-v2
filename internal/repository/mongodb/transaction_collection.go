@@ -11,6 +11,7 @@ import (
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 	"go.opentelemetry.io/otel"
+	"go.opentelemetry.io/otel/attribute"
 	"go.opentelemetry.io/otel/codes"
 	"go.opentelemetry.io/otel/trace"
 )
@@ -24,7 +25,7 @@ type TransactionCollectionConfig struct {
 // CreateIndexes will create mongodb indexes
 func (c *TransactionCollectionConfig) CreateIndexes(ctx context.Context, indexes []string) error {
 	tracer := otel.Tracer("budget-tracker-api-v2")
-	indCtx, span := tracer.Start(ctx, "create indexes")
+	indCtx, span := tracer.Start(ctx, "TransactionCollection.CreateIndexes")
 	defer span.End()
 
 	var indexModels []mongo.IndexModel
@@ -33,6 +34,9 @@ func (c *TransactionCollectionConfig) CreateIndexes(ctx context.Context, indexes
 			Keys:    bson.D{{Key: i, Value: 1}},
 			Options: options.Index().SetUnique(true),
 		})
+
+		kv := attribute.StringSlice("indexes", indexes)
+		span.SetAttributes(kv)
 	}
 
 	_, err := c.MongoCollection.Indexes().CreateMany(indCtx, indexModels)
@@ -44,18 +48,24 @@ func (c *TransactionCollectionConfig) CreateIndexes(ctx context.Context, indexes
 }
 
 // InsertOne will insert a document into mongodb
-func (c *TransactionCollectionConfig) InsertOne(ctx context.Context, document interface{}) (id string, err error) {
+func (c *TransactionCollectionConfig) InsertOne(ctx context.Context, t *model.Transaction) (transaction *model.Transaction, err error) {
 	ctx, span := c.Tracer.Start(ctx, "TransactionCollection.InsertOne")
 	defer span.End()
 
-	r, err := c.MongoCollection.InsertOne(ctx, document)
+	r, err := c.MongoCollection.InsertOne(ctx, t)
 	if err != nil {
 		span.RecordError(err)
 		span.SetStatus(codes.Error, err.Error())
-		return "", err
+		return nil, err
 	}
 
-	return fmt.Sprintf("%v", r.InsertedID), nil
+	returnedID := fmt.Sprintf("%v", r.InsertedID)
+	t.ID, err = primitive.ObjectIDFromHex(returnedID)
+	if err != nil {
+		return nil, err
+	}
+
+	return t, nil
 }
 
 // FindOne will find a Transaction from collection

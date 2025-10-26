@@ -62,7 +62,7 @@ type Card struct {
     Type       string             `json:"type" bson:"type"`
     Network    string             `json:"network" bson:"network"`
     Bank       string             `json:"bank" bson:"bank"`
-    Color      string             `json:"color" bson:"color"`
+    Color      string             `json:"color,omitempty" bson:"color"`
     LastDigits int32              `json:"last_digits" bson:"last_digits"`
     CreatedAt  primitive.DateTime `json:"created_at,omitempty" bson:"created_at,omitempty" swaggerignore:"true"`
 }
@@ -126,16 +126,15 @@ type JWTUser struct {
 ```
 
 <a name="PaymentMethod"></a>
-## type [PaymentMethod](<https://github.com/vsantos/budget-tracker-api-v2/blob/main/internal/model/transaction.go#L53-L58>)
+## type [PaymentMethod](<https://github.com/vsantos/budget-tracker-api-v2/blob/main/internal/model/transaction.go#L53-L57>)
 
 PaymentMethod defines which payment method was used for a certain transaction
 
 ```go
 type PaymentMethod struct {
-    Credit      Card `json:"credit,omitempty" bson:"credit,omitempty"`
-    Debit       Card `json:"debit,omitempty" bson:"debit,omitempty"`
-    Pix         bool `json:"pix,omitempty" bson:"pix,omitempty"`
-    PaymentSlip bool `json:"payment_slip,omitempty" bson:"payment_slip,omitempty"`
+    Credit      Card `json:"credit" bson:"credit,omitempty"`
+    Pix         bool `json:"pix" bson:"pix,omitempty"`
+    PaymentSlip bool `json:"payment_slip" bson:"payment_slip,omitempty"`
 }
 ```
 

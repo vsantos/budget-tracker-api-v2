@@ -18,7 +18,7 @@ import "budget-tracker-api-v2/internal/repository"
 
 
 <a name="CardCollectionInterface"></a>
-## type [CardCollectionInterface](<https://github.com/vsantos/budget-tracker-api-v2/blob/main/internal/repository/card_collection.go#L9-L14>)
+## type [CardCollectionInterface](<https://github.com/vsantos/budget-tracker-api-v2/blob/main/internal/repository/card_collection.go#L11-L17>)
 
 CardCollectionInterface defines a mongodb collection API to be posteriorly mocked
 
@@ -27,12 +27,13 @@ type CardCollectionInterface interface {
     CreateIndexes(ctx context.Context, indexes []string) error
     InsertOne(ctx context.Context, document interface{}) (id string, err error)
     FindOne(ctx context.Context, id string) (*model.Card, error)
+    FindOneByFilter(ctx context.Context, filter bson.M) (*model.Card, error)
     DeleteOne(ctx context.Context, id string) (int64, error)
 }
 ```
 
 <a name="CardRepoInterface"></a>
-## type [CardRepoInterface](<https://github.com/vsantos/budget-tracker-api-v2/blob/main/internal/repository/card.go#L9-L16>)
+## type [CardRepoInterface](<https://github.com/vsantos/budget-tracker-api-v2/blob/main/internal/repository/card.go#L11-L16>)
 
 CardRepoInterface defines Card CRUD operations
 
@@ -40,6 +41,7 @@ CardRepoInterface defines Card CRUD operations
 type CardRepoInterface interface {
     Insert(ctx context.Context, emp *model.Card) (*model.Card, error)
     FindByID(ctx context.Context, empID string) (*model.Card, error)
+    FindByFilter(ctx context.Context, filter bson.M) (*model.Card, error)
     Delete(ctx context.Context, id string) (int64, error)
 }
 ```
@@ -63,7 +65,7 @@ TransactionCollectionInterface defines a mongodb collection API to be posteriorl
 ```go
 type TransactionCollectionInterface interface {
     CreateIndexes(ctx context.Context, indexes []string) error
-    InsertOne(ctx context.Context, document interface{}) (id string, err error)
+    InsertOne(ctx context.Context, t *model.Transaction) (transaction *model.Transaction, err error)
     FindOne(ctx context.Context, id string) (*model.Transaction, error)
     DeleteOne(ctx context.Context, id string) (int64, error)
 }

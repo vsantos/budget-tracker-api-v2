@@ -12,7 +12,7 @@ import "budget-tracker-api-v2/internal/http/router"
 
 
 <a name="NewRouter"></a>
-## func [NewRouter](<https://github.com/vsantos/budget-tracker-api-v2/blob/main/internal/http/router/routes.go#L16-L22>)
+## func [NewRouter](<https://github.com/vsantos/budget-tracker-api-v2/blob/main/internal/http/router/routes.go#L17-L23>)
 
 ```go
 func NewRouter(tracer trace.Tracer, userCollectionInterface repository.UserCollectionInterface, cardsCollectionInterface repository.CardCollectionInterface, transactionsCollectionInterface repository.TransactionCollectionInterface, healthCollectionInterface repository.HealthCollectionInterface) (*mux.Router, error)

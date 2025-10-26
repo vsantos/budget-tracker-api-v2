@@ -39,6 +39,7 @@ jobs:
           VERSION_STATUS_CODE=$?
           set -e
 
+          set -x
           if [[ $VERSION_STATUS_CODE == 128 ]]; then
             VERSION=$(git describe --tags --abbrev=0 --always | cut -c1-10)
             mike deploy --push --update-aliases $version development --config-file=docs/mkdocs.yml

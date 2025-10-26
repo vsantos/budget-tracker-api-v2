@@ -53,15 +53,11 @@ func (c *TransactionCollectionConfig) InsertOne(ctx context.Context, t *model.Tr
 	defer span.End()
 
 	r, err := c.MongoCollection.InsertOne(ctx, t)
+	fmt.Println(r.InsertedID)
+	fmt.Println(err)
 	if err != nil {
 		span.RecordError(err)
 		span.SetStatus(codes.Error, err.Error())
-		return nil, err
-	}
-
-	returnedID := fmt.Sprintf("%v", r.InsertedID)
-	t.ID, err = primitive.ObjectIDFromHex(returnedID)
-	if err != nil {
 		return nil, err
 	}
 

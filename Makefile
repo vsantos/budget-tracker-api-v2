@@ -1,3 +1,8 @@
+CONTAINER_ID := $$(docker ps -aqf "name=budget-tracker-api-v2")
+
+logs:
+	docker logs $(CONTAINER_ID)
+
 sonar:
 	docker run -d -p 9000:9000 sonarqube:community && sleep 60
 	docker run --net=host \

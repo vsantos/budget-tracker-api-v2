@@ -86,7 +86,7 @@ func NewClient() (*mongo.Client, error)
 NewClient will return a valid mongoDB connection
 
 <a name="NewTransactionRepository"></a>
-## func [NewTransactionRepository](<https://github.com/vsantos/budget-tracker-api-v2/blob/main/internal/repository/mongodb/transaction.go#L22>)
+## func [NewTransactionRepository](<https://github.com/vsantos/budget-tracker-api-v2/blob/main/internal/repository/mongodb/transaction.go#L23>)
 
 ```go
 func NewTransactionRepository(ctx context.Context, tracer trace.Tracer, c repository.TransactionCollectionInterface) (repository.TransactionRepoInterface, error)
@@ -317,7 +317,7 @@ type MongoHealthRepository struct {
 ```
 
 <a name="MongoTransactionRepository"></a>
-## type [MongoTransactionRepository](<https://github.com/vsantos/budget-tracker-api-v2/blob/main/internal/repository/mongodb/transaction.go#L16-L19>)
+## type [MongoTransactionRepository](<https://github.com/vsantos/budget-tracker-api-v2/blob/main/internal/repository/mongodb/transaction.go#L17-L20>)
 
 
 
@@ -329,7 +329,7 @@ type MongoTransactionRepository struct {
 ```
 
 <a name="MongoTransactionRepository.Delete"></a>
-### func \(\*MongoTransactionRepository\) [Delete](<https://github.com/vsantos/budget-tracker-api-v2/blob/main/internal/repository/mongodb/transaction.go#L84>)
+### func \(\*MongoTransactionRepository\) [Delete](<https://github.com/vsantos/budget-tracker-api-v2/blob/main/internal/repository/mongodb/transaction.go#L86>)
 
 ```go
 func (r *MongoTransactionRepository) Delete(ctx context.Context, empID string) (int64, error)
@@ -338,7 +338,7 @@ func (r *MongoTransactionRepository) Delete(ctx context.Context, empID string) (
 Delete will delete an card based on its ID
 
 <a name="MongoTransactionRepository.FindByID"></a>
-### func \(\*MongoTransactionRepository\) [FindByID](<https://github.com/vsantos/budget-tracker-api-v2/blob/main/internal/repository/mongodb/transaction.go#L66>)
+### func \(\*MongoTransactionRepository\) [FindByID](<https://github.com/vsantos/budget-tracker-api-v2/blob/main/internal/repository/mongodb/transaction.go#L67>)
 
 ```go
 func (r *MongoTransactionRepository) FindByID(ctx context.Context, empID string) (*model.Transaction, error)
@@ -347,7 +347,7 @@ func (r *MongoTransactionRepository) FindByID(ctx context.Context, empID string)
 FindByID will fetch an card based on its ID
 
 <a name="MongoTransactionRepository.Insert"></a>
-### func \(\*MongoTransactionRepository\) [Insert](<https://github.com/vsantos/budget-tracker-api-v2/blob/main/internal/repository/mongodb/transaction.go#L36>)
+### func \(\*MongoTransactionRepository\) [Insert](<https://github.com/vsantos/budget-tracker-api-v2/blob/main/internal/repository/mongodb/transaction.go#L37>)
 
 ```go
 func (r *MongoTransactionRepository) Insert(ctx context.Context, transaction *model.Transaction) (*model.Transaction, error)
@@ -415,7 +415,7 @@ func (c *TransactionCollectionConfig) CreateIndexes(ctx context.Context, indexes
 CreateIndexes will create mongodb indexes
 
 <a name="TransactionCollectionConfig.DeleteOne"></a>
-### func \(\*TransactionCollectionConfig\) [DeleteOne](<https://github.com/vsantos/budget-tracker-api-v2/blob/main/internal/repository/mongodb/transaction_collection.go#L95>)
+### func \(\*TransactionCollectionConfig\) [DeleteOne](<https://github.com/vsantos/budget-tracker-api-v2/blob/main/internal/repository/mongodb/transaction_collection.go#L92>)
 
 ```go
 func (c *TransactionCollectionConfig) DeleteOne(ctx context.Context, id string) (int64, error)
@@ -424,7 +424,7 @@ func (c *TransactionCollectionConfig) DeleteOne(ctx context.Context, id string) 
 DeleteOne will find a Transaction from collection
 
 <a name="TransactionCollectionConfig.FindOne"></a>
-### func \(\*TransactionCollectionConfig\) [FindOne](<https://github.com/vsantos/budget-tracker-api-v2/blob/main/internal/repository/mongodb/transaction_collection.go#L72>)
+### func \(\*TransactionCollectionConfig\) [FindOne](<https://github.com/vsantos/budget-tracker-api-v2/blob/main/internal/repository/mongodb/transaction_collection.go#L68>)
 
 ```go
 func (c *TransactionCollectionConfig) FindOne(ctx context.Context, id string) (*model.Transaction, error)

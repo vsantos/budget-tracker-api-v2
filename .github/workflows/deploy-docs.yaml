@@ -4,7 +4,6 @@ on:
   push:
     tags:
     - '*'
-    branches: [feat/*, docs/*, fix/*, break/*]
   pull_request:
     branches: [main, feat/*, docs/*, fix/*, break/*]
 
@@ -49,4 +48,4 @@ jobs:
           else
             current_branch=$(git symbolic-ref --short HEAD)
             mike deploy --push --update-aliases $current_branch dev --config-file=docs/mkdocs.yml
-          fi
+          figit s

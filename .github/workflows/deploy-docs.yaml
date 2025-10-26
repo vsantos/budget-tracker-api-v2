@@ -48,4 +48,4 @@ jobs:
           else
             current_branch=$(git symbolic-ref --short HEAD)
             mike deploy --push --update-aliases $current_branch dev --config-file=docs/mkdocs.yml
-          figit s
+          fi

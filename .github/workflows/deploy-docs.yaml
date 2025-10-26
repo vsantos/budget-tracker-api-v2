@@ -47,5 +47,6 @@ jobs:
             mike deploy --push --update-aliases $VERSION latest --config-file=docs/mkdocs.yml
             mike set-default --push latest --config-file=docs/mkdocs.yml
           else
-            mike deploy --push --update-aliases ${FEATURE_BRANCH} dev --config-file=docs/mkdocs.yml
+            PULL_REQUEST=PR-$(echo ${FEATURE_BRANCH} | cut -d'/' -f3)
+            mike deploy --push --update-aliases ${PULL_REQUEST} dev --config-file=docs/mkdocs.yml
           fi

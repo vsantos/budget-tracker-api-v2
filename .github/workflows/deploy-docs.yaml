@@ -5,7 +5,7 @@ on:
     tags:
     - '*'
   pull_request:
-    branches: [main, feat/*, docs/*, fix/*, break/*]
+    branches: [main, feat/*, docs/*, fix/*, break/*, tests/*]
 
 permissions:
   contents: write

@@ -3,9 +3,21 @@ package mongodb
 import (
 	"budget-tracker-api-v2/internal/model"
 	"context"
+	"fmt"
+	"time"
 
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )
+
+var (
+	usertDate time.Time
+)
+
+func init() {
+	mockedTransactionDate := "2023-10-26 14:30:00"
+	layout := "2006-01-02 15:04:05"
+	usertDate, _ = time.Parse(layout, mockedTransactionDate)
+}
 
 // UserMockCollectionConfig will implement mongodb collection functions
 type UserMockCollectionConfig struct {
@@ -18,12 +30,27 @@ func (c *UserMockCollectionConfig) CreateIndexes(ctx context.Context, indexes []
 }
 
 // InsertOne will insert a document into mongodb
-func (c *UserMockCollectionConfig) InsertOne(ctx context.Context, document interface{}) (id string, err error) {
-	if c.Error != nil {
-		return "", c.Error
+func (c *UserMockCollectionConfig) InsertOne(ctx context.Context, emp *model.User) (user *model.User, err error) {
+	objID, err := primitive.ObjectIDFromHex("686f255205535b1dd3b68f38")
+	if err != nil {
+		return nil, err
 	}
 
-	return "66f1cca3c37c733c4ada103d", nil
+	if c.Error != nil {
+		return nil, c.Error
+	}
+
+	fmt.Println("mocked inserted")
+	fmt.Println(objID)
+	return &model.User{
+		ID:        objID,
+		Login:     emp.Login,
+		Firstname: emp.Firstname,
+		Lastname:  emp.Lastname,
+		Email:     emp.Email,
+		Password:  "$2a$10$HOrmuqyfwr575K4P9tjQXe0QKqbddMA/KFZ.YZhWVKPLMUF3LS4gi",
+		CreatedAt: primitive.NewDateTimeFromTime(usertDate),
+	}, nil
 }
 
 // FindOneBy will find a document based on field

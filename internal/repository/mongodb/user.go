@@ -55,7 +55,7 @@ func (r *MongoUserRepository) Insert(ctx context.Context, emp *model.User) (*mod
 
 	emp.Password = sPassword
 
-	_, err = r.MongoCollection.
+	rUser, err := r.MongoCollection.
 		InsertOne(ctx, emp)
 
 	if err != nil {
@@ -66,7 +66,7 @@ func (r *MongoUserRepository) Insert(ctx context.Context, emp *model.User) (*mod
 		return nil, err
 	}
 
-	return emp, nil
+	return rUser, nil
 }
 
 // FindByID will fetch an user based on its ID

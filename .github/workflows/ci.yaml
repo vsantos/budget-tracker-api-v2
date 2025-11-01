@@ -2,9 +2,9 @@ name: CI Workflow
 
 on:
   push:
-    branches: [main, feat/*, docs/*, fix/*, break/*]
+    branches: [main, feat/*, docs/*, fix/*, break/*, tests/*]
   pull_request:
-    branches: [main, feat/*, docs/*, fix/*, break/*]
+    branches: [main, feat/*, docs/*, fix/*, break/*, tests/*]
 
 jobs:
   unit-tests:

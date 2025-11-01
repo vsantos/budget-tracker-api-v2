@@ -74,7 +74,7 @@ func (uc *UsersController) CreateUser(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	user, err = u.Insert(ctx, user)
+	returnedUser, err := u.Insert(ctx, user)
 	if err != nil {
 		if strings.Contains(err.Error(), "user or email already registered") {
 
@@ -100,12 +100,10 @@ func (uc *UsersController) CreateUser(w http.ResponseWriter, r *http.Request) {
 	}
 
 	w.WriteHeader(http.StatusCreated)
-	_, err = w.Write([]byte(`{"message": "created user '` + user.Login + `'", "id": "` + user.ID.Hex() + `"}`))
+	_, err = w.Write([]byte(`{"message": "created user '` + returnedUser.Login + `'", "id": "` + returnedUser.ID.Hex() + `"}`))
 	if err != nil {
 		log.Error("Could not write response: ", err)
 	}
-
-	log.Info("user created")
 }
 
 // GetUser will find a single user based on ID

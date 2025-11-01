@@ -1,10 +1,15 @@
 [
   {
-    "version": "PR-5",
-    "title": "PR-5",
+    "version": "PR-6",
+    "title": "PR-6",
     "aliases": [
       "dev"
     ]
+  },
+  {
+    "version": "PR-5",
+    "title": "PR-5",
+    "aliases": []
   },
   {
     "version": "0.0.1",

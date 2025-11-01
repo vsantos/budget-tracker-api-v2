@@ -4,7 +4,6 @@ import (
 	"budget-tracker-api-v2/internal/model"
 	"context"
 	"errors"
-	"fmt"
 
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
@@ -47,16 +46,16 @@ func (c *UserCollectionConfig) CreateIndexes(ctx context.Context, indexes []stri
 }
 
 // InsertOne will insert a document into mongodb
-func (c *UserCollectionConfig) InsertOne(ctx context.Context, document interface{}) (id string, err error) {
+func (c *UserCollectionConfig) InsertOne(ctx context.Context, emp *model.User) (user *model.User, err error) {
 	fCtx, span := c.Tracer.Start(ctx, "UserCollection.InsertOne")
 	defer span.End()
 
-	r, err := c.MongoCollection.InsertOne(fCtx, document)
+	_, err = c.MongoCollection.InsertOne(fCtx, emp)
 	if err != nil {
-		return "", err
+		return nil, err
 	}
 
-	return fmt.Sprintf("%v", r.InsertedID), nil
+	return emp, nil
 }
 
 // FindOne will find a User from collection

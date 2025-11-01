@@ -4,7 +4,6 @@ import (
 	"budget-tracker-api-v2/internal/model"
 	"context"
 	"errors"
-	"fmt"
 
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
@@ -52,9 +51,7 @@ func (c *TransactionCollectionConfig) InsertOne(ctx context.Context, t *model.Tr
 	ctx, span := c.Tracer.Start(ctx, "TransactionCollection.InsertOne")
 	defer span.End()
 
-	r, err := c.MongoCollection.InsertOne(ctx, t)
-	fmt.Println(r.InsertedID)
-	fmt.Println(err)
+	_, err = c.MongoCollection.InsertOne(ctx, t)
 	if err != nil {
 		span.RecordError(err)
 		span.SetStatus(codes.Error, err.Error())
